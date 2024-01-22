@@ -1,0 +1,30 @@
+.navbar {
+  --bs-navbar-padding-y: 0;
+}
+
+.nav-link-text {
+  --bs-nav-link-font-size: 19px;
+  margin-right: 0.25em;
+}
+
+.nav-link-icon {
+  margin-left: 0.25em;
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.social-links {
+  display: flex;
+}
+
+@media (max-width: 575px) {
+  .social-links {
+    margin-top: 4px;
+    margin-bottom: 10px;
+  }
+}
+
+.nav-link-icon {
+  padding-right: var(--bs-navbar-nav-link-padding-x) !important;
+  padding-left: var(--bs-navbar-nav-link-padding-x) !important;
+}
