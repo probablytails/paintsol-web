@@ -4,15 +4,16 @@ import styles from '@/styles/components/Icon.module.css';
 type Props = {
   height: number
   imageSrc: string
+  title: string
   width: number
 }
 
-export default function Icon({ height, imageSrc, width }: Props) {
+export default function Icon({ height, imageSrc, title, width }: Props) {
   return (
     <div className={`icon ${styles.icon}`}>
       <Image
         src={imageSrc}
-        alt="MS $Paint Logo"
+        alt={title}
         width={width}
         height={height}
         priority

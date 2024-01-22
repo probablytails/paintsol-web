@@ -3,6 +3,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styles from '@/styles/components/NavBar.module.css'
 import Icon from "./Icon";
+import { FontAwesomeIconProps } from "@fortawesome/react-fontawesome";
+import FAIcon from "./FAIcon";
+import { faTelegram } from "@fortawesome/free-brands-svg-icons/faTelegram";
+import { faXTwitter } from "@fortawesome/free-brands-svg-icons/faXTwitter";
 
 const navIconSize = 24;
 
@@ -25,6 +29,30 @@ function NavLinkIcon({ imageSrc, title, url }: NavLinkIconProps) {
         <Icon
           height={navIconSize}
           imageSrc={imageSrc}
+          title={title}
+          width={navIconSize}
+        />
+      </Link>
+    </li>
+  )
+}
+
+type NavLinkFAIconProps = FontAwesomeIconProps & { url: string }
+
+function NavLinkFAIcon({ color, icon, title, url }: NavLinkFAIconProps) {
+  return (
+    <li className="nav-item">
+      <Link
+        aria-label={title}
+        className={`nav-link ${styles['nav-link-icon']}`}
+        href={url}
+        rel="noopener noreferrer"
+        target="_blank"
+        title={title}>
+        <FAIcon
+          height={navIconSize}
+          icon={icon}
+          title={title}
           width={navIconSize}
         />
       </Link>
@@ -92,6 +120,16 @@ export default function NavBar() {
                 imageSrc="/external-sites/coingecko.svg"
                 title="CoinGecko"
                 url="https://www.coingecko.com/en/coins/ms-paint/usd"
+              />
+              <NavLinkFAIcon
+                icon={faXTwitter}
+                title='X - Twitter'
+                url='https://twitter.com/MSPaintSOL'
+              />
+              <NavLinkFAIcon
+                icon={faTelegram}
+                title='Telegram'
+                url='https://t.co/OjMn6rdbaU'
               />
             </div>
           </ul>

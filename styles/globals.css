@@ -4,3 +4,12 @@
 .flex-spacer {
   flex: 1;
 }
+
+
+svg[data-icon="telegram"] {
+  color: #229ED9;
+}
+
+svg[data-icon="x-twitter"] {
+  color: #000000;
+}
