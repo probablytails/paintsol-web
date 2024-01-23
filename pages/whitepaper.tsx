@@ -12,7 +12,7 @@ export default function Whitepaper() {
       <div className="container">
         <div className="row mx-2 my-5">
           <Image
-            alt="$Paint Whitepaper (it's an old picture of MS Paint open with a blank canvas)"
+            alt="$Paint Whitepaper (it's an old picture of Paint open with a blank canvas)"
             className={styles['whitepaper-image']}
             imageSrc="/whitepaper.jpg"
             priority
