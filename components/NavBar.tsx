@@ -1,12 +1,13 @@
+import { FontAwesomeIconProps } from "@fortawesome/react-fontawesome";
+import { faTelegram } from "@fortawesome/free-brands-svg-icons/faTelegram";
+import { faXTwitter } from "@fortawesome/free-brands-svg-icons/faXTwitter";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import styles from '@/styles/components/NavBar.module.css'
-import Icon from "./Icon";
-import { FontAwesomeIconProps } from "@fortawesome/react-fontawesome";
 import FAIcon from "./FAIcon";
-import { faTelegram } from "@fortawesome/free-brands-svg-icons/faTelegram";
-import { faXTwitter } from "@fortawesome/free-brands-svg-icons/faXTwitter";
+import Icon from "./Icon";
+
+import styles from '@/styles/components/NavBar.module.css'
 
 const navIconSize = 24;
 
@@ -39,7 +40,7 @@ function NavLinkIcon({ imageSrc, title, url }: NavLinkIconProps) {
 
 type NavLinkFAIconProps = FontAwesomeIconProps & { url: string }
 
-function NavLinkFAIcon({ color, icon, title, url }: NavLinkFAIconProps) {
+function NavLinkFAIcon({ icon, title, url }: NavLinkFAIconProps) {
   return (
     <li className="nav-item">
       <Link
@@ -47,8 +48,7 @@ function NavLinkFAIcon({ color, icon, title, url }: NavLinkFAIconProps) {
         className={`nav-link ${styles['nav-link-icon']}`}
         href={url}
         rel="noopener noreferrer"
-        target="_blank"
-        title={title}>
+        target="_blank">
         <FAIcon
           height={navIconSize}
           icon={icon}
