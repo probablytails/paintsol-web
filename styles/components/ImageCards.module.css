@@ -1,0 +1,10 @@
+.smallest-card {
+  margin-bottom: 1.5em;
+}
+
+@media (min-width: 350px) and (max-width: 575px) {
+  .smallest-card {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+}
