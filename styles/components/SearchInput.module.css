@@ -1,0 +1,18 @@
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-input {
+  max-width: 530px;
+  position: relative;
+}
+
+.search-icon {
+  color: #888;
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 100;
+}
