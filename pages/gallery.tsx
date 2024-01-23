@@ -1,11 +1,11 @@
 import Head from "next/head";
-import FAIcon from "@/components/FAIcon";
 import ImageCards from "@/components/ImageCards";
-import { getSampleImageData } from "@/lib/sampleData";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import SearchInput from "@/components/SearchInput";
+import { getSampleImageData } from "@/lib/sampleData";
+import { Dispatch, SetStateAction, useState } from "react";
 
 export default function Gallery() {
+  const [isLoading, setIsLoading] = useState(false)
   const sampleData = getSampleImageData()
   const imageItems = sampleData.imageItems
 
@@ -16,9 +16,20 @@ export default function Gallery() {
         <meta name="description" content="TODO: GALLERY PAGE DESCRIPTION" />
       </Head>
       <div className="container-fluid my-4">
-        <SearchInput />
-        <ImageCards items={imageItems} />
+        <SearchInput handleSearch={(value: string) => handleSearch(value, setIsLoading)} />
+        <ImageCards isLoading={isLoading} items={imageItems} />
       </div>
     </>
   );
+}
+
+const handleSearch = (
+  value: string,
+  setIsLoading: Dispatch<SetStateAction<boolean>>
+) => {
+  console.log('handleSearch', value)
+  setIsLoading(true)
+  setTimeout(() => {
+    setIsLoading(false)
+  }, 3000)
 }

@@ -1,6 +1,6 @@
 import { FontAwesomeIcon, FontAwesomeIconProps } from "@fortawesome/react-fontawesome";
 
-export default function FAIcon({ className, color, height, icon, title,
+export default function FAIcon({ className, color, height, icon, spin, title,
   width }: FontAwesomeIconProps) {
   return (
     <FontAwesomeIcon
@@ -8,6 +8,7 @@ export default function FAIcon({ className, color, height, icon, title,
       color={color}
       height={height}
       icon={icon}
+      spin={spin}
       title={title}
       titleId={title}
       width={width}

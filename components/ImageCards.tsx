@@ -1,4 +1,5 @@
 import ImageCard from "@/components/ImageCard";
+import LoadingSpinner from "./LoadingSpinner";
 import styles from "@/styles/components/ImageCards.module.css";
 
 type ImageCardItem = {
@@ -8,10 +9,11 @@ type ImageCardItem = {
 }
 
 type Props = {
+  isLoading: boolean
   items: ImageCardItem[]
 }
 
-export default function ImageCards({ items }: Props) {
+export default function ImageCards({ isLoading, items }: Props) {
   const imageCards = items.map((item: ImageCardItem) => (
     <div
       className={`col-sm-6 col-md-4 col-lg-3 col-xl-2 ${styles['smallest-card']}`}
@@ -27,7 +29,14 @@ export default function ImageCards({ items }: Props) {
 
   return (
     <div className="row gx-3 mt-4">
-      {imageCards}
+      {
+        isLoading && (
+          <LoadingSpinner />
+        )
+      }
+      {
+        !isLoading && (imageCards)
+      }
     </div>
   )
 }
