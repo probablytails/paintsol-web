@@ -4,6 +4,7 @@ export default function FAIcon({ color, height, icon, title, width }: FontAwesom
   return (
     <div>
       <FontAwesomeIcon
+        titleId={title}
         color={color}
         height={height}
         icon={icon}
