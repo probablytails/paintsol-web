@@ -50,10 +50,8 @@ function NavLinkFAIcon({ icon, title, url }: NavLinkFAIconProps) {
         rel="noopener noreferrer"
         target="_blank">
         <FAIcon
-          height={navIconSize}
           icon={icon}
           title={title}
-          width={navIconSize}
         />
       </Link>
     </li>
@@ -71,11 +69,11 @@ export default function NavBar() {
       <div className="container-fluid">
         <Link className="navbar-brand" href="/">
           <Image
-            alt="MS $Paint Logo"
+            alt="$PAINT Logo"
             height={48}
             imageSrc="/paint_logo_small_square.png"
             priority
-            title="MS $Paint Logo"
+            title="$PAINT Logo"
             width={48}
           />
         </Link>
