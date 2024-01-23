@@ -9,16 +9,6 @@ export default function Whitepaper() {
         <title>$PAINT – Whitepaper</title>
         <meta name="description" content="TODO: WHITEPAPER PAGE DESCRIPTION" />
       </Head>
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
     </>
   );
 }

@@ -1,5 +1,4 @@
 import Image from "next/image";
-import styles from '@/styles/components/Icon.module.css';
 
 type Props = {
   height: number
@@ -10,7 +9,7 @@ type Props = {
 
 export default function Icon({ height, imageSrc, title, width }: Props) {
   return (
-    <div className={`icon ${styles.icon}`}>
+    <div>
       <Image
         src={imageSrc}
         alt={title}

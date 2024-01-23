@@ -1,12 +1,14 @@
-import { Inter } from "next/font/google";
 import Head from "next/head";
 import NavBar from "@/components/NavBar";
-
-const inter = Inter({ subsets: ["latin"] });
 
 type Props = {
   children: React.ReactNode
 }
+
+/*
+  NOTE: Layout styles must go in the globals.css file because *.module.css
+  files are not available in _app.tsx (I think).
+*/
 
 export default function Layout({ children }: Props) {
   return (
@@ -17,7 +19,9 @@ export default function Layout({ children }: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavBar />
-      <main className={inter.className}>{children}</main>
+      <main>
+        {children}
+      </main>
     </>
   )
 }
