@@ -1,9 +1,9 @@
 import { FontAwesomeIconProps } from "@fortawesome/react-fontawesome";
 import { faTelegram } from "@fortawesome/free-brands-svg-icons/faTelegram";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons/faXTwitter";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "@/components/Image";
 import FAIcon from "./FAIcon";
 import Icon from "./Icon";
 
@@ -71,11 +71,12 @@ export default function NavBar() {
       <div className="container-fluid">
         <Link className="navbar-brand" href="/">
           <Image
-            src="/paint_logo_small_square.png"
             alt="MS $Paint Logo"
-            width={48}
             height={48}
+            imageSrc="/paint_logo_small_square.png"
             priority
+            title="MS $Paint Logo"
+            width={48}
           />
         </Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

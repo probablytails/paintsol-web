@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Image from "next/image";
+import Image from "@/components/Image";
 import styles from "@/styles/Whitepaper.module.css";
 
 export default function Whitepaper() {
@@ -10,17 +10,14 @@ export default function Whitepaper() {
         <meta name="description" content="TODO: WHITEPAPER PAGE DESCRIPTION" />
       </Head>
       <div className="container">
-        <div className="row my-5">
+        <div className="row mx-2 my-5">
           <Image
-            unoptimized
-            className={styles['whitepaper-image']}
-            src="/whitepaper.jpg"
-            width={0}
-            height={0}
-            sizes=""
             alt="$Paint Whitepaper (it's an old picture of MS Paint open with a blank canvas)"
-            style={{ width: '100%', height: 'auto' }}
+            className={styles['whitepaper-image']}
+            imageSrc="/whitepaper.jpg"
             priority
+            stretchFill
+            title="Whitepaper"
           />
         </div>
       </div>

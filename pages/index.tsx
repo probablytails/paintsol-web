@@ -1,7 +1,7 @@
 import Head from "next/head";
-import Image from "next/image";
 import styles from "@/styles/Home.module.css"
 import Link from "next/link";
+import Image from "@/components/Image"
 
 export default function Home() {
   return (
@@ -13,14 +13,11 @@ export default function Home() {
       <div className="centered-column-grid">
         <div className={styles['content-wrapper']}>
           <Image
-            unoptimized
+            alt="$PAINT Logo"
             className={styles['splash-logo']}
-            src="/paint_splash_logo.png"
-            width={0}
-            height={0}
-            alt="$Paint Logo"
-            // sizes="100vw"
-            style={{ width: '100%', height: 'auto' }}
+            imageSrc="/paint_splash_logo.png"
+            stretchFill
+            title="$PAINT Logo"
           />
           <div className={styles['contract-wrapper']}>
             <h2 className={styles['contract-label']}>CONTRACT:</h2>

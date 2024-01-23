@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/Image";
 
 type Props = {
   height: number
@@ -9,14 +9,13 @@ type Props = {
 
 export default function Icon({ height, imageSrc, title, width }: Props) {
   return (
-    <div>
-      <Image
-        src={imageSrc}
-        alt={title}
-        width={width}
-        height={height}
-        priority
-      />
-    </div>
+    <Image
+      alt={title}
+      imageSrc={imageSrc}
+      width={width}
+      height={height}
+      priority
+      title={title}
+    />
   )
 }
