@@ -16,6 +16,7 @@ export default function Home() {
             alt="$PAINT Logo"
             className={styles['splash-logo']}
             imageSrc="/paint_splash_logo.png"
+            priority
             stretchFill
             title="$PAINT Logo"
           />
