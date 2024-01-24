@@ -1,8 +1,8 @@
-import Head from "next/head";
-import ImageCards from "@/components/ImageCards";
-import SearchInput from "@/components/SearchInput";
-import { getSampleImageData } from "@/lib/sampleData";
-import { Dispatch, SetStateAction, useState } from "react";
+import Head from 'next/head'
+import ImageCards from '@/components/ImageCards'
+import SearchInput from '@/components/SearchInput'
+import { getSampleImageData } from '@/lib/sampleData'
+import { Dispatch, SetStateAction, useState } from 'react'
 
 export default function Gallery() {
   const [isLoading, setIsLoading] = useState(false)
@@ -13,14 +13,14 @@ export default function Gallery() {
     <>
       <Head>
         <title>$PAINT – Gallery</title>
-        <meta name="description" content="TODO: GALLERY PAGE DESCRIPTION" />
+        <meta name='description' content='TODO: GALLERY PAGE DESCRIPTION' />
       </Head>
-      <div className="container-fluid my-4">
+      <div className='container-fluid my-4'>
         <SearchInput handleSearch={(value: string) => handleSearch(value, setIsLoading)} />
         <ImageCards isLoading={isLoading} items={imageItems} />
       </div>
     </>
-  );
+  )
 }
 
 const handleSearch = (

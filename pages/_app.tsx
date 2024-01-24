@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import '@/styles/globals.css'
-import "@fortawesome/fontawesome-svg-core/styles.css"
+import '@fortawesome/fontawesome-svg-core/styles.css'
 import type { AppProps } from 'next/app'
 import { useEffect, useState } from 'react'
 import Layout from '@/components/Layout'

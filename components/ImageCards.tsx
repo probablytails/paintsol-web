@@ -1,6 +1,6 @@
-import ImageCard from "@/components/ImageCard";
-import LoadingSpinner from "./LoadingSpinner";
-import styles from "@/styles/components/ImageCards.module.css";
+import ImageCard from '@/components/ImageCard'
+import LoadingSpinner from './LoadingSpinner'
+import styles from '@/styles/components/ImageCards.module.css'
 
 type ImageCardItem = {
   imageSrc: string
@@ -28,7 +28,7 @@ export default function ImageCards({ isLoading, items }: Props) {
   ))
 
   return (
-    <div className="row gx-3 mt-4">
+    <div className='row gx-3 mt-4'>
       {
         isLoading && (
           <LoadingSpinner />

@@ -1,4 +1,4 @@
-import { FontAwesomeIcon, FontAwesomeIconProps } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
 
 export default function FAIcon({ className, color, height, icon, spin, title,
   width }: FontAwesomeIconProps) {

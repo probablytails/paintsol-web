@@ -1,24 +1,24 @@
-import Head from "next/head";
-import styles from "@/styles/Home.module.css"
-import Link from "next/link";
-import Image from "@/components/Image"
+import Head from 'next/head'
+import styles from '@/styles/Home.module.css'
+import Link from 'next/link'
+import Image from '@/components/Image'
 
 export default function Home() {
   return (
     <>
       <Head>
         <title>$PAINT</title>
-        <meta name="description" content="TODO: HOME PAGE DESCRIPTION" />
+        <meta name='description' content='TODO: HOME PAGE DESCRIPTION' />
       </Head>
-      <div className="centered-column-grid">
+      <div className='centered-column-grid'>
         <div className={styles['content-wrapper']}>
           <Image
-            alt="$PAINT Logo"
+            alt='$PAINT Logo'
             className={styles['splash-logo']}
-            imageSrc="/paint_splash_logo.png"
+            imageSrc='/paint_splash_logo.png'
             priority
             stretchFill
-            title="$PAINT Logo"
+            title='$PAINT Logo'
           />
           <div className={styles['contract-wrapper']}>
             <h2 className={styles['contract-label']}>CONTRACT:</h2>
@@ -27,12 +27,12 @@ export default function Home() {
           <div className={styles['gallery-link-wrapper']}>
             <Link
               className={`link-primary ${styles['gallery-link']}`}
-              href="/gallery">
+              href='/gallery'>
               Visit the Art Gallery
             </Link>
           </div>
         </div>
       </div>
     </>
-  );
+  )
 }

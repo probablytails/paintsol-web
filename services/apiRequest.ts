@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig } from 'axios'
 
 export const apiRequest = (config: AxiosRequestConfig<any>) => {
   return axios.request({

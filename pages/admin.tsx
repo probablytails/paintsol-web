@@ -1,4 +1,4 @@
-import Head from "next/head";
+import Head from 'next/head'
 import styles from '@/styles/Admin.module.css'
 
 export default function Admin() {
@@ -6,15 +6,15 @@ export default function Admin() {
     <>
       <Head>
         <title>$PAINT – Admin</title>
-        <meta name="description" content="TODO: ADMIN PAGE DESCRIPTION" />
+        <meta name='description' content='TODO: ADMIN PAGE DESCRIPTION' />
       </Head>
-      <div className="centered-column-grid">
-        <div className="row mb-5 text-center">
+      <div className='centered-column-grid'>
+        <div className='row mb-5 text-center'>
           <h3>Admin Panel</h3>
           <button
             className={`btn btn-primary ${styles['login-btn']}`}
             onClick={handleLogin}
-            type="button">
+            type='button'>
             Log In
           </button>
         </div>
