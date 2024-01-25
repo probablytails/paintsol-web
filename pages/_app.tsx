@@ -5,12 +5,9 @@ import type { AppProps } from 'next/app'
 import { useEffect, useState } from 'react'
 import Layout from '@/components/Layout'
 import { useRouter } from 'next/router'
+import AdminWidget from '@/components/AdminWidget'
+import { UserInfo } from '@/lib/types'
 import { getUserInfo } from '@/services/admin'
-
-type UserInfo = {
-  nickname?: string
-  picture?: string
-} | null
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
@@ -31,7 +28,18 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <Layout>
-      <Component {...pageProps} />
+      {
+        userInfo && (
+          <AdminWidget
+            nickname={userInfo.nickname}
+            picture={userInfo.picture}
+          />
+        )
+      }
+      <Component
+        {...pageProps}
+        userInfo={userInfo}
+      />
     </Layout>
   )
 }
