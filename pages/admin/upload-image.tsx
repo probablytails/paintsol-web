@@ -122,9 +122,19 @@ export default function UploadImage({ userInfo }: Props) {
   }
 
   const handleClear = () => {
+    const imageNoBorderInput = document.getElementById('image-no-border-file') as any
+    const imageBorderInput = document.getElementById('image-border-file') as any
+    const imageAnimationInput = document.getElementById('image-animation-file') as any
+
     setImageNoBorderSrc('')
+    if (imageNoBorderInput) imageNoBorderInput.value = ''
+
+    if (imageBorderInput) imageBorderInput.value = ''
     setImageBorderSrc('')
+    
+    if (imageAnimationInput) imageAnimationInput.value = ''
     setImageAnimationSrc('')
+
     setTitle('')
     setTagText('')
     setTags([])
