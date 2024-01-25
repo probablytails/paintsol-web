@@ -85,6 +85,7 @@ export default function UploadImage({ userInfo }: Props) {
   }
 
   const handleSubmit = async () => {
+    setIsSaving(true)
     const formData = new FormData()
     formData.append('slug', slug?.toLowerCase())
     formData.append('tagTitles', JSON.stringify(tags))
@@ -117,7 +118,7 @@ export default function UploadImage({ userInfo }: Props) {
         alert(error.message)
       }
     }
-  
+    setIsSaving(false)
   }
 
   const handleClear = () => {
@@ -275,6 +276,7 @@ export default function UploadImage({ userInfo }: Props) {
               </Button>
               <Button
                 className={`btn btn-primary ms-3 ${styles['bottom-button']}`}
+                isLoading={isSaving}
                 onClick={handleSubmit}
                 type="button">
                 Save
