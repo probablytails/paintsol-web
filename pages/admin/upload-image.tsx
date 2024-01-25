@@ -5,18 +5,19 @@ import { ChangeEvent, KeyboardEvent, useState } from 'react'
 import TagBadge from '@/components/TagBadge'
 import Image from '@/components/Image'
 import { createImage } from '@/services/image'
+import Button from '@/components/Button'
 
 type Props = {
   userInfo: UserInfo
 }
 
-type ImageType = 'no-border' | 'border' | 'animation' | 'video'
+type ImageType = 'no-border' | 'border' | 'animation'
 
 export default function UploadImage({ userInfo }: Props) {
   const [imageNoBorderSrc, setImageNoBorderSrc] = useState<string>('')
   const [imageBorderSrc, setImageBorderSrc] = useState<string>('')
   const [imageAnimationSrc, setImageAnimationSrc] = useState<string>('')
-  // const [imageVideoSrc, setImageVideoSrc] = useState<string>('')
+  const [isSaving, setIsSaving] = useState<boolean>(false)
   const [title, setTitle] = useState<string>('')
   const [slug, setSlug] = useState<string>('')
   const [tagText, setTagText] = useState<string>('')
@@ -101,7 +102,7 @@ export default function UploadImage({ userInfo }: Props) {
 
     const imageAnimationFile = document.getElementById('image-animation-file')?.files?.[0]
     if (imageAnimationFile) {
-      formData.append('fileAnimations', imageAnimationFile)
+      formData.append('fileImageAnimations', imageAnimationFile)
     }
 
     try {
@@ -116,8 +117,7 @@ export default function UploadImage({ userInfo }: Props) {
         alert(error.message)
       }
     }
-    
-    
+  
   }
 
   const handleClear = () => {
@@ -212,7 +212,6 @@ export default function UploadImage({ userInfo }: Props) {
         <div className='main-content-inner-wrapper'>
           <form className='form-wrapper' onSubmit={() => false}>
             <h2>Upload Image</h2>
-            <p>Accepted file formats are .png, .gif, and .mp4.</p>
             {generateImageNodes('no-border')}
             {generateImageNodes('border')}
             {generateImageNodes('animation')}
@@ -267,19 +266,19 @@ export default function UploadImage({ userInfo }: Props) {
               />
               <div id="emailHelp" className="form-text">{'Alphanumeric and hyphens only. Slug is used for a custom url path.'}</div>
             </div>
-            <div className="mt-5 mb-3 text-end">
-              <button
-                type="button"
+            <div className="mt-5 mb-5 text-end">
+              <Button
                 className={`btn btn-secondary ${styles['bottom-button']}`}
-                onClick={handleClear}>
-                Cancel
-              </button>
-              <button
-                type="button"
+                onClick={handleClear}
+                type="button">
+                Clear
+              </Button>
+              <Button
                 className={`btn btn-primary ms-3 ${styles['bottom-button']}`}
-                onClick={handleSubmit}>
+                onClick={handleSubmit}
+                type="button">
                 Save
-              </button>
+              </Button>
             </div>
           </form>
         </div>
