@@ -1,0 +1,21 @@
+.wrapper {
+  max-width: var(--form-max-width);
+}
+
+.form-wrapper {
+  margin: 2em 0;
+}
+
+.image-file-button {
+  padding: 0;
+}
+
+.image-file-label {
+  cursor: pointer;
+  margin: 0 !important;
+  padding: var(--bs-btn-padding-y) var(--bs-btn-padding-x);
+}
+
+.bottom-button {
+  min-width: 100px;
+}

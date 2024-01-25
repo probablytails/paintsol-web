@@ -15,9 +15,11 @@ export default function Gallery() {
         <title>$PAINT – Gallery</title>
         <meta name='description' content='TODO: GALLERY PAGE DESCRIPTION' />
       </Head>
-      <div className='container-fluid my-4'>
-        <SearchInput handleSearch={(value: string) => handleSearch(value, setIsLoading)} />
-        <ImageCards isLoading={isLoading} items={imageItems} />
+      <div className='container-fluid main-content-column'>
+        <div className='main-content-inner-wrapper'>
+          <SearchInput handleSearch={(value: string) => handleSearch(value, setIsLoading)} />
+          <ImageCards isLoading={isLoading} items={imageItems} />
+        </div>
       </div>
     </>
   )

@@ -5,7 +5,7 @@
 }
 
 .search-input {
-  max-width: 530px;
+  max-width: var(--form-max-width);
   position: relative;
 }
 
