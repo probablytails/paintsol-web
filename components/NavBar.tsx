@@ -65,7 +65,7 @@ export default function NavBar() {
   const isWhitepaper = pathname === '/whitepaper'
 
   return (
-    <nav className={`navbar navbar-expand-sm navbar-light bg-light ${styles.navbar}`}>
+    <nav className={`navbar fixed-top navbar-expand-sm navbar-light bg-light ${styles.navbar}`}>
       <div className='container-fluid'>
         <Link className='navbar-brand' href='/'>
           <Image

@@ -1,5 +1,6 @@
 /* Variables */
 :root {
+  --form-max-width: 530px;
   --navbar-height: 58px;
   --main-container-height: calc(100vh - var(--navbar-height));
 }
@@ -33,6 +34,7 @@ svg[data-icon="x-twitter"] {
 /* Misc / Utility */
 
 .centered-column-grid {
+  margin-top: var(--navbar-height);
   height: calc(100vh - var(--navbar-height));
   overflow: auto;
   display: grid;
@@ -40,6 +42,28 @@ svg[data-icon="x-twitter"] {
   align-items: center;
 }
 
+.main-content-column {
+  margin-top: var(--navbar-height);
+  padding: 0em 2em;
+  height: calc(100vh - var(--navbar-height));
+  overflow: auto;
+}
+
+.main-content-inner-wrapper {
+  margin: 1.5rem auto;
+}
+
 .flex-spacer {
   flex: 1;
+}
+
+.border-radius-0-start {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-wrapper {
+  max-width: var(--form-max-width);
+  width: 100%;
+  margin: 0 auto;
 }
