@@ -79,10 +79,35 @@ export const getImage = async (idOrSlug: number | string ) => {
   return response?.data
 }
 
-export const getImages = async () => {
+type GetImages = {
+  page: number
+}
+
+export const getImages = async ({ page = 1 }: GetImages) => {
   const response = await apiRequest({
     method: 'GET',
-    url: '/images'
+    url: '/images',
+    params: {
+      page
+    }
+  })
+
+  return response?.data
+}
+
+type GetImagesByTagId = {
+  page: number
+  tagId: number
+}
+
+export const getImagesByTagId = async ({ page = 1, tagId }: GetImagesByTagId) => {
+  const response = await apiRequest({
+    method: 'GET',
+    url: '/images/by-tag',
+    params: {
+      page,
+      id: tagId
+    }
   })
 
   return response?.data

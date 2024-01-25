@@ -2,17 +2,22 @@ import Head from 'next/head'
 import ImageCards from '@/components/ImageCards'
 import SearchInput from '@/components/SearchInput'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { Image } from '@/lib/types'
-import { getImages } from '@/services/image'
+import { Image, Tag } from '@/lib/types'
+import { getImages, getImagesByTagId } from '@/services/image'
+import { getAllTags } from '@/services/tag'
 
 export default function Gallery() {
   const [isLoading, setIsLoading] = useState(false)
   const [images, setImages] = useState<Image[]>([])
+  const [allTags, setAllTags] = useState<Tag[]>([])
 
   useEffect(() => {
     (async () => {
-      const data = await getImages()
-      setImages(data)
+      const images = await getImages({ page: 1 })
+      setImages(images)
+
+      const allTags = await getAllTags()
+      setAllTags(allTags)
     })()
   }, [])
 
@@ -24,7 +29,9 @@ export default function Gallery() {
       </Head>
       <div className='container-fluid main-content-column'>
         <div className='main-content-inner-wrapper'>
-          <SearchInput handleSearch={(value: string) => handleSearch(value, setIsLoading)} />
+          <SearchInput
+            allTags={allTags}
+            handleSearch={(tag?: Tag) => handleSearch(setIsLoading, setImages, tag)}/>
           <ImageCards
             isLoading={isLoading}
             images={images} />
@@ -34,12 +41,18 @@ export default function Gallery() {
   )
 }
 
-const handleSearch = (
-  value: string,
-  setIsLoading: Dispatch<SetStateAction<boolean>>
+const handleSearch = async (
+  setIsLoading: Dispatch<SetStateAction<boolean>>,
+  setImages: Dispatch<SetStateAction<Image[]>>,
+  tag?: Tag
 ) => {
   setIsLoading(true)
-  setTimeout(() => {
-    setIsLoading(false)
-  }, 3000)
+  if (!tag) {
+    const images = await getImages({ page: 1 })
+    setImages(images)
+  } else {
+    const images = await getImagesByTagId({ page: 1, tagId: tag.id })
+    setImages(images)
+  }
+  setIsLoading(false)
 }
