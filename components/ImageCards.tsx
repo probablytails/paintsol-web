@@ -1,31 +1,24 @@
 import ImageCard from '@/components/ImageCard'
 import LoadingSpinner from './LoadingSpinner'
 import styles from '@/styles/components/ImageCards.module.css'
-
-type ImageCardItem = {
-  imageSrc: string
-  tags: string[]
-  title: string
-}
+import { Image, Tag } from '@/lib/types'
 
 type Props = {
   isLoading: boolean
-  items: ImageCardItem[]
+  images: Image[]
 }
 
-export default function ImageCards({ isLoading, items }: Props) {
-  const imageCards = items.map((item: ImageCardItem) => (
-    <div
-      className={`col-sm-6 col-md-4 col-lg-3 col-xl-2 ${styles['smallest-card']}`}
-      key={`div-${item.title}`}>
-      <ImageCard
-        imageSrc={item.imageSrc}
-        key={item.title}
-        tags={item.tags}
-        title={item.title}
-      />
-    </div>
-  ))
+export default function ImageCards({ isLoading, images }: Props) {
+  const imageCards = images.map((image) => {
+    return (
+      <div
+        className={`col-sm-6 col-md-4 col-lg-3 ${styles['smallest-card']}`}
+        key={`image-card-${image.id}`}>
+        <ImageCard image={image} />
+      </div>
+    )
+  })
+
 
   return (
     <div className='row gx-3 mt-4'>

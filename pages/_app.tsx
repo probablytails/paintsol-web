@@ -30,10 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <Layout>
       {
         userInfo && (
-          <AdminWidget
-            nickname={userInfo.nickname}
-            picture={userInfo.picture}
-          />
+          <AdminWidget/>
         )
       }
       <Component

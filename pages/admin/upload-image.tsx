@@ -6,22 +6,29 @@ import TagBadge from '@/components/TagBadge'
 import Image from '@/components/Image'
 import { createImage } from '@/services/image'
 import Button from '@/components/Button'
+import Link from 'next/link'
 
 type Props = {
   userInfo: UserInfo
 }
 
 type ImageType = 'no-border' | 'border' | 'animation'
+type LastUpdatedData = {
+  id: number
+  slug?: string
+} | null
 
 export default function UploadImage({ userInfo }: Props) {
   const [imageNoBorderSrc, setImageNoBorderSrc] = useState<string>('')
   const [imageBorderSrc, setImageBorderSrc] = useState<string>('')
   const [imageAnimationSrc, setImageAnimationSrc] = useState<string>('')
   const [isSaving, setIsSaving] = useState<boolean>(false)
+  const [lastUpdatedData, setLastUpdatedData] = useState<LastUpdatedData>(null)
   const [title, setTitle] = useState<string>('')
-  const [slug, setSlug] = useState<string>('')
   const [tagText, setTagText] = useState<string>('')
   const [tags, setTags] = useState<string[]>([])
+  const [artist, setArtist] = useState<string>('')
+  const [slug, setSlug] = useState<string>('')
   
   const handleChooseImage = (imageType: ImageType, event: ChangeEvent<HTMLInputElement>) => {
     const fileInput = event.target
@@ -47,6 +54,10 @@ export default function UploadImage({ userInfo }: Props) {
 
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value)
+  }
+
+  const handleArtistChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setArtist(event.target.value)
   }
 
   const handleSlugChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -90,6 +101,8 @@ export default function UploadImage({ userInfo }: Props) {
     formData.append('slug', slug?.toLowerCase())
     formData.append('tagTitles', JSON.stringify(tags))
     formData.append('title', title)
+    formData.append('artist', artist)
+
 
     const imageNoBorderFile = document.getElementById('image-no-border-file')?.files?.[0]
     if (imageNoBorderFile) {
@@ -107,11 +120,15 @@ export default function UploadImage({ userInfo }: Props) {
     }
 
     try {
-      const response = await createImage(formData)
-      console.log('response', response)
-      alert('finished')
+      const data = await createImage(formData)
+      setLastUpdatedData({
+        id: data.id,
+        slug: data.slug
+      })
+      handleClear()
+      const scrollableDiv = document.querySelector('.main-content-column')
+      if (scrollableDiv) scrollableDiv.scrollTop = 0
     } catch (error: any) {
-      console.error(error.response)
       if (error?.response?.data?.message) {
         alert(error.response.data.message)
       } else {
@@ -138,6 +155,8 @@ export default function UploadImage({ userInfo }: Props) {
     setTitle('')
     setTagText('')
     setTags([])
+    setArtist('')
+    setSlug('')
   }
 
   const tagBadges = tags.map((tag) => {
@@ -222,6 +241,30 @@ export default function UploadImage({ userInfo }: Props) {
       <div className='main-content-column'>
         <div className='main-content-inner-wrapper'>
           <form className='form-wrapper' onSubmit={() => false}>
+            {
+              lastUpdatedData && (
+                <div>
+                  <div>
+                    Last uploaded: 
+                  </div>
+                  <div>
+                    <Link href={`${process.env.NEXT_PUBLIC_WEB_BASE_URL}/${lastUpdatedData.id}`}>
+                      {`${process.env.NEXT_PUBLIC_WEB_BASE_URL}/${lastUpdatedData.id}`}
+                    </Link>
+                  </div>
+                  {
+                    lastUpdatedData?.slug && (
+                      <div>
+                        <Link href={`${process.env.NEXT_PUBLIC_WEB_BASE_URL}/${lastUpdatedData.slug}`}>
+                          {`${process.env.NEXT_PUBLIC_WEB_BASE_URL}/${lastUpdatedData.slug}`}
+                        </Link>
+                      </div>
+                    )
+                  }
+                  <hr className='mt-4 mb-3' />
+                </div>
+              )
+            }
             <h2>Upload Image</h2>
             {generateImageNodes('no-border')}
             {generateImageNodes('border')}
@@ -265,6 +308,17 @@ export default function UploadImage({ userInfo }: Props) {
                 </div>
               )
             }
+            <div className="mb-3">
+              <label htmlFor="artist" className="form-label">Artist</label>
+              <input
+                className="form-control"
+                id="artist"
+                onChange={(e) => handleArtistChange(e)}
+                placeholder='optional'
+                type="text"
+                value={artist}
+              />
+            </div>
             <div className="mb-3">
               <label htmlFor="slug" className="form-label">Slug</label>
               <input

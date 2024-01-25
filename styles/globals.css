@@ -44,7 +44,6 @@ svg[data-icon="x-twitter"] {
 
 .main-content-column {
   margin-top: var(--navbar-height);
-  padding: 0em 2em;
   height: calc(100vh - var(--navbar-height));
   overflow: auto;
 }

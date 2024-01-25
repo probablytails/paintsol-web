@@ -31,7 +31,7 @@ export default function Admin({ userInfo }: Props) {
             userInfo && (
               <>
                 <Link
-                  className={`btn btn-primary ${styles['btn']}`}
+                  className={`btn btn-success ${styles['btn']}`}
                   href='/admin/upload-image'>
                   Upload Image
                 </Link>
