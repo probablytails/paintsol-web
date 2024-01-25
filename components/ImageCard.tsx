@@ -15,7 +15,6 @@ export default function ImageCard({ imageSrc, tags, title }: Props) {
       <Image
         alt={title}
         imageSrc={imageSrc}
-        priority
         stretchFill
         title={title}
       />
