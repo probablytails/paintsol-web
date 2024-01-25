@@ -11,20 +11,22 @@
   font-size: 32px;
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
 }
 
 .prev-svg {
   color: #000;
+  margin: 0;
+  padding: 1rem; 
 }
 
 .next {
   font-size: 32px;
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
 }
 
 .next-svg {
   color: #000;
+  margin: 0;
+  padding: 1rem 0.5rem; 
 }
