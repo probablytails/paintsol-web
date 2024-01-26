@@ -191,7 +191,7 @@ export default function UploadImage() {
       let data: any = null
       if (isEditing && editingImage) {
         data = await updateImage(editingImage.id, formData)
-        location.reload()
+        location.href = `/${editingImage.id}`
         return
       } else {
         data = await createImage(formData)
