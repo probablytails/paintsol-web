@@ -1,14 +1,12 @@
 import ImageCard from '@/components/ImageCard'
-import LoadingSpinner from './LoadingSpinner'
 import styles from '@/styles/components/ImageCards.module.css'
 import { Image, Tag } from '@/lib/types'
 
 type Props = {
-  isLoading: boolean
   images: Image[]
 }
 
-export default function ImageCards({ isLoading, images }: Props) {
+export default function ImageCards({ images }: Props) {
   const imageCards = images.map((image) => {
     return (
       <div
@@ -19,17 +17,9 @@ export default function ImageCards({ isLoading, images }: Props) {
     )
   })
 
-
   return (
     <div className='row gx-3 mt-4'>
-      {
-        isLoading && (
-          <LoadingSpinner />
-        )
-      }
-      {
-        !isLoading && (imageCards)
-      }
+      {imageCards}
     </div>
   )
 }
