@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from '@/components/Image'
 import { Image as ImageT, Tag } from '@/lib/types'
-import { getAvailableImageUrl, getAvailableImageVersion, getPreferredImagePageUrl } from '@/services/image'
+import { getAvailableImageUrl, getPreferredImagePageUrl } from '@/services/image'
 import styles from '@/styles/components/ImageCard.module.css'
 import { getImageTitle } from '@/lib/utility'
 
@@ -17,7 +17,7 @@ export default function ImageCard({ image }: Props) {
   const imageSrc = getAvailableImageUrl('no-border', image)
 
   return (
-    <Link href={pageUrl}>
+    <Link href={pageUrl} className='remove-text-decoration'>
       <div className={`card ${styles.card}`}>
         <Image
           alt={title}
