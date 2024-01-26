@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { Image as ImageT } from '@/lib/types'
+import { Image as ImageT, UserInfo } from '@/lib/types'
 import { useRouter } from 'next/router'
 import { getAvailableImageUrl, getImage } from '@/services/image'
 import Image from '@/components/Image'
@@ -13,8 +13,14 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons/faArrowRight'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft'
 import { getImageTitle } from '@/lib/utility'
 import ImageVersionLinks from '@/components/ImageVersionLinks'
+import Button from '@/components/Button'
+import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit'
 
-export default function ImagePage() {
+type Props = {
+  userInfo?: UserInfo
+}
+
+export default function ImagePage({ userInfo }: Props) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [image, setImage] = useState<ImageT | null>(null)
@@ -79,7 +85,9 @@ export default function ImagePage() {
                 }
               </div>
               <div className='col-lg-8 col-md-10'>
-                <h2>{title}</h2>
+                <div className='row'>
+                  <h2>{title}</h2>
+                </div>
                 <div className='row'>
                   <div className='col-md-8'>
                     {tagBadges}
@@ -91,6 +99,21 @@ export default function ImagePage() {
                 {
                   !!image?.artist && (
                     <div className={styles.artist}>{`${image.artist}`}</div>
+                  )
+                }
+                {
+                  !!userInfo && (
+                    <button
+                      className={`btn btn-warning btn-rounded ${styles['edit-button']}`}
+                      onClick={() => router.push(`/admin/upload-image?editId=${image?.id}`)}
+                      type="button">
+                      <FAIcon
+                        className={styles['edit-icon']}
+                        icon={faEdit}
+                        title='Edit'
+                      />
+                      Edit
+                    </button>
                   )
                 }
                 <Image

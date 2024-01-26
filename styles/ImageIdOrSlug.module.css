@@ -30,3 +30,11 @@
   margin: 0;
   padding: 1rem 0.5rem; 
 }
+
+.edit-button {
+  margin: 1rem 0 0 0;
+}
+
+.edit-icon {
+  margin-right: 0.5rem;
+}

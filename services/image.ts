@@ -16,7 +16,7 @@ export const getAvailableImageUrl = (preferredVersion: ImageVersion | null, imag
   return getImageUrl(image.id, availableImageVersion)
 }
 
-const getImageUrl = (id: number, imageVersion: ImageVersion | null) => {
+export const getImageUrl = (id: number, imageVersion: ImageVersion | null) => {
   if (imageVersion === 'animation') {
     return `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${id}-animation.gif`
   } else if (imageVersion === 'border') {
@@ -59,6 +59,22 @@ export const convertImagesToImageCardItems = (preferredVersion: ImageVersion, im
 export const createImage = async (formData: FormData) => {
   const response = await apiRequest({
     method: 'POST',
+    url: '/image',
+    withCredentials: true,
+    data: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+
+  return response?.data
+}
+
+export const updateImage = async (id: number, formData: FormData) => {
+  formData.append('id', id.toString())
+
+  const response = await apiRequest({
+    method: 'PATCH',
     url: '/image',
     withCredentials: true,
     data: formData,

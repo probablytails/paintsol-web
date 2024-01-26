@@ -1,9 +1,6 @@
-import ImageCard from '@/components/ImageCard'
-import LoadingSpinner from './LoadingSpinner'
-import { Image, Tag } from '@/lib/types'
+import { Image } from '@/lib/types'
 import { ImageVersion } from '@/services/image'
 import styles from '@/styles/components/ImageVersionLinks.module.css'
-import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 
 type ImageVersionLinkProps = {

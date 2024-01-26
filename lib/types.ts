@@ -9,7 +9,6 @@ export type Image = {
   tags: Tag[]
   created_at: Date
   updated_at: Date
-  hasNextImage?: boolean
 }
 
 export type Tag = {
