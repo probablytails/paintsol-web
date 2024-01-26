@@ -3,13 +3,26 @@ import Image from '@/components/Image'
 import styles from '@/styles/Whitepaper.module.css'
 
 export default function Whitepaper() {
+  const metaTitle = '$PAINT – Whitepaper'
+  const metaDescription = 'The $PAINT on SOL whitepaper.'
+  const metaImageUrl = `${process.env.NEXT_PUBLIC_WEB_BASE_URL}/public/whitepaper.jpg`
+
   return (
     <>
       <Head>
-        <title>$PAINT – Whitepaper</title>
-        <meta name='description' content='TODO: WHITEPAPER PAGE DESCRIPTION' />
+        <title>{metaTitle}</title>
+        <meta name='description' content={metaDescription} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@MSPaintSOL" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={metaDescription} />
+        <meta name="twitter:image" content={metaImageUrl} />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:image" content={metaImageUrl} />
+        <meta property="og:type" content="website" />
       </Head>
-      <div className='container'>
+      <div className='container-fluid main-content-column'>
         <div className='row mx-2 my-5'>
           <Image
             alt={'$Paint Whitepaper (it\'s an old picture of Paint open with a blank canvas)'}

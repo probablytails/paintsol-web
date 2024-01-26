@@ -43,11 +43,24 @@ export default function Gallery() {
     setIsLoading(false)
   }
 
+  const metaTitle = '$PAINT – Art Gallery'
+  const metaDescription = 'The $PAINT on SOL art gallery. Showcasing the art of the $PAINT community.'
+  const metaImageUrl = `${process.env.NEXT_PUBLIC_WEB_BASE_URL}/paint_splash_logo.png`
+
   return (
     <>
       <Head>
-        <title>$PAINT – Gallery</title>
-        <meta name='description' content='TODO: GALLERY PAGE DESCRIPTION' />
+        <title>{metaTitle}</title>
+        <meta name='description' content={metaDescription} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@MSPaintSOL" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={metaDescription} />
+        <meta name="twitter:image" content={metaImageUrl} />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:image" content={metaImageUrl} />
+        <meta property="og:type" content="website" />
       </Head>
       <div className='container-fluid main-content-column' onScroll={(event) => {
         debouncedHandleOnScroll({

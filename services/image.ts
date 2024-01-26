@@ -11,7 +11,8 @@ export const getPreferredImagePageUrl = (image: Image) => {
   }
 }
 
-export const getAvailableImageUrl = (preferredVersion: ImageVersion | null, image: Image) => {
+export const getAvailableImageUrl = (preferredVersion: ImageVersion | null, image: Image | null) => {
+  if (!image) return ''
   const availableImageVersion = getAvailableImageVersion(preferredVersion, image)
   return getImageUrl(image.id, availableImageVersion)
 }
@@ -81,6 +82,15 @@ export const updateImage = async (id: number, formData: FormData) => {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
+  })
+
+  return response?.data
+}
+
+export const deleteImage = async (id: number) => {
+  const response = await apiRequest({
+    method: 'POST',
+    url: `/image/delete/${id}`
   })
 
   return response?.data

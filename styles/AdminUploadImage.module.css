@@ -26,6 +26,16 @@
   margin-right: 8px;
 }
 
+.bottom-button-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .bottom-button {
   min-width: 100px;
+}
+
+.bottom-button-left {
+  min-width: 100px;
+  margin-right: auto
 }

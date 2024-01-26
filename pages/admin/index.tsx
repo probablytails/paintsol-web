@@ -11,8 +11,18 @@ export default function Admin({ userInfo }: Props) {
   return (
     <>
       <Head>
-        <title>$PAINT – Admin</title>
-        <meta name='description' content='TODO: ADMIN PAGE DESCRIPTION' />
+        <title>$PAINT - Admin Panel</title>
+        <meta name='description' content='The $PAINT on SOL Admin Panel' />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@MSPaintSOL" />
+        <meta name="twitter:title" content="$PAINT" />
+        <meta name="twitter:description" content="$PAINT on SOL" />
+        <meta name="twitter:image" content={`${process.env.NEXT_PUBLIC_WEB_BASE_URL}/paint_splash_logo.png`} />
+        <meta property="og:title" content="$PAINT" />
+        <meta property="og:description" content="$PAINT on SOL" />
+        <meta property="og:image" content={`${process.env.NEXT_PUBLIC_WEB_BASE_URL}/paint_splash_logo.png`} />
+        <meta property="og:type" content="website" />
+        <meta name="robots" content="noindex" />
       </Head>
       <div className='centered-column-grid'>
         <div className='row mb-5 text-center'>

@@ -7,8 +7,9 @@ import Image from '@/components/Image'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import TagBadge from '@/components/TagBadge'
 import { Image as ImageT } from '@/lib/types'
-import { createImage, getImage, getImageUrl, updateImage } from '@/services/image'
+import { createImage, deleteImage, getImage, getImageUrl, updateImage } from '@/services/image'
 import styles from '@/styles/AdminUploadImage.module.css'
+import { useRouter } from 'next/router'
 
 type ImageType = 'no-border' | 'border' | 'animation'
 type LastUpdatedData = {
@@ -18,6 +19,7 @@ type LastUpdatedData = {
 
 export default function UploadImage() {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const [artist, setArtist] = useState<string>('')
   const [editingImage, setEditingImage] = useState<ImageT | null>(null)
   const [imageNoBorderSrc, setImageNoBorderSrc] = useState<string>('')
@@ -140,6 +142,13 @@ export default function UploadImage() {
       return tagToRemove !== tag
     })
     setTags(newTags)
+  }
+
+  const handleDelete = async () => {
+    if (editingImage?.id && confirm('Are you sure you want to delete this image?') === true) {
+      deleteImage(editingImage.id)
+      router.push('/admin')
+    }
   }
 
   const handleSubmit = async () => {
@@ -348,8 +357,18 @@ export default function UploadImage() {
   return (
     <>
       <Head>
-        <title>$PAINT – Upload Image</title>
-        <meta name='description' content='TODO: UPLOAD IMAGE PAGE DESCRIPTION' />
+        <title>$PAINT - Upload Image</title>
+        <meta name='description' content='The $PAINT on SOL Upload Image page' />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@MSPaintSOL" />
+        <meta name="twitter:title" content="$PAINT" />
+        <meta name="twitter:description" content="$PAINT on SOL" />
+        <meta name="twitter:image" content={`${process.env.NEXT_PUBLIC_WEB_BASE_URL}/paint_splash_logo.png`} />
+        <meta property="og:title" content="$PAINT" />
+        <meta property="og:description" content="$PAINT on SOL" />
+        <meta property="og:image" content={`${process.env.NEXT_PUBLIC_WEB_BASE_URL}/paint_splash_logo.png`} />
+        <meta property="og:type" content="website" />
+        <meta name="robots" content="noindex" />
       </Head>
       <div className='main-content-column'>
         <div className='main-content-inner-wrapper'>
@@ -451,7 +470,17 @@ export default function UploadImage() {
                   />
                   <div id="emailHelp" className="form-text">{'Alphanumeric and hyphens only. Slug is used for a custom url path.'}</div>
                 </div>
-                <div className="mt-5 mb-5 text-end">
+                <div className={`mt-5 mb-5 text-end ${styles['bottom-button-row']}`}>
+                  {
+                    isEditing && (
+                      <Button
+                        className={`btn btn-danger ${styles['bottom-button-left']}`}
+                        onClick={handleDelete}
+                        type="button">
+                        Delete
+                      </Button>
+                    )
+                  }
                   <Button
                     className={`btn btn-secondary ${styles['bottom-button']}`}
                     onClick={handleClear}
