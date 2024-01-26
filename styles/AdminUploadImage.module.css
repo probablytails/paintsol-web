@@ -16,6 +16,16 @@
   padding: var(--bs-btn-padding-y) var(--bs-btn-padding-x);
 }
 
+.remove-image-toggle-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0 0 0;
+}
+
+.remove-image-toggle {
+  margin-right: 8px;
+}
+
 .bottom-button {
   min-width: 100px;
 }

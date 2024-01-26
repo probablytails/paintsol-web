@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
+import { ChangeEvent, ChangeEventHandler, KeyboardEvent, useEffect, useState } from 'react'
 import Button from '@/components/Button'
 import Image from '@/components/Image'
 import LoadingSpinner from '@/components/LoadingSpinner'
@@ -27,6 +27,9 @@ export default function UploadImage() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isSaving, setIsSaving] = useState<boolean>(false)
   const [lastUpdatedData, setLastUpdatedData] = useState<LastUpdatedData>(null)
+  const [removeAnimation, setRemoveAnimation] = useState<boolean>(false)
+  const [removeBorder, setRemoveBorder] = useState<boolean>(false)
+  const [removeNoBorder, setRemoveNoBorder] = useState<boolean>(false)
   const [slug, setSlug] = useState<string>('')
   const [title, setTitle] = useState<string>('')
   const [tagText, setTagText] = useState<string>('')
@@ -163,20 +166,34 @@ export default function UploadImage() {
       formData.append('fileImageAnimations', imageAnimationFile)
     }
 
+    if (removeAnimation) {
+      formData.append('remove_animation', 'true')
+    }
+
+    if (removeBorder) {
+      formData.append('remove_border', 'true')
+    }
+
+    if (removeNoBorder) {
+      formData.append('remove_no_border', 'true')
+    }
+
     try {
       let data: any = null
       if (isEditing && editingImage) {
         data = await updateImage(editingImage.id, formData)
+        location.reload()
+        return
       } else {
         data = await createImage(formData)
         handleClear()
+        setLastUpdatedData({
+          id: data.id,
+          slug: data.slug
+        })
+        const scrollableDiv = document.querySelector('.main-content-column')
+        if (scrollableDiv) scrollableDiv.scrollTop = 0
       }
-      setLastUpdatedData({
-        id: data.id,
-        slug: data.slug
-      })
-      const scrollableDiv = document.querySelector('.main-content-column')
-      if (scrollableDiv) scrollableDiv.scrollTop = 0
     } catch (error: any) {
       if (error?.response?.data?.message) {
         alert(error.response.data.message)
@@ -229,6 +246,10 @@ export default function UploadImage() {
     let isImageSelected = false
     let imageSrc: string | ArrayBuffer = ''
     let imageAlt = ''
+    let deleteText = ''
+    let deleteCheckId = ''
+    let removeValue = ''
+    let onChange: any = null
 
     if (imageType === 'no-border') {
       id = 'image-no-border-file'
@@ -236,18 +257,36 @@ export default function UploadImage() {
       isImageSelected = !!imageNoBorderSrc
       imageSrc = imageNoBorderSrc
       imageAlt = 'Image preview without border'
+      deleteText = 'Delete no border image'
+      deleteCheckId = 'image-no-border-delete'
+      removeValue = String(removeNoBorder)
+      onChange = (event: any) => {
+        setRemoveNoBorder(event.target.checked)
+      }
     } else if (imageType === 'border') {
       id = 'image-border-file'
       label = 'Select Border Image'
       isImageSelected = !!imageBorderSrc
       imageSrc = imageBorderSrc
       imageAlt = 'Image preview with border'
+      deleteText = 'Delete border image'
+      deleteCheckId = 'image-border-delete'
+      removeValue = String(removeBorder)
+      onChange = (event: any) => {
+        setRemoveBorder(event.target.checked)
+      }
     } else if (imageType === 'animation') {
       id = 'image-animation-file'
       label = 'Select GIF'
       isImageSelected = !!imageAnimationSrc
       imageSrc = imageAnimationSrc
       imageAlt = 'GIF preview'
+      deleteText = 'Delete animation image'
+      deleteCheckId = 'image-animation-delete'
+      removeValue = String(removeAnimation)
+      onChange = (event: any) => {
+        setRemoveAnimation(event.target.checked)
+      }
     }
 
     return (
@@ -267,6 +306,22 @@ export default function UploadImage() {
               onChange={(event) => handleChooseImage(imageType, event)}
               type="file" />
           </button>
+          {
+            isEditing && (
+              <div className={`form-check ${styles['remove-image-toggle-wrapper']}`}>
+                <input
+                  className={`form-check-input ${styles['remove-image-toggle']}`}
+                  id={deleteCheckId}
+                  onChange={onChange}
+                  type="checkbox"
+                  value={removeValue}
+                />
+                <label className="form-check-label" htmlFor={deleteCheckId}>
+                  {deleteText}
+                </label>
+              </div>
+            )
+          }
         </div>
         {
           isImageSelected && (
@@ -281,6 +336,7 @@ export default function UploadImage() {
             </div>
           )
         }
+        <hr />
       </>
     )
   }
