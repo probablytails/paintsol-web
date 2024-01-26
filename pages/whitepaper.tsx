@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from '@/components/Image'
 import styles from '@/styles/Whitepaper.module.css'
+import Footer from '@/components/Footer'
 
 export default function Whitepaper() {
   const metaTitle = '$PAINT – Whitepaper'
@@ -33,6 +34,7 @@ export default function Whitepaper() {
             title='Whitepaper'
           />
         </div>
+        <Footer />
       </div>
     </>
   )

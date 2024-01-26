@@ -1,0 +1,12 @@
+.footer {
+  margin: 10rem 32px 32px 32px;
+}
+
+.disclaimer {
+  font-size: 12px;
+  text-align: center;
+  margin: 3rem;
+  max-width: 660px;
+  line-height: 17px;
+  margin: auto
+}
