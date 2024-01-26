@@ -7,6 +7,8 @@ export type Image = {
   slug: string | null
   title: string | null
   tags: Tag[]
+  nextId?: number | null
+  prevId?: number | null
   created_at: Date
   updated_at: Date
 }

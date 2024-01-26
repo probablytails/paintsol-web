@@ -1,4 +1,3 @@
-import { GetServerSideProps, GetStaticProps } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -15,7 +14,6 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons/faArrowRight'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft'
 import { getImageTitle } from '@/lib/utility'
 import ImageVersionLinks from '@/components/ImageVersionLinks'
-import Button from '@/components/Button'
 import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit'
 
 type Props = {
@@ -23,7 +21,7 @@ type Props = {
   userInfo?: UserInfo
 }
 
-export const getServerSideProps = (async ({ req, res }) => {
+export const getServerSideProps = (async ({ req, res }: any) => {
   const pathAfterDomain = req?.url && url?.parse(req?.url)?.pathname?.slice(1)
   let initialImage: ImageT | null = null
 
@@ -50,11 +48,9 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
   const searchParams = useSearchParams()
   const [image, setImage] = useState<ImageT | null>(initialImage)
   const [imageSrc, setImageSrc] = useState('')
-  const { tags } = image || {}
+  const { nextId, prevId, tags } = image || {}
   const title = getImageTitle(image?.title || null)
   const artist = image?.artist || ''
-  const idPrev = image?.id && image.id > 1 && image.id - 1
-  const idNext = image?.id && image.id + 1
 
   useEffect(() => {
     (async () => {
@@ -112,9 +108,9 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
             <div className='row'>
               <div className='col-lg-2 col-md-1 d-none d-md-block'>
                 {
-                  idPrev && idPrev > 0 && (
+                  prevId && prevId > 0 && (
                     <div className={styles['prev']}>
-                      <Link className={styles['prev-svg']} href={`/${idPrev}`}>
+                      <Link className={styles['prev-svg']} href={`/${prevId}`}>
                         <FAIcon
                           icon={faArrowLeft}
                           title='Go to previous image'
@@ -170,14 +166,18 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
                 }
               </div>
               <div className='col-lg-2 col-md-1 d-none d-md-block'>
-                <div className={styles['next']}>
-                  <Link className={styles['next-svg']} href={`/${idNext}`}>
-                    <FAIcon
-                      icon={faArrowRight}
-                      title='Go to next image'
-                    />
-                  </Link>
-                </div>
+                {
+                  nextId && nextId > 1 && (
+                    <div className={styles['next']}>
+                      <Link className={styles['next-svg']} href={`/${nextId}`}>
+                        <FAIcon
+                          icon={faArrowRight}
+                          title='Go to next image'
+                        />
+                      </Link>
+                    </div>
+                  )
+                }
               </div>
             </div>
           </div>
