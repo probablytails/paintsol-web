@@ -33,13 +33,15 @@ export default function SearchInput({ allTags, handleSearch }: Props) {
       && !dropdownMenuRef.current?.contains(event.target)
     ) {
       setInputHasFocus(false)
+      handleFilterTags(allTags, inputText)
     }
   }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounceFilterTags = useCallback(_debounce(handleFilterTags, 1000), [])
+  const debounceFilterTags = useCallback(_debounce(handleFilterTags, 500), [])
 
   async function handleSearchByTag(tag: Tag) {
+    debounceFilterTags(allTags, tag.title)
     setInputHasFocus(false)
     setInputText(tag.title)
     await handleSearch(tag)
@@ -57,11 +59,7 @@ export default function SearchInput({ allTags, handleSearch }: Props) {
 
   function handleChange (event: ChangeEvent<HTMLInputElement>) {
     setInputText(event.target.value)
-    if (event.target.value) {
-      debounceFilterTags(allTags, event.target.value)
-    } else {
-      handleSearch()
-    }
+    debounceFilterTags(allTags, event.target.value)
   };
 
   function tagOnClick(tag: Tag) {
