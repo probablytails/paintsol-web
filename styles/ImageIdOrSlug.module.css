@@ -7,6 +7,13 @@
   color: #333;
 }
 
+@media(max-width: 767px) {
+  .small-screen-navs {
+    display: flex !important;
+    justify-content: space-between;
+  }
+}
+
 .prev {
   font-size: 32px;
   display: flex;
@@ -28,7 +35,7 @@
 .next-svg {
   color: #000;
   margin: 0;
-  padding: 1rem 0.5rem; 
+  padding: 1rem; 
 }
 
 .edit-button {

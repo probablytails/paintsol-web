@@ -87,6 +87,24 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
   const paramImageVersion = searchParams.get('v') as any
   const metaImageUrl = getAvailableImageUrl(paramImageVersion, image)
 
+  const prevNav = (
+    <Link className={styles['prev-svg']} href={`/${prevId}`}>
+      <FAIcon
+        icon={faArrowLeft}
+        title='Go to previous image'
+      />
+    </Link>
+  )
+
+  const nextNav = (
+    <Link className={styles['next-svg']} href={`/${nextId}`}>
+      <FAIcon
+        icon={faArrowRight}
+        title='Go to next image'
+      />
+    </Link>
+  )
+
   return (
     <>
       <Head>
@@ -107,18 +125,9 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
           <div className='container-fluid'>
             <div className='row'>
               <div className='col-lg-2 col-md-1 d-none d-md-block'>
-                {
-                  prevId && prevId > 0 && (
-                    <div className={styles['prev']}>
-                      <Link className={styles['prev-svg']} href={`/${prevId}`}>
-                        <FAIcon
-                          icon={faArrowLeft}
-                          title='Go to previous image'
-                        />
-                      </Link>
-                    </div>
-                  )
-                }
+                <div className={styles['prev']}>
+                  {prevId && prevId > 0 && prevNav}
+                </div>
               </div>
               <div className='col-lg-8 col-md-10'>
                 <div className='row'>
@@ -166,18 +175,17 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
                 }
               </div>
               <div className='col-lg-2 col-md-1 d-none d-md-block'>
-                {
-                  nextId && nextId > 1 && (
-                    <div className={styles['next']}>
-                      <Link className={styles['next-svg']} href={`/${nextId}`}>
-                        <FAIcon
-                          icon={faArrowRight}
-                          title='Go to next image'
-                        />
-                      </Link>
-                    </div>
-                  )
-                }
+                <div className={styles['next']}>
+                  {nextId && nextId > 1 && nextNav}
+                </div>
+              </div>
+            </div>
+            <div className={`d-block d-md-none d-lg-none d-xl-none d-xxl-none ${styles['small-screen-navs']}`}>
+              <div className={styles['prev']}>
+                {prevId && prevId > 0 && prevNav}
+              </div>
+              <div className={styles['next']}>
+                {nextId && nextId > 1 && nextNav}
               </div>
             </div>
           </div>
