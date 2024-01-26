@@ -48,7 +48,7 @@ export default function SearchInput({ allTags, handleSearch }: Props) {
   }
 
   function handleFilterTags(allTags: Tag[], inputText: string) {
-    const strRegExPattern = `.*${inputText}.*`; 
+    const strRegExPattern = `.*${inputText}.*`
     
     const newFilteredTags = allTags?.filter((tag) => {
       return tag?.title?.match(new RegExp(strRegExPattern,'g'))
