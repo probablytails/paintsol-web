@@ -157,18 +157,21 @@ export default function UploadImage() {
     formData.append('title', title)
     formData.append('artist', artist)
 
-
-    const imageNoBorderFile = document.getElementById('image-no-border-file')?.files?.[0]
+    const imageNoBorderFileInput = document.getElementById('image-no-border-file') as any
+    const imageNoBorderFile = imageNoBorderFileInput?.files?.[0]
+    
     if (imageNoBorderFile) {
       formData.append('fileImageNoBorders', imageNoBorderFile)
     }
 
-    const imageBorderFile = document.getElementById('image-border-file')?.files?.[0]
+    const imageBorderFileInput = document.getElementById('image-border-file') as any
+    const imageBorderFile = imageBorderFileInput?.files?.[0]
     if (imageBorderFile) {
       formData.append('fileImageBorders', imageBorderFile)
     }
 
-    const imageAnimationFile = document.getElementById('image-animation-file')?.files?.[0]
+    const imageAnimationFileInput = document.getElementById('image-animation-file') as any
+    const imageAnimationFile = imageAnimationFileInput?.files?.[0]
     if (imageAnimationFile) {
       formData.append('fileImageAnimations', imageAnimationFile)
     }
