@@ -96,11 +96,11 @@ export const deleteImage = async (id: number) => {
   return response?.data
 }
 
-export const getImage = async (idOrSlug: number | string ) => {
+export const getImage = async (idOrSlug: number | string, isServerSideReq?: boolean) => {
   const response = await apiRequest({
     method: 'GET',
     url: `/image/${idOrSlug}`
-  })
+  }, isServerSideReq)
 
   return response?.data
 }

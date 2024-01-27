@@ -27,7 +27,7 @@ export const getServerSideProps = (async ({ req, res }: any) => {
 
   if (pathAfterDomain) {
     try {
-      const data = await getImage(pathAfterDomain)
+      const data = await getImage(pathAfterDomain, true)
       if (data) {
         initialImage = data
       }
