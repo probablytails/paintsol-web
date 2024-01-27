@@ -36,7 +36,7 @@ export const getServerSideProps = (async ({ req, res }: any) => {
         res.end()
       }
     } catch (error: any) {
-      //
+      console.log('[imageIdOrSlug].tsx getServerSideProps error', error)
     }
   }
 
