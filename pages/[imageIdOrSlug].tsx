@@ -15,6 +15,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft'
 import { getImageTitle } from '@/lib/utility'
 import ImageVersionLinks from '@/components/ImageVersionLinks'
 import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 type Props = {
   initialImage: ImageT | null
@@ -46,6 +47,7 @@ export const getServerSideProps = (async ({ req, res }: any) => {
 export default function ImagePage({ initialImage, userInfo }: Props) {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [image, setImage] = useState<ImageT | null>(initialImage)
   const [imageSrc, setImageSrc] = useState('')
   const { nextId, prevId, tags } = image || {}
@@ -54,6 +56,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
 
   useEffect(() => {
     (async () => {
+      setIsLoading(true)
       const idOrSlug = router.asPath?.replace(/\//, '')
       if (idOrSlug !== '[imageIdOrSlug]') {
         try {
@@ -69,6 +72,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
           }
         }
       }
+      setIsLoading(false)
     })()
   }, [searchParams])
 
@@ -130,49 +134,54 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
                 </div>
               </div>
               <div className='col-lg-8 col-md-10'>
-                <div className='row'>
-                  <h2>{title}</h2>
-                </div>
-                <div className='row'>
-                  <div className='col-md-8'>
-                    {tagBadges}
-                  </div>
-                  <div className='col-md-4 ml'>
-                    <ImageVersionLinks image={image} />
-                  </div>
-                </div>
-                {
-                  !!image?.artist && (
-                    <div className={styles.artist}>{`${image.artist}`}</div>
-                  )
-                }
-                {
-                  !!userInfo && (
-                    <button
-                      className={`btn btn-warning btn-rounded ${styles['edit-button']}`}
-                      onClick={() => router.push(`/admin/upload-image?editId=${image?.id}`)}
-                      type="button">
-                      <FAIcon
-                        className={styles['edit-icon']}
-                        icon={faEdit}
-                        title='Edit'
-                      />
-                      Edit
-                    </button>
-                  )
-                }
-                {
-                  imageSrc && (
-                    <Image
-                      alt={title}
-                      className={`${styles['main-image']}`}
-                      imageSrc={imageSrc}
-                      priority
-                      stretchFill
-                      title={title}
-                    />
-                  )
-                }
+                {isLoading && <LoadingSpinner />}
+                {!isLoading && (
+                  <>
+                    <div className='row'>
+                      <h2>{title}</h2>
+                    </div>
+                    <div className='row'>
+                      <div className='col-md-8'>
+                        {tagBadges}
+                      </div>
+                      <div className='col-md-4 ml'>
+                        <ImageVersionLinks image={image} />
+                      </div>
+                    </div>
+                    {
+                      !!image?.artist && (
+                        <div className={styles.artist}>{`${image.artist}`}</div>
+                      )
+                    }
+                    {
+                      !!userInfo && (
+                        <button
+                          className={`btn btn-warning btn-rounded ${styles['edit-button']}`}
+                          onClick={() => router.push(`/admin/upload-image?editId=${image?.id}`)}
+                          type="button">
+                          <FAIcon
+                            className={styles['edit-icon']}
+                            icon={faEdit}
+                            title='Edit'
+                          />
+                          Edit
+                        </button>
+                      )
+                    }
+                    {
+                      imageSrc && (
+                        <Image
+                          alt={title}
+                          className={`${styles['main-image']}`}
+                          imageSrc={imageSrc}
+                          priority
+                          stretchFill
+                          title={title}
+                        />
+                      )
+                    }
+                  </>
+                )}
               </div>
               <div className='col-lg-2 col-md-1 d-none d-md-block'>
                 <div className={styles['next']}>
