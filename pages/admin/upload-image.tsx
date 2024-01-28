@@ -126,7 +126,7 @@ export default function UploadImage() {
   }
 
   const addTag = () => {
-    if (!tags.includes(tagText)) {
+    if (tagText && !tags.includes(tagText)) {
       const newTags = tags.concat(tagText)
       setTags(newTags)
       setTagText('')
@@ -439,6 +439,7 @@ export default function UploadImage() {
                     <div className="input-group-append">
                       <button
                         className="btn btn-outline-secondary border-radius-0-start"
+                        onClick={addTag}
                         type="button">
                         Add
                       </button>
