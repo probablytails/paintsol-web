@@ -43,7 +43,7 @@ export default function Gallery() {
     setIsLoading(false)
   }
 
-  const metaTitle = '$PAINT – Art Gallery'
+  const metaTitle = '$PAINT - Art Gallery'
   const metaDescription = 'The $PAINT on SOL art gallery. Showcasing the art of the $PAINT community.'
   const metaImageUrl = `${process.env.NEXT_PUBLIC_WEB_BASE_URL}/paint_splash_logo.png`
 

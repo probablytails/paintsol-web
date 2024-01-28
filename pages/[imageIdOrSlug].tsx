@@ -108,7 +108,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
   return (
     <>
       <Head>
-        <title>{`$PAINT – ${title}`}</title>
+        <title>{`$PAINT - ${title}`}</title>
         <meta name='description' content={metaDescription} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@MSPaintSOL" />
