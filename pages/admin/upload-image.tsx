@@ -48,6 +48,10 @@ export default function UploadImage() {
             const image = await getImage(editId)
             setEditingImage(image)
             populateEditData(image)
+            setLastUpdatedData({
+              id: image.id,
+              slug: image.slug
+            })
             setIsLoading(false)
           }, 100)
         }
