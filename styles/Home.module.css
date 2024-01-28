@@ -5,7 +5,7 @@
 
 .splash-logo {
   max-width: 480px;
-  margin: 0 0 36px 0;
+  margin: 16px 0 40px 0;
 }
 
 @media (max-width: 575px) {
@@ -26,6 +26,20 @@
   }
 }
 
+.images-count-wrapper {
+  font-size: 18px;
+}
+
+.images-count {
+  font-size: 21px;
+}
+
+.gallery-link-wrapper {
+  font-size: 21px;
+  font-weight: 700;
+  margin: 24px 0 24px 0;
+}
+
 .contract-wrapper {
   text-align: center;
 }
@@ -41,10 +55,4 @@
   font-weight: 400;
   word-wrap: anywhere;
   margin-bottom: 0;
-}
-
-.gallery-link-wrapper {
-  font-size: 21px;
-  font-weight: 700;
-  margin-top: 28px;
 }
