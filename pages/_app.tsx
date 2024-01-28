@@ -19,9 +19,13 @@ export default function App({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     (async () => {
-      if (localStorage.getItem('loginAttempted')) {
-        const data = await getUserInfo()
-        setUserInfo(data)
+      try {
+        if (localStorage.getItem('loginAttempted')) {
+          const data = await getUserInfo()
+          setUserInfo(data)
+        }
+      } catch (error) {
+        //
       }
     })()
   }, [router.asPath])

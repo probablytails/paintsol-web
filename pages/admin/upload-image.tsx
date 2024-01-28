@@ -39,16 +39,20 @@ export default function UploadImage() {
 
   useEffect(() => {
     (async () => {
-      const editId = searchParams.get('editId')
-      if (editId) {
-        setTimeout(async () => {
-          setIsLoading(true)
-          setIsEditing(true)
-          const image = await getImage(editId)
-          setEditingImage(image)
-          populateEditData(image)
-          setIsLoading(false)
-        }, 100)
+      try {
+        const editId = searchParams.get('editId')
+        if (editId) {
+          setTimeout(async () => {
+            setIsLoading(true)
+            setIsEditing(true)
+            const image = await getImage(editId)
+            setEditingImage(image)
+            populateEditData(image)
+            setIsLoading(false)
+          }, 100)
+        }
+      } catch (error) {
+        //
       }
     })()
   }, [searchParams])

@@ -21,10 +21,14 @@ export default function Gallery() {
 
   useEffect(() => {
     (async () => {
-      const images = await getImages({ page })
-      setImages(images)
-      const allTags = await getAllTags()
-      setAllTags(allTags)
+      try {
+        const images = await getImages({ page })
+        setImages(images)
+        const allTags = await getAllTags()
+        setAllTags(allTags)
+      } catch (error) {
+        //
+      }
     })()
   }, [])
 
