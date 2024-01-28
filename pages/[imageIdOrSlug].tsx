@@ -16,23 +16,29 @@ import { getImageTitle } from '@/lib/utility'
 import ImageVersionLinks from '@/components/ImageVersionLinks'
 import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit'
 import LoadingSpinner from '@/components/LoadingSpinner'
+import { GetServerSidePropsContext, NextPageContext } from 'next'
 
 type Props = {
   initialImage: ImageT | null
   userInfo?: UserInfo
 }
 
-export const getServerSideProps = (async ({ req, res }: any) => {
-  const pathAfterDomain = req?.url && url?.parse(req?.url)?.pathname?.slice(1)
+type ServerSidePropsParams = {
+  id?: string
+}
+
+export const getServerSideProps = (async (context: GetServerSidePropsContext) => {
+  const { params, res } = context
+  const { id } = params as ServerSidePropsParams
   let initialImage: ImageT | null = null
 
-  if (pathAfterDomain) {
+  if (id) {
     try {
-      const data = await getImage(pathAfterDomain, true)
+      const data = await getImage(id, true)
       if (data) {
         initialImage = data
       }
-      if (data?.id === parseInt(pathAfterDomain) && data?.slug) {
+      if (data?.id === parseInt(id) && data?.slug) {
         res.writeHead(302, { Location: `/${data.slug}` })
         res.end()
       }
@@ -50,7 +56,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [image, setImage] = useState<ImageT | null>(initialImage)
   const [imageSrc, setImageSrc] = useState('')
-  const { nextId, prevId, tags } = image || {}
+  const { nextData, prevData, tags } = image || {}
   const title = getImageTitle(image?.title || null)
   const artist = image?.artist || ''
 
@@ -92,7 +98,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
   const metaImageUrl = getAvailableImageUrl(paramImageVersion, image)
 
   const prevNav = (
-    <Link className={styles['prev-svg']} href={`/${prevId}`}>
+    <Link className={styles['prev-svg']} href={`/${prevData?.slug ? prevData.slug : prevData?.id}`}>
       <FAIcon
         icon={faArrowLeft}
         title='Go to previous image'
@@ -101,7 +107,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
   )
 
   const nextNav = (
-    <Link className={styles['next-svg']} href={`/${nextId}`}>
+    <Link className={styles['next-svg']} href={`/${nextData?.slug ? nextData.slug : nextData?.id}`}>
       <FAIcon
         icon={faArrowRight}
         title='Go to next image'
@@ -130,7 +136,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
             <div className='row'>
               <div className='col-lg-2 col-md-1 d-none d-md-block'>
                 <div className={styles['prev']}>
-                  {prevId && prevId > 0 && prevNav}
+                  {prevData?.id && prevNav}
                 </div>
               </div>
               <div className='col-lg-8 col-md-10'>
@@ -185,16 +191,16 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
               </div>
               <div className='col-lg-2 col-md-1 d-none d-md-block'>
                 <div className={styles['next']}>
-                  {nextId && nextId > 1 && nextNav}
+                  {nextData?.id && nextNav}
                 </div>
               </div>
             </div>
             <div className={`d-block d-md-none d-lg-none d-xl-none d-xxl-none ${styles['small-screen-navs']}`}>
               <div className={styles['prev']}>
-                {prevId && prevId > 0 && prevNav}
+                {prevData?.id && prevNav}
               </div>
               <div className={styles['next']}>
-                {nextId && nextId > 1 && nextNav}
+                {nextData?.id && nextNav}
               </div>
             </div>
           </div>
