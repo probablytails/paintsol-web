@@ -84,7 +84,9 @@ export default function Gallery() {
           <SearchInput
             allTags={allTags}
             handleSearch={(tag: Tag | null) => handleSearch(tag)}/>
-          <ImageCards images={images} />
+          <ImageCards
+            images={images}
+            endReached={endReached} />
           {isLoading && <LoadingSpinner />}
         </div>
       </div>

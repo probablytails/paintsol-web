@@ -3,10 +3,11 @@ import styles from '@/styles/components/ImageCards.module.css'
 import { Image, Tag } from '@/lib/types'
 
 type Props = {
+  endReached?: boolean
   images: Image[]
 }
 
-export default function ImageCards({ images }: Props) {
+export default function ImageCards({ endReached, images }: Props) {
   const imageCards = images.map((image) => {
     return (
       <div
@@ -20,6 +21,13 @@ export default function ImageCards({ images }: Props) {
   return (
     <div className='row gx-3 mt-4'>
       {imageCards}
+      {
+        endReached && (
+          <div className={styles['end-reached']}>
+            End of results
+          </div>
+        )
+      }
     </div>
   )
 }
