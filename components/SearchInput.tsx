@@ -1,6 +1,7 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch'
+import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark'
 import _debounce from 'lodash/debounce'
-import { ChangeEvent, KeyboardEvent, Ref, useCallback, useEffect, useRef, useState } from 'react'
+import { KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react'
 import FAIcon from './FAIcon'
 import styles from '@/styles/components/SearchInput.module.css'
 import { Tag } from '@/lib/types'
@@ -57,10 +58,16 @@ export default function SearchInput({ allTags, handleSearch }: Props) {
     setFilteredTags(newFilteredTags)
   }
 
-  function handleChange (event: ChangeEvent<HTMLInputElement>) {
-    setInputText(event.target.value)
-    debounceFilterTags(allTags, event.target.value)
-  };
+  function handleChange (text: string) {
+    setInputText(text)
+    debounceFilterTags(allTags, text)
+  }
+
+  function handleClearKeyUp (event: KeyboardEvent<SVGSVGElement>) {
+    if (event.key === 'Enter') {
+      handleChange('')
+    }
+  }
 
   function tagOnClick(tag: Tag) {
     handleSearchByTag(tag)
@@ -96,11 +103,11 @@ export default function SearchInput({ allTags, handleSearch }: Props) {
           aria-describedby='search-addon'
           aria-label='Search'
           className='form-control rounded'
-          onChange={(e) => handleChange(e)}
+          onChange={(e) => handleChange(e?.target?.value)}
           onFocus={() => updateInputHasFocus(true)}
           placeholder='Search by tag'
           ref={searchInputRef}
-          type='search'
+          type='text'
           value={inputText}
         />
         {
@@ -109,6 +116,17 @@ export default function SearchInput({ allTags, handleSearch }: Props) {
               className={styles['search-icon']}
               icon={faSearch}
               title='Search by tag'
+            />
+          )
+        }
+        {
+          inputText && (
+            <FAIcon
+              className={styles['clear-icon']}
+              icon={faXmark}
+              onClick={() => handleChange('')}
+              onKeyUp={handleClearKeyUp}
+              title='Clear search input'
             />
           )
         }
