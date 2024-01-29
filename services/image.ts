@@ -121,6 +121,24 @@ export const getImages = async ({ page = 1 }: GetImages) => {
   return response?.data
 }
 
+type GetImagesByArtistId = {
+  page: number
+  artistId: number
+}
+
+export const getImagesByArtistId = async ({ page = 1, artistId }: GetImagesByArtistId) => {
+  const response = await apiRequest({
+    method: 'GET',
+    url: '/images/by-artist',
+    params: {
+      page,
+      id: artistId
+    }
+  })
+
+  return response?.data
+}
+
 type GetImagesByTagId = {
   page: number
   tagId: number

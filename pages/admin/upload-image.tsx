@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { ChangeEvent, ChangeEventHandler, KeyboardEvent, useEffect, useState } from 'react'
+import ArtistLink from '@/components/ArtistLink'
 import Button from '@/components/Button'
 import Image from '@/components/Image'
 import LoadingSpinner from '@/components/LoadingSpinner'
@@ -20,7 +21,8 @@ type LastUpdatedData = {
 export default function UploadImage() {
   const searchParams = useSearchParams()
   const router = useRouter()
-  const [artist, setArtist] = useState<string>('')
+  const [artistText, setArtistText] = useState<string>('')
+  const [artistNames, setArtistNames] = useState<string[]>([])
   const [editingImage, setEditingImage] = useState<ImageT | null>(null)
   const [imageNoBorderSrc, setImageNoBorderSrc] = useState<string>('')
   const [imageBorderSrc, setImageBorderSrc] = useState<string>('')
@@ -35,7 +37,7 @@ export default function UploadImage() {
   const [slug, setSlug] = useState<string>('')
   const [title, setTitle] = useState<string>('')
   const [tagText, setTagText] = useState<string>('')
-  const [tags, setTags] = useState<string[]>([])
+  const [tagTitles, setTagTitles] = useState<string[]>([])
 
   useEffect(() => {
     (async () => {
@@ -64,12 +66,18 @@ export default function UploadImage() {
   const populateEditData = (paramImage: ImageT | null) => {
     const image = paramImage ? paramImage : editingImage
     if (image) {
-      const { artist, has_animation, has_border, has_no_border, id, slug, tags, title } = image
-      setArtist(artist || '')
-      setSlug(slug || '')
-      const tagsText = tags.map((tag) => tag.title || '')
-      setTags(tagsText)
+      const { artists, has_animation, has_border, has_no_border,
+        id, slug, tags, title } = image
+
       setTitle(title || '')
+        
+      const tagTitles = tags.map((tag) => tag.title || '')
+      setTagTitles(tagTitles)
+
+      const artistNames = artists.map((artist) => artist.name || '')
+      setArtistNames(artistNames)
+
+      setSlug(slug || '')
 
       if (has_animation) {
         setImageAnimationSrc(getImageUrl(id, 'animation'))
@@ -111,12 +119,48 @@ export default function UploadImage() {
     setTitle(event.target.value)
   }
 
-  const handleArtistChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setArtist(event.target.value)
+  const handleAddArtist = () => {
+    if (artistText && !artistNames?.some((artistName) =>
+      artistName?.toLowerCase() === artistText?.toLowerCase())) {
+      const newArtistNames = artistNames.concat(artistText)
+      setArtistNames(newArtistNames)
+      setArtistText('')
+    }
+  }
+
+  const handleArtistTextChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setArtistText(event.target.value)
+  }
+
+  const handleArtistTextEnterPress = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      handleAddArtist()
+    }
+  }
+
+  const handleArtistEnterPress = (artistName: string, event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      handleRemoveArtist(artistName)
+    }
+  }
+
+  const handleRemoveArtist = (artistNameToRemove: string) => {
+    const newArtistNames = artistNames.filter((artistName) => {
+      return artistNameToRemove !== artistName
+    })
+    setArtistNames(newArtistNames)
   }
 
   const handleSlugChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSlug(event.target.value)
+  }
+
+  const handleAddTag = () => {
+    if (tagText && !tagTitles.includes(tagText)) {
+      const newTagTitles = tagTitles.concat(tagText)
+      setTagTitles(newTagTitles)
+      setTagText('')
+    }
   }
 
   const handleTagTextChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -125,29 +169,21 @@ export default function UploadImage() {
 
   const handleTagTextEnterPress = (event: KeyboardEvent) => {
     if (event.key === 'Enter') {
-      addTag()
-    }
-  }
-
-  const addTag = () => {
-    if (tagText && !tags.includes(tagText)) {
-      const newTags = tags.concat(tagText)
-      setTags(newTags)
-      setTagText('')
+      handleAddTag()
     }
   }
 
   const handleTagEnterPress = (tag: string, event: KeyboardEvent) => {
     if (event.key === 'Enter') {
-      removeTag(tag)
+      handleRemoveTag(tag)
     }
   }
   
-  const removeTag = (tagToRemove: string) => {
-    const newTags = tags.filter((tag) => {
-      return tagToRemove !== tag
+  const handleRemoveTag = (tagTitleToRemove: string) => {
+    const newTagTitles = tagTitles.filter((tagTitle) => {
+      return tagTitleToRemove !== tagTitle
     })
-    setTags(newTags)
+    setTagTitles(newTagTitles)
   }
 
   const handleDelete = async () => {
@@ -161,9 +197,9 @@ export default function UploadImage() {
     setIsSaving(true)
     const formData = new FormData()
     formData.append('slug', slug?.toLowerCase())
-    formData.append('tagTitles', JSON.stringify(tags))
+    formData.append('tagTitles', JSON.stringify(tagTitles))
+    formData.append('artistNames', JSON.stringify(artistNames))
     formData.append('title', title)
-    formData.append('artist', artist)
 
     const imageNoBorderFileInput = document.getElementById('image-no-border-file') as any
     const imageNoBorderFile = imageNoBorderFileInput?.files?.[0]
@@ -198,6 +234,7 @@ export default function UploadImage() {
 
     try {
       let data: any = null
+
       if (isEditing && editingImage) {
         data = await updateImage(editingImage.id, formData)
         location.href = `/${editingImage.id}`
@@ -241,19 +278,31 @@ export default function UploadImage() {
   
       setTitle('')
       setTagText('')
-      setTags([])
-      setArtist('')
+      setTagTitles([])
+      setArtistText('')
+      setArtistNames([])
       setSlug('')
     }
   }
 
-  const tagBadges = tags.map((tag) => {
+  const tagBadges = tagTitles.map((tagTitle) => {
     return (
       <TagBadge
-        key={`tag-${tag}`}
-        onRemoveClick={() => removeTag(tag)}
-        onRemoveKeyUp={(event) => handleTagEnterPress(tag, event)}
-        title={tag}
+        key={`tag-${tagTitle}`}
+        onRemoveClick={() => handleRemoveTag(tagTitle)}
+        onRemoveKeyUp={(event) => handleTagEnterPress(tagTitle, event)}
+        title={tagTitle}
+      />
+    )
+  })
+
+  const artistLinks = artistNames.map((artistName) => {
+    return (
+      <ArtistLink
+        key={`artist-${artistName}`}
+        name={artistName}
+        onRemoveClick={() => handleRemoveArtist(artistName)}
+        onRemoveKeyUp={(event) => handleArtistEnterPress(artistName, event)}
       />
     )
   })
@@ -443,7 +492,7 @@ export default function UploadImage() {
                     <div className="input-group-append">
                       <button
                         className="btn btn-outline-secondary border-radius-0-start"
-                        onClick={addTag}
+                        onClick={handleAddTag}
                         type="button">
                         Add
                       </button>
@@ -458,16 +507,34 @@ export default function UploadImage() {
                   )
                 }
                 <div className="mb-3">
-                  <label htmlFor="artist" className="form-label">Artist</label>
-                  <input
-                    className="form-control"
-                    id="artist"
-                    onChange={(e) => handleArtistChange(e)}
-                    placeholder='optional'
-                    type="text"
-                    value={artist}
-                  />
+                  <label htmlFor="artist" className="form-label">Artists</label>
+                  <div className='input-group'>
+                    <input
+                      className="form-control"
+                      id="artist"
+                      onChange={(e) => handleArtistTextChange(e)}
+                      onKeyUp={(e) => handleArtistTextEnterPress(e)}
+                      placeholder='optional'
+                      type="text"
+                      value={artistText}
+                    />
+                    <div className="input-group-append">
+                      <button
+                        className="btn btn-outline-secondary border-radius-0-start"
+                        onClick={handleAddArtist}
+                        type="button">
+                        Add
+                      </button>
+                    </div>
+                  </div>
                 </div>
+                {
+                  artistLinks?.length > 0 && (
+                    <div className="mb-3">
+                      {artistLinks}
+                    </div>
+                  )
+                }
                 <div className="mb-3">
                   <label htmlFor="slug" className="form-label">Slug</label>
                   <input

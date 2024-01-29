@@ -2,9 +2,9 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import url from 'url'
-import { Image as ImageT, Tag, UserInfo } from '@/lib/types'
+import { Artist, Image as ImageT, Tag, UserInfo } from '@/lib/types'
 import { getAvailableImageUrl, getImage, getImageUrl } from '@/services/image'
+import ArtistLink from '@/components/ArtistLink'
 import Image from '@/components/Image'
 import styles from '@/styles/ImageIdOrSlug.module.css'
 import TagBadge from '@/components/TagBadge'
@@ -43,7 +43,7 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
         res.end()
       }
     } catch (error: any) {
-      console.log('[imageIdOrSlug].tsx getServerSideProps error', error)
+      //
     }
   }
 
@@ -56,16 +56,15 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [image, setImage] = useState<ImageT | null>(initialImage)
   const [imageSrc, setImageSrc] = useState('')
-  const { nextData, prevData, tags } = image || {}
+  const { artists, nextData, prevData, tags } = image || {}
   const title = getImageTitle(image?.title || null)
-  const artist = image?.artist || ''
 
   useEffect(() => {
     (async () => {
       setIsLoading(true)
-      const idOrSlug = router.asPath?.replace(/\//, '')
-      if (idOrSlug !== '[imageIdOrSlug]') {
+      if (router.isReady) {
         try {
+          const idOrSlug = router.asPath?.replace(/\//, '')
           const paramImageVersion = searchParams.get('v') as any
           const data = await getImage(idOrSlug)
           setImage(data)
@@ -77,10 +76,24 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
             router.replace('/gallery')
           }
         }
+        setIsLoading(false)
       }
-      setIsLoading(false)
     })()
-  }, [searchParams])
+  }, [router.isReady, searchParams])
+
+  function artistLinkOnClick(artist: Artist) {
+    artistNavigation(artist)
+  }
+
+  function artistLinkOnKeyUp(event: any, artist: Artist) {
+    if (event?.key === 'Enter'){
+      artistNavigation(artist)
+    }
+  }
+
+  function artistNavigation(artist: Artist) {
+    router.push(`/gallery?artistId=${artist?.id}`)
+  }
 
   function tagBadgeOnClick(tag: Tag) {
     tagNavigation(tag)
@@ -95,6 +108,18 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
   function tagNavigation(tag: Tag) {
     router.push(`/gallery?tagId=${tag?.id}`)
   }
+
+  const artistLinks = artists?.map((artist) => {
+    const artistName = artist?.name
+    return (
+      <ArtistLink
+        name={artistName}
+        onClick={() => artistLinkOnClick(artist)}
+        onKeyUp={(event) => artistLinkOnKeyUp(event, artist)}
+        key={`artist-${artistName}`}
+      />
+    )
+  })
 
   const tagBadges = tags?.map((tag) => {
     const tagTitle = tag?.title
@@ -126,8 +151,10 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
     </Link>
   )
 
+  const artistNames = artists?.map((artist) => artist?.name)?.join(', ')
+
   const metaTitle = title
-  const metaDescription = `${title} ${artist ? `– by ${artist}` : ''}`
+  const metaDescription = `${title} ${artistNames ? `– by ${artistNames}` : ''}`
   const paramImageVersion = searchParams.get('v') as any
   const metaImageUrl = getAvailableImageUrl(paramImageVersion, image)
 
@@ -171,8 +198,12 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
                       </div>
                     </div>
                     {
-                      !!image?.artist && (
-                        <div className={styles.artist}>{`${image.artist}`}</div>
+                      !!artistLinks?.length && (
+                        <div className='row'>
+                          <div className='col-md-12'>
+                            {artistLinks}
+                          </div>
+                        </div>
                       )
                     }
                     {

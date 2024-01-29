@@ -1,25 +1,36 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch'
 import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark'
+import { escapeRegExp } from 'lodash'
 import _debounce from 'lodash/debounce'
 import { Dispatch, KeyboardEvent, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
+import { Artist, Tag } from '@/lib/types'
 import FAIcon from './FAIcon'
-import styles from '@/styles/components/SearchInput.module.css'
-import { Tag } from '@/lib/types'
+import ArtistLink from './ArtistLink'
 import TagBadge from './TagBadge'
-import { escapeRegExp } from 'lodash'
+import styles from '@/styles/components/SearchInput.module.css'
+import { usePrevious } from '@/lib/reactHelpers'
+import { useRouter } from 'next/router'
 
 type Props = {
+  allArtists: Artist[]
   allTags: Tag[]
-  handleSearch: Function
+  filterSelected: 'by-artist' | 'by-tag'
+  handleSearch: (
+    selectedArtistOrTag: Artist | Tag | null,
+    filterSelected: 'by-artist' | 'by-tag'
+  ) => void
   inputText: string
   setInputText: Dispatch<SetStateAction<string>>
 }
 
-export default function SearchInput({ allTags, handleSearch, inputText, setInputText }: Props) {
+export default function SearchInput({ allArtists, allTags, filterSelected,
+  handleSearch, inputText, setInputText }: Props) {
   const [inputHasFocus, setInputHasFocus] = useState(false)
+  const [filteredArtists, setFilteredArtists] = useState<Artist[]>([])
   const [filteredTags, setFilteredTags] = useState<Tag[]>([])
   const searchInputRef = useRef<any>(null)
   const dropdownMenuRef = useRef<any>(null)
+  const prevState = usePrevious({ filterSelected })
 
   useEffect(() => {
     window.addEventListener('mousedown', handleOutSideClick)
@@ -28,7 +39,16 @@ export default function SearchInput({ allTags, handleSearch, inputText, setInput
       window.removeEventListener('mousedown', handleOutSideClick)
       window.removeEventListener('keydown', handleOutSideClick)
     }
-  })
+  }, [])
+
+  useEffect(() => {
+    if (
+      !!prevState?.filterSelected
+      && filterSelected !== prevState?.filterSelected as 'by-artist' | 'by-tag'
+    ) {
+      debouncedFilter(filterSelected, '')
+    }
+  }, [filterSelected])
 
   function handleOutSideClick (event: any) {
     if (
@@ -36,21 +56,37 @@ export default function SearchInput({ allTags, handleSearch, inputText, setInput
       && !dropdownMenuRef.current?.contains(event.target)
     ) {
       setInputHasFocus(false)
-      handleFilterTags(allTags, inputText)
     }
   }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounceFilterTags = useCallback(_debounce(handleFilterTags, 500), [])
+  const debouncedFilter = useCallback(_debounce(handleFilter, 500), [])
 
   async function handleSearchByTag(tag: Tag) {
-    debounceFilterTags(allTags, tag.title)
+    debouncedFilter(filterSelected, tag.title)
     setInputHasFocus(false)
     setInputText(tag.title)
-    await handleSearch(tag)
+    await handleSearch(tag, filterSelected)
   }
 
-  function handleFilterTags(allTags: Tag[], inputText: string) {
+  async function handleSearchByArtist(artist: Artist) {
+    debouncedFilter(filterSelected, artist.name)
+    setInputHasFocus(false)
+    setInputText(artist.name)
+    await handleSearch(artist, filterSelected)
+  }
+
+  function handleFilter(
+    filterSelected: 'by-artist' | 'by-tag',
+    inputText: string) {
+    if (filterSelected === 'by-artist') {
+      handleFilterArtists(inputText)
+    } else if (filterSelected === 'by-tag') {
+      handleFilterTags(inputText)
+    }
+  }
+
+  function handleFilterTags(inputText: string) {
     const strRegExPattern = `.*${escapeRegExp(inputText?.toLowerCase())}.*`
     
     const newFilteredTags = allTags?.filter((tag) => {
@@ -58,18 +94,40 @@ export default function SearchInput({ allTags, handleSearch, inputText, setInput
     })
 
     setFilteredTags(newFilteredTags)
+    setFilteredArtists(allArtists)
+  }
+
+  function handleFilterArtists(inputText: string) {
+    const strRegExPattern = `.*${escapeRegExp(inputText?.toLowerCase())}.*`
+    
+    const newFilteredArtists = allArtists?.filter((artist) => {
+      return artist?.name?.toLowerCase().match(new RegExp(strRegExPattern,'g'))
+    })
+
+    setFilteredArtists(newFilteredArtists)
+    setFilteredTags(allTags)
   }
 
   function handleChange (text: string, removeFocus: boolean) {
     setInputText(text)
-    debounceFilterTags(allTags, text)
+    debouncedFilter(filterSelected, text)
     setInputHasFocus(!removeFocus)
   }
 
   function handleClear () {
     const removeFocus = true
     handleChange('', removeFocus)
-    handleSearch()
+    handleSearch(null, filterSelected)
+  }
+
+  function artistLinkOnClick(artist: Artist) {
+    handleSearchByArtist(artist)
+  }
+
+  function artistLinkOnKeyUp (artist: Artist, event: KeyboardEvent<HTMLButtonElement>) {
+    if (event.key === 'Enter') {
+      handleSearchByArtist(artist)
+    }
   }
 
   function tagBadgeOnClick(tag: Tag) {
@@ -85,17 +143,42 @@ export default function SearchInput({ allTags, handleSearch, inputText, setInput
   function handleInputKeyUp (event: any) {
     if (event.key === 'Enter') {
       const val = event.target.value || ''
-      const tag = getTagByTitle(val)
-      if (tag) {
-        handleSearchByTag(tag)
+      if (filterSelected === 'by-artist') {
+        const artist = getArtistByName(val)
+        if (artist) {
+          handleSearchByArtist(artist)
+        }
+      } else if (filterSelected === 'by-tag') {
+        const tag = getTagByTitle(val)
+        if (tag) {
+          handleSearchByTag(tag)
+        }
       }
     }
+  }
+  
+  function getArtistByName(name: string) {
+    const artist = allArtists.find((artist: Artist) =>
+      artist?.name?.toLowerCase() === name?.toLowerCase())
+    return artist || null
   }
 
   function getTagByTitle(title: string) {
     const tag = allTags.find((tag: Tag) => tag?.title?.toLowerCase() === title?.toLowerCase())
     return tag || null
   }
+
+  const artists = filteredArtists?.length > 0 ? filteredArtists : allArtists
+  const artistLinks = artists?.map((artist) => {
+    return (
+      <ArtistLink 
+        key={`search-artist-${artist.id}`}
+        name={artist.name}
+        onClick={() => artistLinkOnClick(artist)}
+        onKeyUp={(event) => artistLinkOnKeyUp(artist, event)}
+      />
+    )
+  })
 
   const tags = filteredTags?.length > 0 ? filteredTags : allTags
   const tagBadges = tags?.map((tag) => {
@@ -108,6 +191,11 @@ export default function SearchInput({ allTags, handleSearch, inputText, setInput
       />)
   })
 
+  let placeholder = 'Search by tag'
+  if (filterSelected === 'by-artist') {
+    placeholder = 'Search by artist'
+  }
+
   return (
     <div className={styles['search-wrapper']}>
       <div className={`input-group rounded ${styles['search-input']}`}>
@@ -115,10 +203,10 @@ export default function SearchInput({ allTags, handleSearch, inputText, setInput
           aria-describedby='search-addon'
           aria-label='Search'
           className='form-control rounded'
-          onChange={(e) => handleChange(e?.target?.value)}
+          onChange={(e) => handleChange(e?.target?.value, false)}
           onFocus={() => setInputHasFocus(true)}
           onKeyUp={handleInputKeyUp}
-          placeholder='Search by tag'
+          placeholder={placeholder}
           ref={searchInputRef}
           type='text'
           value={inputText}
@@ -128,7 +216,7 @@ export default function SearchInput({ allTags, handleSearch, inputText, setInput
             <FAIcon
               className={styles['search-icon']}
               icon={faSearch}
-              title='Search by tag'
+              title={placeholder}
             />
           )
         }
@@ -144,7 +232,14 @@ export default function SearchInput({ allTags, handleSearch, inputText, setInput
         }
       </div>
       {
-        inputHasFocus && tagBadges?.length > 0 && (
+        filterSelected === 'by-artist' && inputHasFocus && artistLinks?.length > 0 && (
+          <div className={styles['search-dropdown-menu']} ref={dropdownMenuRef}>
+            {artistLinks}
+          </div>
+        )
+      }
+      {
+        filterSelected === 'by-tag' && inputHasFocus && tagBadges?.length > 0 && (
           <div className={styles['search-dropdown-menu']} ref={dropdownMenuRef}>
             {tagBadges}
           </div>

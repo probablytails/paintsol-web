@@ -1,6 +1,6 @@
 import ImageCard from '@/components/ImageCard'
 import styles from '@/styles/components/ImageCards.module.css'
-import { Image, Tag } from '@/lib/types'
+import { Image } from '@/lib/types'
 
 type Props = {
   endReached?: boolean

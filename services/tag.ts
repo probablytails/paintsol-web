@@ -1,3 +1,4 @@
+import { Tag } from '@/lib/types'
 import { apiRequest } from './apiRequest'
 
 export const getAllTags = async () => {
@@ -6,7 +7,7 @@ export const getAllTags = async () => {
     url: '/tags/all'
   })
 
-  return response?.data
+  return response?.data as Tag[]
 }
 
 export const getAllTagsWithImages = async () => {
@@ -15,7 +16,7 @@ export const getAllTagsWithImages = async () => {
     url: '/tags/all-with-images'
   })
 
-  return response?.data
+  return response?.data as Tag[]
 }
 
 export const getTagById = async (id: number) => {
@@ -24,5 +25,5 @@ export const getTagById = async (id: number) => {
     url: `/tag/${id}`
   })
 
-  return response?.data
+  return response?.data as Tag
 }

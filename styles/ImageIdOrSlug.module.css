@@ -2,11 +2,6 @@
   margin: 1.5rem 0;
 }
 
-.artist {
-  font-size: 14px;
-  color: #333;
-}
-
 @media(max-width: 767px) {
   .small-screen-navs {
     display: flex !important;

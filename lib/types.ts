@@ -1,5 +1,10 @@
+export type Artist = {
+  id: number
+  name: string
+}
+
 export type Image = {
-  artist: string | null
+  artists: Artist[]
   id: number
   has_animation: boolean
   has_border: boolean
