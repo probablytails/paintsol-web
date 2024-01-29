@@ -1,7 +1,7 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch'
 import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark'
 import _debounce from 'lodash/debounce'
-import { KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react'
+import { Dispatch, KeyboardEvent, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import FAIcon from './FAIcon'
 import styles from '@/styles/components/SearchInput.module.css'
 import { Tag } from '@/lib/types'
@@ -10,10 +10,11 @@ import TagBadge from './TagBadge'
 type Props = {
   allTags: Tag[]
   handleSearch: Function
+  inputText: string | null
+  setInputText: Dispatch<SetStateAction<string>>
 }
 
-export default function SearchInput({ allTags, handleSearch }: Props) {
-  const [inputText, setInputText] = useState('')
+export default function SearchInput({ allTags, handleSearch, inputText, setInputText }: Props) {
   const [inputHasFocus, setInputHasFocus] = useState(false)
   const [filteredTags, setFilteredTags] = useState<Tag[]>([])
   const searchInputRef = useRef<any>(null)

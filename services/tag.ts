@@ -17,3 +17,12 @@ export const getAllTagsWithImages = async () => {
 
   return response?.data
 }
+
+export const getTagById = async (id: number) => {
+  const response = await apiRequest({
+    method: 'GET',
+    url: `/tag/${id}`
+  })
+
+  return response?.data
+}

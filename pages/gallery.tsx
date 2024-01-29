@@ -5,11 +5,14 @@ import ImageCards from '@/components/ImageCards'
 import SearchInput from '@/components/SearchInput'
 import { Image, Tag } from '@/lib/types'
 import { getImages, getImagesByTagId } from '@/services/image'
-import { getAllTagsWithImages } from '@/services/tag'
+import { getAllTagsWithImages, getTagById } from '@/services/tag'
 import LoadingSpinner from '@/components/LoadingSpinner'
+import { useSearchParams } from 'next/navigation'
 
 export default function Gallery() {
+  const searchParams = useSearchParams()
   const [isLoading, setIsLoading] = useState(false)
+  const [inputText, setInputText] = useState('')
   const [images, setImages] = useState<Image[]>([])
   const [allTags, setAllTags] = useState<Tag[]>([])
   const [page, setPage] = useState<number>(1)
@@ -22,15 +25,21 @@ export default function Gallery() {
   useEffect(() => {
     (async () => {
       try {
-        const images = await getImages({ page })
-        setImages(images)
+        const tagId = searchParams.get('tagId') || ''
+        const parsedTagId = parseInt(tagId)
         const allTags = await getAllTagsWithImages()
         setAllTags(allTags)
+        if (parsedTagId > 0) {
+          const tag = await getTagById(parsedTagId)
+          await handleSearch(tag)
+        } else {
+          await handleSearch(null)
+        }
       } catch (error) {
         //
       }
     })()
-  }, [])
+  }, [searchParams])
 
   const handleSearch = async (tag: Tag | null) => {
     setIsLoading(true)
@@ -41,6 +50,7 @@ export default function Gallery() {
       const images = await getImages({ page: 1 })
       setImages(images)
     } else {
+      setInputText(tag.title)
       const images = await getImagesByTagId({ page: 1, tagId: tag.id })
       setImages(images)
     }
@@ -83,7 +93,9 @@ export default function Gallery() {
         <div className='main-content-inner-wrapper'>
           <SearchInput
             allTags={allTags}
-            handleSearch={(tag: Tag | null) => handleSearch(tag)}/>
+            handleSearch={(tag: Tag | null) => handleSearch(tag)}
+            inputText={inputText}
+            setInputText={setInputText}/>
           <ImageCards
             images={images}
             endReached={endReached} />

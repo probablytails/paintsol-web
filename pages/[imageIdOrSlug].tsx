@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import url from 'url'
-import { Image as ImageT, UserInfo } from '@/lib/types'
+import { Image as ImageT, Tag, UserInfo } from '@/lib/types'
 import { getAvailableImageUrl, getImage, getImageUrl } from '@/services/image'
 import Image from '@/components/Image'
 import styles from '@/styles/ImageIdOrSlug.module.css'
@@ -82,20 +82,31 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
     })()
   }, [searchParams])
 
+  function tagBadgeOnClick(tag: Tag) {
+    tagNavigation(tag)
+  }
+
+  function tagBadgeOnKeyUp(event: any, tag: Tag) {
+    if (event?.key === 'Enter'){
+      tagNavigation(tag)
+    }
+  }
+
+  function tagNavigation(tag: Tag) {
+    router.push(`/gallery?tagId=${tag?.id}`)
+  }
+
   const tagBadges = tags?.map((tag) => {
     const tagTitle = tag?.title
     return (
       <TagBadge
+        onClick={() => tagBadgeOnClick(tag)}
+        onKeyUp={(event) => tagBadgeOnKeyUp(event, tag)}
         key={`tag-${tagTitle}`}
         title={tagTitle}
       />
     )
   })
-
-  const metaTitle = title
-  const metaDescription = `${title} ${artist ? `– by ${artist}` : ''}`
-  const paramImageVersion = searchParams.get('v') as any
-  const metaImageUrl = getAvailableImageUrl(paramImageVersion, image)
 
   const prevNav = (
     <Link className={styles['prev-svg']} href={`/${prevData?.slug ? prevData.slug : prevData?.id}`}>
@@ -114,6 +125,11 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
       />
     </Link>
   )
+
+  const metaTitle = title
+  const metaDescription = `${title} ${artist ? `– by ${artist}` : ''}`
+  const paramImageVersion = searchParams.get('v') as any
+  const metaImageUrl = getAvailableImageUrl(paramImageVersion, image)
 
   return (
     <>
