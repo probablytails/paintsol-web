@@ -60,14 +60,15 @@ export default function SearchInput({ allTags, handleSearch, inputText, setInput
     setFilteredTags(newFilteredTags)
   }
 
-  function handleChange (text: string) {
+  function handleChange (text: string, removeFocus: boolean) {
     setInputText(text)
     debounceFilterTags(allTags, text)
-    setInputHasFocus(true)
+    setInputHasFocus(!removeFocus)
   }
 
   function handleClear () {
-    handleChange('')
+    const removeFocus = true
+    handleChange('', removeFocus)
     handleSearch()
   }
 
