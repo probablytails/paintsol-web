@@ -19,6 +19,7 @@
 .full-image {
   height: 100%;
   width: auto;
+  max-width: 100%;
   object-fit: contain;
   padding: 24px;
 }
