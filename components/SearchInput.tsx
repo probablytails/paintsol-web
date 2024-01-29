@@ -63,10 +63,9 @@ export default function SearchInput({ allTags, handleSearch }: Props) {
     debounceFilterTags(allTags, text)
   }
 
-  function handleClearKeyUp (event: KeyboardEvent<SVGSVGElement>) {
-    if (event.key === 'Enter') {
-      handleChange('')
-    }
+  function handleClear () {
+    handleChange('')
+    handleSearch()
   }
 
   function tagOnClick(tag: Tag) {
@@ -124,8 +123,7 @@ export default function SearchInput({ allTags, handleSearch }: Props) {
             <FAIcon
               className={styles['clear-icon']}
               icon={faXmark}
-              onClick={() => handleChange('')}
-              onKeyUp={handleClearKeyUp}
+              onClick={handleClear}
               title='Clear search input'
             />
           )
