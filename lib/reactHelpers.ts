@@ -7,3 +7,5 @@ export const usePrevious = <T>(value: T): T | undefined => {
   })
   return ref.current
 }
+
+export const nonBreakingSpace = '\u00A0'

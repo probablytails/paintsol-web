@@ -19,7 +19,7 @@ export default function ImageCards({ endReached, images }: Props) {
   })
 
   return (
-    <div className='row gx-3 mt-4'>
+    <div className='row gx-3 mt-3'>
       {imageCards}
       {
         endReached && (

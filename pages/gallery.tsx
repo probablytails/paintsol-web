@@ -27,7 +27,7 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
   const parsedTagId = parseInt(tagId as any)
   
   let initialImages: Image[] = []
-  let initialImagesTotal = 0
+  let initialImagesTotal: number | null = 0
 
   let initialArtist: Artist | null = null
   let initialTag: Tag | null = null
@@ -37,7 +37,7 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
   if (!parsedArtistId && !parsedTagId) {
     const data = await getImages({ page: 1 })
     initialImages = data?.[0] || []
-    initialImagesTotal = data?.[1] || 0
+    initialImagesTotal = null
   } else if (parsedArtistId) {
     initialArtist = await getArtistById(parsedArtistId)
     initialInputText = initialArtist?.name
@@ -72,7 +72,7 @@ type Props = {
   initialArtist: Artist | null
   initialFilterSelected: 'by-artist' | 'by-tag'
   initialImages: Image[]
-  initialImagesTotal: number
+  initialImagesTotal: number | null
   initialInputText: string
   initialTag: Tag | null
 }
@@ -114,13 +114,16 @@ export default function Gallery({
     let data: [Image[], number] = [[], 0]
     if (!selectedArtistOrTag) {
       data = await handleSearchDefault()
+      setImagesTotal(null)
     } else if (filterSelected === 'by-artist') {
       data = await handleSearchByArtist(selectedArtistOrTag as Artist)
+      setImagesTotal(data?.[1] || 0)
     } else if (filterSelected === 'by-tag') {
       data = await handleSearchByTag(selectedArtistOrTag as Tag)
+      setImagesTotal(data?.[1] || 0)
     }
+    
     setImages(data?.[0] || [])
-    setImagesTotal(data?.[1] || 0)
     setIsLoading(false)
 
     const queryParams = !selectedArtistOrTag
@@ -228,13 +231,16 @@ export default function Gallery({
               </label>
             </div>
           </div>
-          <div className={styles['results-found']}>
-            {
-              !isLoading ? (
-                `${imagesTotal} ${imagesTotal && imagesTotal > 1 ? ' paintings' : ' painting'}`
-              ) : '\u00A0'
-            }
-          </div>
+
+          {
+            (!isLoading && imagesTotal !== null) && (
+              <div className={styles['results-found']}>
+                {
+                    `${imagesTotal} ${imagesTotal && imagesTotal > 1 ? ' paintings' : ' painting'}`
+                }
+              </div>
+            )
+          }
           <ImageCards
             images={images}
             endReached={endReached} />

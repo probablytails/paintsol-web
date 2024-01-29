@@ -9,7 +9,6 @@ import ArtistLink from './ArtistLink'
 import TagBadge from './TagBadge'
 import styles from '@/styles/components/SearchInput.module.css'
 import { usePrevious } from '@/lib/reactHelpers'
-import { useRouter } from 'next/router'
 
 type Props = {
   allArtists: Artist[]
@@ -62,6 +61,10 @@ export default function SearchInput({ allArtists, allTags, filterSelected,
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedFilter = useCallback(_debounce(handleFilter, 500), [])
 
+  async function handleSearchDefault() {
+    await handleSearch(null, filterSelected)
+  }
+
   async function handleSearchByTag(tag: Tag) {
     debouncedFilter(filterSelected, tag.title)
     setInputHasFocus(false)
@@ -112,6 +115,9 @@ export default function SearchInput({ allArtists, allTags, filterSelected,
     setInputText(text)
     debouncedFilter(filterSelected, text)
     setInputHasFocus(!removeFocus)
+    if (!text) {
+      handleSearchDefault()
+    }
   }
 
   function handleClear () {

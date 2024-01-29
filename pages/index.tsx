@@ -3,28 +3,8 @@ import styles from '@/styles/Home.module.css'
 import Link from 'next/link'
 import Image from '@/components/Image'
 import Footer from '@/components/Footer'
-import { getImagesCountMaterializedView } from '@/services/imageCountMaterializedView'
 
-export const getServerSideProps = (async () => {
-  let imagesCount = 0
-  try {
-    const data = await getImagesCountMaterializedView()
-    imagesCount = data.image_count || 0
-  } catch (error) {
-    //
-  }
-  return {
-    props: {
-      imagesCount: imagesCount
-    }
-  }
-})
-
-type Props = {
-  imagesCount: number
-}
-
-export default function Home({ imagesCount }: Props) {  
+export default function Home() {  
   return (
     <>
       <Head>
@@ -50,9 +30,6 @@ export default function Home({ imagesCount }: Props) {
             stretchFill
             title='$PAINT Logo'
           />
-          <div className={styles['images-count-wrapper']}>
-            <span className={styles['images-count']}>{imagesCount}</span><span>&nbsp;paintings and counting...</span>
-          </div>
           <div className={styles['gallery-link-wrapper']}>
             <Link
               className={`link-primary ${styles['gallery-link']}`}
