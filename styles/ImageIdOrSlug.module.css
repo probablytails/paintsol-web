@@ -1,5 +1,6 @@
 .main-image {
   margin: 1.5rem 0;
+  cursor: pointer;
 }
 
 @media(max-width: 767px) {

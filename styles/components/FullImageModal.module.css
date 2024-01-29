@@ -1,0 +1,43 @@
+
+
+.full-image-modal {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1000000;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.full-image-inner-wrapper {
+  height: 100%;
+  width: 100;
+  text-align: center;
+}
+
+.full-image {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  padding: 24px;
+}
+
+.close-button-wrapper {
+  all: unset;
+  display: flex;
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  color: #eee;
+  border-radius: 32px;
+  border: 1px solid #eee;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.close-button-svg {
+  font-size: 22px;
+}

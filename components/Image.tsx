@@ -1,11 +1,13 @@
 import NextImage from 'next/image'
-import { CSSProperties } from 'react'
+import { CSSProperties, MouseEventHandler } from 'react'
 
 type Props = {
   alt: string
   className?: string
   height?: number
   imageSrc: string
+  innerRef?: any
+  onClick?: MouseEventHandler<HTMLImageElement>
   priority?: boolean
   stretchFill?: boolean
   title: string
@@ -13,7 +15,7 @@ type Props = {
 }
 
 export default function Image({ alt, className, height = 0, imageSrc,
-  priority, stretchFill, title, width = 0 }: Props) {
+  innerRef, onClick, priority, stretchFill, title, width = 0 }: Props) {
 
   const style: CSSProperties = {}
   if (stretchFill) {
@@ -26,7 +28,9 @@ export default function Image({ alt, className, height = 0, imageSrc,
       alt={alt}
       className={className}
       height={height}
+      onClick={onClick}
       priority={priority}
+      ref={innerRef}
       src={imageSrc}
       title={title}
       unoptimized

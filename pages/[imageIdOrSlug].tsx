@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Artist, Image as ImageT, Tag, UserInfo } from '@/lib/types'
 import { getAvailableImageUrl, getImage, getImageUrl } from '@/services/image'
 import ArtistLink from '@/components/ArtistLink'
@@ -17,6 +17,7 @@ import ImageVersionLinks from '@/components/ImageVersionLinks'
 import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import { GetServerSidePropsContext, NextPageContext } from 'next'
+import FullImageModal from '@/components/FullImageModal'
 
 type Props = {
   initialImage: ImageT | null
@@ -53,7 +54,9 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
 export default function ImagePage({ initialImage, userInfo }: Props) {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const closeButtonRef = useRef<any>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [isFullView, setIsFullView] = useState<boolean>(false)
   const [image, setImage] = useState<ImageT | null>(initialImage)
   const [imageSrc, setImageSrc] = useState('')
   const { artists, nextData, prevData, tags } = image || {}
@@ -107,6 +110,10 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
 
   function tagNavigation(tag: Tag) {
     router.push(`/gallery?tagId=${tag?.id}`)
+  }
+
+  function handleImageClick() {
+    setIsFullView(true)
   }
 
   const artistLinks = artists?.map((artist) => {
@@ -173,6 +180,13 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
         <meta property="og:image" content={metaImageUrl} />
         <meta property="og:type" content="website" />
       </Head>
+      <FullImageModal
+        closeButtonRef={closeButtonRef}
+        handleHide={() => setIsFullView(false)}
+        imageSrc={imageSrc}
+        show={isFullView}
+        title={title}
+      />
       <div className='container-fluid main-content-column overflow-y-scroll'>
         <div className='main-content-inner-wrapper'>
           <div className='container-fluid'>
@@ -227,6 +241,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
                           alt={title}
                           className={`${styles['main-image']}`}
                           imageSrc={imageSrc}
+                          onClick={handleImageClick}
                           priority
                           stretchFill
                           title={title}

@@ -70,3 +70,7 @@ svg[data-icon="x-twitter"] {
 .remove-text-decoration {
   text-decoration: none !important;
 }
+
+.focus-style:focus-visible {
+  box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, .5);
+}
