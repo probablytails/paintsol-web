@@ -5,7 +5,7 @@ import ImageCards from '@/components/ImageCards'
 import SearchInput from '@/components/SearchInput'
 import { Image, Tag } from '@/lib/types'
 import { getImages, getImagesByTagId } from '@/services/image'
-import { getAllTags } from '@/services/tag'
+import { getAllTagsWithImages } from '@/services/tag'
 import LoadingSpinner from '@/components/LoadingSpinner'
 
 export default function Gallery() {
@@ -24,7 +24,7 @@ export default function Gallery() {
       try {
         const images = await getImages({ page })
         setImages(images)
-        const allTags = await getAllTags()
+        const allTags = await getAllTagsWithImages()
         setAllTags(allTags)
       } catch (error) {
         //

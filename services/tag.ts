@@ -8,3 +8,12 @@ export const getAllTags = async () => {
 
   return response?.data
 }
+
+export const getAllTagsWithImages = async () => {
+  const response = await apiRequest({
+    method: 'GET',
+    url: '/tags/all-with-images'
+  })
+
+  return response?.data
+}
