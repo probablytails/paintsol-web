@@ -15,16 +15,16 @@ type Props = {
 
 export default function FullImageModal({ closeButtonRef, handleHide,
   imageSrc, show, title }: Props) {
-  if (!show) return null
-
   const imageRef = useRef<any>()
   useDetectOutsideClicks(imageRef)
-
+  
   useEffect(() => {
     if (closeButtonRef?.current) {
       closeButtonRef?.current?.focus()
     }
-  }, [closeButtonRef]);
+  }, [closeButtonRef])
+  
+  if (!show) return null
 
   function useDetectOutsideClicks(imageRef: any) {
     useEffect(() => {
@@ -33,11 +33,11 @@ export default function FullImageModal({ closeButtonRef, handleHide,
           handleHide()
         }
       }
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside)
       return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [imageRef]);
+        document.removeEventListener('mousedown', handleClickOutside)
+      }
+    }, [imageRef])
   }
 
   return (
@@ -47,7 +47,7 @@ export default function FullImageModal({ closeButtonRef, handleHide,
         onClick={handleHide}
         ref={closeButtonRef}
         tabIndex={0}
-        type="button">
+        type='button'>
         <FAIcon
           className={styles['close-button-svg']}
           icon={faXmark}
