@@ -418,7 +418,7 @@ export default function UploadImage() {
         <title>$PAINT - Upload Image</title>
         <meta name='description' content='The $PAINT on SOL Upload Image page' />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@MSPaintSOL" />
+        <meta name="twitter:site" content="@paintonsol" />
         <meta name="twitter:title" content="$PAINT" />
         <meta name="twitter:description" content="$PAINT on SOL" />
         <meta name="twitter:image" content={`${process.env.NEXT_PUBLIC_WEB_BASE_URL}/paint_splash_logo.png`} />

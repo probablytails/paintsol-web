@@ -123,7 +123,7 @@ export default function NavBar() {
               <NavLinkFAIcon
                 icon={faXTwitter}
                 title='X - Twitter'
-                url='https://twitter.com/MSPaintSOL'
+                url='https://twitter.com/paintonsol'
               />
               <NavLinkFAIcon
                 icon={faTelegram}
