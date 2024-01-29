@@ -6,11 +6,12 @@ import FAIcon from './FAIcon'
 import styles from '@/styles/components/SearchInput.module.css'
 import { Tag } from '@/lib/types'
 import TagBadge from './TagBadge'
+import { escapeRegExp } from 'lodash'
 
 type Props = {
   allTags: Tag[]
   handleSearch: Function
-  inputText: string | null
+  inputText: string
   setInputText: Dispatch<SetStateAction<string>>
 }
 
@@ -50,7 +51,7 @@ export default function SearchInput({ allTags, handleSearch, inputText, setInput
   }
 
   function handleFilterTags(allTags: Tag[], inputText: string) {
-    const strRegExPattern = `.*${inputText?.toLowerCase()}.*`
+    const strRegExPattern = `.*${escapeRegExp(inputText?.toLowerCase())}.*`
     
     const newFilteredTags = allTags?.filter((tag) => {
       return tag?.title?.toLowerCase().match(new RegExp(strRegExPattern,'g'))
@@ -62,6 +63,7 @@ export default function SearchInput({ allTags, handleSearch, inputText, setInput
   function handleChange (text: string) {
     setInputText(text)
     debounceFilterTags(allTags, text)
+    setInputHasFocus(true)
   }
 
   function handleClear () {
@@ -69,28 +71,37 @@ export default function SearchInput({ allTags, handleSearch, inputText, setInput
     handleSearch()
   }
 
-  function tagOnClick(tag: Tag) {
+  function tagBadgeOnClick(tag: Tag) {
     handleSearchByTag(tag)
   }
 
-  function tagOnKeyUp (tag: Tag, event: KeyboardEvent<HTMLButtonElement>) {
+  function tagBadgeOnKeyUp (tag: Tag, event: KeyboardEvent<HTMLButtonElement>) {
     if (event.key === 'Enter') {
       handleSearchByTag(tag)
     }
   }
 
-  function updateInputHasFocus(bool: boolean) {
-    setTimeout(() => {
-      setInputHasFocus(bool)
-    }, 0)
+  function handleInputKeyUp (event: any) {
+    if (event.key === 'Enter') {
+      const val = event.target.value || ''
+      const tag = getTagByTitle(val)
+      if (tag) {
+        handleSearchByTag(tag)
+      }
+    }
+  }
+
+  function getTagByTitle(title: string) {
+    const tag = allTags.find((tag: Tag) => tag?.title?.toLowerCase() === title?.toLowerCase())
+    return tag || null
   }
 
   const tags = filteredTags?.length > 0 ? filteredTags : allTags
   const tagBadges = tags?.map((tag) => {
     return (
       <TagBadge
-        onClick={() => tagOnClick(tag)}
-        onKeyUp={(event) => tagOnKeyUp(tag, event)}
+        onClick={() => tagBadgeOnClick(tag)}
+        onKeyUp={(event) => tagBadgeOnKeyUp(tag, event)}
         key={`search-tag-${tag.id}`}
         title={tag.title}
       />)
@@ -104,7 +115,8 @@ export default function SearchInput({ allTags, handleSearch, inputText, setInput
           aria-label='Search'
           className='form-control rounded'
           onChange={(e) => handleChange(e?.target?.value)}
-          onFocus={() => updateInputHasFocus(true)}
+          onFocus={() => setInputHasFocus(true)}
+          onKeyUp={handleInputKeyUp}
           placeholder='Search by tag'
           ref={searchInputRef}
           type='text'
