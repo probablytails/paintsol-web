@@ -8,12 +8,14 @@ import { getImages, getImagesByTagId } from '@/services/image'
 import { getAllTagsWithImages, getTagById } from '@/services/tag'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import { useSearchParams } from 'next/navigation'
+import styles from '@/styles/Gallery.module.css'
 
 export default function Gallery() {
   const searchParams = useSearchParams()
   const [isLoading, setIsLoading] = useState(false)
   const [inputText, setInputText] = useState('')
   const [images, setImages] = useState<Image[]>([])
+  const [imagesTotal, setImagesTotal] = useState<number | null>()
   const [allTags, setAllTags] = useState<Tag[]>([])
   const [page, setPage] = useState<number>(1)
   const [selectedTag, setSelectedTag] = useState<Tag | null>(null)
@@ -47,12 +49,14 @@ export default function Gallery() {
     setEndReached(false)
     setSelectedTag(tag)
     if (!tag) {
-      const images = await getImages({ page: 1 })
-      setImages(images)
+      const data = await getImages({ page: 1 })
+      setImages(data?.[0] || [])
+      setImagesTotal(data?.[1] || 0)
     } else {
       setInputText(tag.title)
-      const images = await getImagesByTagId({ page: 1, tagId: tag.id })
-      setImages(images)
+      const data = await getImagesByTagId({ page: 1, tagId: tag.id })
+      setImages(data?.[0] || [])
+      setImagesTotal(data?.[1] || 0)
     }
     setIsLoading(false)
   }
@@ -96,6 +100,9 @@ export default function Gallery() {
             handleSearch={(tag: Tag | null) => handleSearch(tag)}
             inputText={inputText}
             setInputText={setInputText}/>
+          <div className={styles['results-found']}>
+            {`${imagesTotal} ${imagesTotal && imagesTotal > 1 ? 'paintings' : 'painting'}`}
+          </div>
           <ImageCards
             images={images}
             endReached={endReached} />
@@ -141,16 +148,16 @@ async function handleOnScroll({
     setIsLoading(true)
     const oldImages = images
     const nextPage = page + 1
-    let nextPageImages = []
+    let nextPageData = []
     if (selectedTag) {
-      nextPageImages = await getImagesByTagId({ page: nextPage, tagId: selectedTag.id })
+      nextPageData = await getImagesByTagId({ page: nextPage, tagId: selectedTag.id })
     } else {
-      nextPageImages = await getImages({ page: nextPage })
+      nextPageData = await getImages({ page: nextPage })
     }
-    if (nextPageImages?.length === 0) {
+    if (nextPageData?.[0].length === 0) {
       setEndReached(true)
     }
-    const newImages = [...oldImages, ...nextPageImages]
+    const newImages = [...oldImages, ...nextPageData?.[0]]
     setPage(nextPage)
     setImages(newImages)
   }
