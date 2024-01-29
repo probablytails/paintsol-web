@@ -236,7 +236,7 @@ export default function Gallery({
             (!isLoading && imagesTotal !== null) && (
               <div className={styles['results-found']}>
                 {
-                    `${imagesTotal} ${imagesTotal && imagesTotal > 1 ? ' paintings' : ' painting'}`
+                  `${imagesTotal} ${imagesTotal && imagesTotal > 1 ? ' paintings' : ' painting'}`
                 }
               </div>
             )
