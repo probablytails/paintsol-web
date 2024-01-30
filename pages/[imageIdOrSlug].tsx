@@ -25,21 +25,21 @@ type Props = {
 }
 
 type ServerSidePropsParams = {
-  id?: string
+  imageIdOrSlug?: string
 }
 
 export const getServerSideProps = (async (context: GetServerSidePropsContext) => {
   const { params, res } = context
-  const { id } = params as ServerSidePropsParams
+  const { imageIdOrSlug } = params as ServerSidePropsParams
   let initialImage: ImageT | null = null
 
-  if (id) {
+  if (imageIdOrSlug) {
     try {
-      const data = await getImage(id, true)
+      const data = await getImage(imageIdOrSlug, true)
       if (data) {
         initialImage = data
       }
-      if (data?.id === parseInt(id) && data?.slug) {
+      if (data?.id === parseInt(imageIdOrSlug) && data?.slug) {
         res.writeHead(302, { Location: `/${data.slug}` })
         res.end()
       }
