@@ -76,7 +76,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
 
         } catch (error: any) {
           if (error?.response?.status === 404) {
-            router.replace('/gallery')
+            router.replace('/art')
           }
         }
         setIsLoading(false)
@@ -95,7 +95,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
   }
 
   function artistNavigation(artist: Artist) {
-    router.push(`/gallery?artistId=${artist?.id}`)
+    router.push(`/art?artistId=${artist?.id}`)
   }
 
   function tagBadgeOnClick(tag: Tag) {
@@ -109,7 +109,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
   }
 
   function tagNavigation(tag: Tag) {
-    router.push(`/gallery?tagId=${tag?.id}`)
+    router.push(`/art?tagId=${tag?.id}`)
   }
 
   function handleImageClick() {

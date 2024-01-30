@@ -8,7 +8,7 @@ import { getAllArtistsWithImages, getArtistById } from '@/services/artist'
 import { getImages, getImagesByArtistId, getImagesByTagId } from '@/services/image'
 import { getAllTagsWithImages, getTagById } from '@/services/tag'
 import LoadingSpinner from '@/components/LoadingSpinner'
-import styles from '@/styles/Gallery.module.css'
+import styles from '@/styles/Art.module.css'
 import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
 

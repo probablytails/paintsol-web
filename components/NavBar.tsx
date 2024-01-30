@@ -61,7 +61,7 @@ function NavLinkFAIcon({ icon, title, url }: NavLinkFAIconProps) {
 export default function NavBar() {
   const pathname = usePathname()
 
-  const isGallery = pathname === '/gallery'
+  const isArtGallery = pathname === '/art'
   const isWhitepaper = pathname === '/whitepaper'
 
   return (
@@ -84,9 +84,9 @@ export default function NavBar() {
           <ul className='navbar-nav me-auto d-flex flex-grow-1'>
             <li className='nav-item'>
               <Link
-                className={`nav-link ${styles['nav-link-text']} ${isGallery ? 'active' : ''}`}
-                {...(isGallery ? { 'aria-current': 'page' } : {})}
-                href='/gallery'>
+                className={`nav-link ${styles['nav-link-text']} ${isArtGallery ? 'active' : ''}`}
+                {...(isArtGallery ? { 'aria-current': 'page' } : {})}
+                href='/art'>
                 Gallery
               </Link>
             </li>

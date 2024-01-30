@@ -23,8 +23,8 @@ export default function Home() {
       <div className='centered-column-grid'>
         <div className={styles['content-wrapper']}>
           <Link
-            className={`link-primary ${styles['gallery-link']}`}
-            href='/gallery'>
+            className={`link-primary ${styles['art-link']}`}
+            href='/art'>
             <Image
               alt='$PAINT Logo'
               className={styles['splash-logo']}
@@ -34,10 +34,10 @@ export default function Home() {
               title='$PAINT Logo'
             />
           </Link>
-          <div className={styles['gallery-link-wrapper']}>
+          <div className={styles['art-link-wrapper']}>
             <Link
-              className={`link-primary ${styles['gallery-link']}`}
-              href='/gallery'>
+              className={`link-primary ${styles['art-link']}`}
+              href='/art'>
               Visit the Art Gallery
             </Link>
           </div>
