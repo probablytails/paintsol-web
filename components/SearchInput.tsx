@@ -59,7 +59,7 @@ export default function SearchInput({ allArtists, allTags, filterSelected,
   }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedFilter = useCallback(_debounce(handleFilter, 500), [])
+  const debouncedFilter = useCallback(_debounce(handleFilter, 400), [])
 
   async function handleSearchDefault() {
     await handleSearch(null, filterSelected)
