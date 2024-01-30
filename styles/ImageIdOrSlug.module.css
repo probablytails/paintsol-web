@@ -1,3 +1,10 @@
+.main-image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
 .main-image {
   margin: 1.5rem 0;
   cursor: pointer;
