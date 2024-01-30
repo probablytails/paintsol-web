@@ -22,14 +22,18 @@ export default function Home() {
       </Head>
       <div className='centered-column-grid'>
         <div className={styles['content-wrapper']}>
-          <Image
-            alt='$PAINT Logo'
-            className={styles['splash-logo']}
-            imageSrc='/paint_splash_logo.png'
-            priority
-            stretchFill
-            title='$PAINT Logo'
-          />
+          <Link
+            className={`link-primary ${styles['gallery-link']}`}
+            href='/gallery'>
+            <Image
+              alt='$PAINT Logo'
+              className={styles['splash-logo']}
+              imageSrc='/paint_splash_logo.png'
+              priority
+              stretchFill
+              title='$PAINT Logo'
+            />
+          </Link>
           <div className={styles['gallery-link-wrapper']}>
             <Link
               className={`link-primary ${styles['gallery-link']}`}
