@@ -1,23 +1,23 @@
+import { GetServerSidePropsContext } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
-import { Artist, Image as ImageT, Tag, UserInfo } from '@/lib/types'
-import { getAvailableImageUrl, getImage, getImageUrl } from '@/services/image'
-import ArtistLink from '@/components/ArtistLink'
-import Image from '@/components/Image'
-import styles from '@/styles/ImageIdOrSlug.module.css'
-import TagBadge from '@/components/TagBadge'
-import { useSearchParams } from 'next/navigation'
-import FAIcon from '@/components/FAIcon'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons/faArrowRight'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft'
-import { getImageTitle } from '@/lib/utility'
-import ImageVersionLinks from '@/components/ImageVersionLinks'
 import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit'
-import LoadingSpinner from '@/components/LoadingSpinner'
-import { GetServerSidePropsContext, NextPageContext } from 'next'
+import ArtistLink from '@/components/ArtistLink'
 import FullImageModal from '@/components/FullImageModal'
+import Image from '@/components/Image'
+import ImageVersionLinks from '@/components/ImageVersionLinks'
+import LoadingSpinner from '@/components/LoadingSpinner'
+import TagBadge from '@/components/TagBadge'
+import FAIcon from '@/components/FAIcon'
+import { getImageTitle } from '@/lib/utility'
+import { Artist, Image as ImageT, Tag, UserInfo } from '@/lib/types'
+import { getAvailableImageUrl, getImage } from '@/services/image'
+import styles from '@/styles/ImageIdOrSlug.module.css'
 
 type Props = {
   initialImage: ImageT | null
@@ -237,15 +237,17 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
                     }
                     {
                       imageSrc && (
-                        <Image
-                          alt={title}
-                          className={`${styles['main-image']}`}
-                          imageSrc={imageSrc}
-                          onClick={handleImageClick}
-                          priority
-                          stretchFill
-                          title={title}
-                        />
+                        <div className={styles['main-image-wrapper']}>
+                          <Image
+                            alt={title}
+                            className={`${styles['main-image']}`}
+                            imageSrc={imageSrc}
+                            onClick={handleImageClick}
+                            priority
+                            stretchFill
+                            title={title}
+                          />
+                        </div>
                       )
                     }
                   </>
