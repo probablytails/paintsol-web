@@ -141,6 +141,8 @@ export default function Gallery({
 
   const handleSearchDefault = async () => {
     setInputText('')
+    setSelectedArtist(null)
+    setSelectedTag(null)
     return getImages({ page: 1 })
   }
 
