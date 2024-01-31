@@ -75,8 +75,8 @@ export const updateImage = async (id: number, formData: FormData) => {
   formData.append('id', id.toString())
 
   const response = await apiRequest({
-    method: 'PATCH',
-    url: '/image',
+    method: 'POST',
+    url: '/image/update',
     withCredentials: true,
     data: formData,
     headers: {
