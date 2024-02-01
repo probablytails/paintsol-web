@@ -421,10 +421,10 @@ export default function UploadImage() {
         <meta name="twitter:site" content="@paintonsol" />
         <meta name="twitter:title" content="$PAINT" />
         <meta name="twitter:description" content="$PAINT on SOL" />
-        <meta name="twitter:image" content={`${process.env.NEXT_PUBLIC_WEB_BASE_URL}/paint_splash_logo.png`} />
+        <meta name="twitter:image" content={`${process.env.NEXT_PUBLIC_WEB_BASE_URL}/paint-logo-preview.png`} />
         <meta property="og:title" content="$PAINT" />
         <meta property="og:description" content="$PAINT on SOL" />
-        <meta property="og:image" content={`${process.env.NEXT_PUBLIC_WEB_BASE_URL}/paint_splash_logo.png`} />
+        <meta property="og:image" content={`${process.env.NEXT_PUBLIC_WEB_BASE_URL}/paint-logo-preview.png`} />
         <meta property="og:type" content="website" />
         <meta name="robots" content="noindex" />
       </Head>

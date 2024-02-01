@@ -71,7 +71,7 @@ export default function NavBar() {
           <Image
             alt='$PAINT Logo'
             height={48}
-            imageSrc='/paint_logo_small_square.png'
+            imageSrc='/paint-logo-small-square.png'
             priority
             title='$PAINT Logo'
             width={48}
