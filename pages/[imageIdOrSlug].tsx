@@ -162,8 +162,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
 
   const metaTitle = title
   const metaDescription = `${title} ${artistNames ? `– by ${artistNames}` : ''}`
-  const paramImageVersion = searchParams.get('v') as any
-  const metaImageUrl = getAvailableImageUrl(paramImageVersion, image)
+  const metaImageUrl = getAvailableImageUrl('preview', image)
 
   return (
     <>

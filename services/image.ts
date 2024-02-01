@@ -1,7 +1,7 @@
 import { Image } from '@/lib/types'
 import { apiRequest } from './apiRequest'
 
-export type ImageVersion = 'animation' | 'border' | 'no-border'
+export type ImageVersion = 'animation' | 'border' | 'no-border' | 'preview'
 
 export const getPreferredImagePageUrl = (image: Image) => {
   if (image?.slug) {
@@ -22,6 +22,8 @@ export const getImageUrl = (id: number, imageVersion: ImageVersion | null) => {
     return `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${id}-animation.gif`
   } else if (imageVersion === 'border') {
     return `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${id}-border.png`
+  } else if (imageVersion === 'preview') {
+    return `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${id}-preview.png`
   } else {
     return `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${id}-no-border.png`
   }
@@ -34,6 +36,8 @@ const getAvailableImageVersion = (origVersion: ImageVersion | null, image: Image
     return 'border'
   } else if (origVersion === 'no-border' && image.has_no_border) {
     return 'no-border'
+  } else if (origVersion === 'preview') {
+    return 'preview'
   } else {
     return image.has_no_border
       ? 'no-border'
