@@ -123,6 +123,10 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
     setIsFullView(true)
   }
 
+  function handleImageFinishedLoading() {
+    setImagedFinishedLoading(true)
+  }
+
   const artistLinks = artists?.map((artist) => {
     const artistName = artist?.name
     return (
@@ -249,7 +253,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
                             className={`${styles['main-image']}`}
                             imageSrc={imageSrc}
                             onClick={handleImageClick}
-                            onLoad={() => setTimeout(() => setImagedFinishedLoading(true), 0)}
+                            onLoad={handleImageFinishedLoading}
                             priority
                             stretchFill
                             title={title}
