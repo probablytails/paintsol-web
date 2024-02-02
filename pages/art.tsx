@@ -246,7 +246,8 @@ export default function Gallery({
           <ImageCards
             images={images}
             endReached={endReached} />
-          {isLoading && <LoadingSpinner />}
+          {isLoading && <LoadingSpinner noMargin />}
+          {!isLoading && !endReached && <div className={styles['spacer']} />}
         </div>
       </div>
     </>
@@ -285,7 +286,8 @@ async function handleOnScroll({
   setImages
 }: HandleOnScroll) {
   const element = event.target
-  const endOfElementReached = element.scrollHeight - (element.scrollTop + 1) < element.offsetHeight
+  const bottomSpacerHeight = 64
+  const endOfElementReached = element.scrollHeight - (element.scrollTop + 1) - bottomSpacerHeight < element.offsetHeight
   if (endOfElementReached && !isLoading && !endReached) {
     setIsLoading(true)
     const oldImages = images
