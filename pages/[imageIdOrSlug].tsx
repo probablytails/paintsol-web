@@ -69,7 +69,11 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
         try {
           const idOrSlug = router.asPath?.replace(/\//, '')
           let paramImageVersion = searchParams.get('v') as any
-          paramImageVersion = paramImageVersion === 'original' ? 'no-border' : paramImageVersion
+          paramImageVersion = paramImageVersion === 'original'
+            ? 'no-border'
+            : !paramImageVersion
+              ? null
+              : paramImageVersion
           const data = await getImage(idOrSlug)
           setImage(data)
           const imageUrl = getAvailableImageUrl(paramImageVersion, data)
