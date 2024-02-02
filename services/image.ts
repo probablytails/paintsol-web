@@ -17,11 +17,11 @@ export const getAvailableImageUrl = (preferredVersion: ImageVersion | null, imag
   return getImageUrl(image.id, availableImageVersion)
 }
 
-export const getImageUrl = (id: number, imageVersion: ImageVersion | null) => {
+export const getImageUrl = (id: number, imageVersion: ImageVersion) => {
   if (imageVersion === 'animation') {
     return `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${id}-animation.gif`
   } else if (imageVersion === 'no-border') {
-    return `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${id}-border.png`
+    return `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${id}-no-border.png`
   } else if (imageVersion === 'preview') {
     return `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${id}-preview.png`
   } else {
@@ -39,13 +39,13 @@ const getAvailableImageVersion = (origVersion: ImageVersion | null, image: Image
   } else if (origVersion === 'preview') {
     return 'preview'
   } else {
-    return image.has_no_border
-      ? 'no-border'
-      : image.has_border
-        ? 'border'
+    return image.has_border
+      ? 'border'
+      : image.has_no_border
+        ? 'no-border'
         : image.has_animation
           ? 'animation'
-          : 'no-border'
+          : 'border'
   }
 }
 
