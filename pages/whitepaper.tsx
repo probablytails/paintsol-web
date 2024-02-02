@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Image from '@/components/Image'
 import styles from '@/styles/Whitepaper.module.css'
 import Footer from '@/components/Footer'
 
@@ -23,17 +22,11 @@ export default function Whitepaper() {
         <meta property="og:image" content={metaImageUrl} />
         <meta property="og:type" content="website" />
       </Head>
-      <div className='container-fluid main-content-column'>
-        <div className='row mx-2 my-5'>
-          <Image
-            alt={'$Paint Whitepaper (it\'s an old picture of Paint open with a blank canvas)'}
-            className={styles['whitepaper-image']}
-            imageSrc='/whitepaper.jpg'
-            priority
-            stretchFill
-            title='Whitepaper'
-          />
-        </div>
+      <div>
+        <iframe
+          className={styles['jspaint-app']}
+          src='https://jspaint.app'
+        />
         <Footer />
       </div>
     </>

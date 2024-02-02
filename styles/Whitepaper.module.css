@@ -2,3 +2,9 @@
   max-width: 528px;
   margin: 0 auto; 
 }
+
+.jspaint-app {
+  height: calc(100vh - var(--navbar-height));
+  width: 100%;
+  margin-top: var(--navbar-height);
+}
