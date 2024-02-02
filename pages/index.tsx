@@ -23,7 +23,7 @@ export default function Home() {
       <div className='centered-column-grid'>
         <div className={styles['content-wrapper']}>
           <Link
-            className={`link-primary ${styles['art-link']}`}
+            className='link-primary'
             href='/art'>
             <Image
               alt='$PAINT Logo'
