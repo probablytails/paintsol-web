@@ -20,12 +20,12 @@ export const getAvailableImageUrl = (preferredVersion: ImageVersion | null, imag
 export const getImageUrl = (id: number, imageVersion: ImageVersion | null) => {
   if (imageVersion === 'animation') {
     return `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${id}-animation.gif`
-  } else if (imageVersion === 'border') {
+  } else if (imageVersion === 'no-border') {
     return `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${id}-border.png`
   } else if (imageVersion === 'preview') {
     return `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${id}-preview.png`
   } else {
-    return `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${id}-no-border.png`
+    return `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${id}-border.png`
   }
 }
 

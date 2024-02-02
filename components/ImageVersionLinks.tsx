@@ -20,7 +20,8 @@ function ImageVersionLink({ imageVersion }: ImageVersionLinkProps) {
         : null
 
   const onClick = () => {
-    const newQueryParam = imageVersion === 'no-border' ? null : imageVersion
+    let newQueryParam: any = imageVersion === 'border' ? null : imageVersion
+    newQueryParam = newQueryParam === 'no-border' ? 'original' : newQueryParam
     const newUrl = `${router.asPath.split('?')[0]}${newQueryParam ? `?v=${newQueryParam}` : ''}`
     router.push(newUrl)
   }
