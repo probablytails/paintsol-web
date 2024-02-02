@@ -15,7 +15,7 @@ type Props = {
 
 export default function FullImageModal({ closeButtonRef, handleHide,
   imageSrc, show, title }: Props) {
-  const imageRef = useRef<any>()
+  const imageRef = useRef<any>(null)
   useDetectOutsideClicks(imageRef)
   
   useEffect(() => {
