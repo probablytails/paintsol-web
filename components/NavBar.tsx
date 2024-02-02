@@ -8,6 +8,7 @@ import FAIcon from './FAIcon'
 import Icon from './Icon'
 
 import styles from '@/styles/components/NavBar.module.css'
+import { useEffect, useRef, useState } from 'react'
 
 const navIconSize = 24
 
@@ -59,13 +60,28 @@ function NavLinkFAIcon({ icon, title, url }: NavLinkFAIconProps) {
 }
 
 export default function NavBar() {
+  const buttonRef = useRef<any>(null)
   const pathname = usePathname()
-
   const isArtGallery = pathname === '/art'
   const isWhitepaper = pathname === '/whitepaper'
 
+  const handleOutsideClick = (event: any) => {
+    const menuIsExpanded = !!document.querySelector('.navbar-collapse.collapse.show')
+    if (menuIsExpanded) {
+      document.querySelector('#navbar-button-toggle')?.click()
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    }
+  }, [])
+
   return (
-    <nav className={`navbar fixed-top navbar-expand-sm navbar-light bg-light ${styles.navbar}`}>
+    <nav
+      className={`navbar fixed-top navbar-expand-sm navbar-light bg-light ${styles.navbar}`}>
       <div className='container-fluid'>
         <Link className='navbar-brand' href='/'>
           <Image
@@ -77,7 +93,16 @@ export default function NavBar() {
             width={48}
           />
         </Link>
-        <button className='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'>
+        <button
+          className='navbar-toggler'
+          id='navbar-button-toggle'
+          type='button'
+          data-bs-toggle='collapse'
+          data-bs-target='#navbarSupportedContent'
+          aria-controls='navbarSupportedContent'
+          aria-expanded='false'
+          aria-label='Toggle navigation'
+          ref={buttonRef}>
           <span className='navbar-toggler-icon'></span>
         </button>
         <div className='collapse navbar-collapse' id='navbarSupportedContent'>
