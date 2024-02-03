@@ -69,14 +69,15 @@ export default function NavBar() {
   const handleOutsideClick = (event: any) => {
     const menuIsExpanded = !!document.querySelector('.navbar-collapse.collapse.show')
     if (menuIsExpanded) {
-      document.querySelector('#navbar-button-toggle')?.click()
+      const btn = document.querySelector('#navbar-button-toggle') as any
+      btn?.click()
     }
   }
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleOutsideClick);
+    document.addEventListener('mousedown', handleOutsideClick)
     return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener('mousedown', handleOutsideClick)
     }
   }, [])
 
