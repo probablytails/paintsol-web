@@ -83,7 +83,7 @@ export default function NavBar() {
     <nav
       className={`navbar fixed-top navbar-expand-sm navbar-light bg-light ${styles.navbar}`}>
       <div className='container-fluid'>
-        <Link className='navbar-brand' href='/'>
+        <Link className='navbar-brand d-none d-sm-block' href='/'>
           <Image
             alt='$PAINT Logo'
             height={48}
@@ -91,6 +91,16 @@ export default function NavBar() {
             priority
             title='$PAINT Logo'
             width={48}
+          />
+        </Link>
+        <Link className='navbar-brand d-block d-sm-none' href='/'>
+          <Image
+            alt='$PAINT Logo'
+            height={48}
+            imageSrc='/paint-horizontal-logo.png'
+            priority
+            title='$PAINT Logo'
+            width={175}
           />
         </Link>
         <button
