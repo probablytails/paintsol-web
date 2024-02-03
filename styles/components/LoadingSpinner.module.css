@@ -4,6 +4,10 @@
   margin: 16px 0;
 }
 
+.loading-wrapper.no-margin {
+  margin: 0;
+}
+
 .loading-icon {
   height: 2em;
   width: 2em;

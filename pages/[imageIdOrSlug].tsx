@@ -56,6 +56,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
   const searchParams = useSearchParams()
   const closeButtonRef = useRef<any>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [imagedFinishedLoading, setImagedFinishedLoading] = useState<boolean>(false)
   const [isFullView, setIsFullView] = useState<boolean>(false)
   const [image, setImage] = useState<ImageT | null>(initialImage)
   const [imageSrc, setImageSrc] = useState('')
@@ -65,6 +66,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
   useEffect(() => {
     (async () => {
       setIsLoading(true)
+      setImagedFinishedLoading(false)
       if (router.isReady) {
         try {
           const idOrSlug = router.asPath?.replace(/\//, '')
@@ -119,6 +121,10 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
 
   function handleImageClick() {
     setIsFullView(true)
+  }
+
+  function handleImageFinishedLoading() {
+    setImagedFinishedLoading(true)
   }
 
   const artistLinks = artists?.map((artist) => {
@@ -192,7 +198,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
         title={title}
       />
       <div className='container-fluid main-content-column overflow-y-scroll'>
-        <div className='main-content-inner-wrapper'>
+        <div className={`main-content-inner-wrapper ${styles['main-content-inner-wrapper-mobile']}`}>
           <div className='container-fluid'>
             <div className='row'>
               <div className='col-lg-2 col-md-1 d-none d-md-block'>
@@ -247,6 +253,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
                             className={`${styles['main-image']}`}
                             imageSrc={imageSrc}
                             onClick={handleImageClick}
+                            onLoad={handleImageFinishedLoading}
                             priority
                             stretchFill
                             title={title}
@@ -263,14 +270,18 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
                 </div>
               </div>
             </div>
-            <div className={`d-block d-md-none d-lg-none d-xl-none d-xxl-none ${styles['small-screen-navs']}`}>
-              <div className={styles['prev']}>
-                {prevData?.id && prevNav}
-              </div>
-              <div className={styles['next']}>
-                {nextData?.id && nextNav}
-              </div>
-            </div>
+            {
+              imagedFinishedLoading && (
+                <div className={`d-block d-md-none d-lg-none d-xl-none d-xxl-none ${styles['small-screen-navs']}`}>
+                  <div className={styles['prev']}>
+                    {prevData?.id && prevNav}
+                  </div>
+                  <div className={styles['next']}>
+                    {nextData?.id && nextNav}
+                  </div>
+                </div>
+              )
+            }
           </div>
         </div>
       </div>

@@ -12,16 +12,21 @@
 
 .full-image-inner-wrapper {
   height: 100%;
-  width: 100;
+  width: 100%;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .full-image {
-  height: 100%;
   width: auto;
+  height: auto;
+  max-height: 100%;
   max-width: 100%;
   object-fit: contain;
   padding: 24px;
+  flex: 0 0 auto;
 }
 
 .close-button-wrapper {

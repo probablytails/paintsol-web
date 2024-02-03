@@ -6,7 +6,7 @@
 @media (max-width: 767px) {
   .image-versions {
     justify-content: flex-start;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
 }
 

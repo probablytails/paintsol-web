@@ -37,11 +37,12 @@
 .art-link-wrapper {
   font-size: 21px;
   font-weight: 700;
-  margin: 24px 0 24px 0;
+  margin: 24px 1rem;
 }
 
 .contract-wrapper {
   text-align: center;
+  margin: 0 1rem;
 }
 
 .contract-label {

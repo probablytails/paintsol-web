@@ -100,7 +100,11 @@ export default function Gallery({
   const [endReached, setEndReached] = useState<boolean>(false)
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedHandleOnScroll = useCallback(_debounce(handleOnScroll, 500), [])
+  const debouncedHandleOnScroll = useCallback(_debounce(handleOnScroll, 500, {
+    leading: true,
+    trailing: true,
+    maxWait: 500
+  }), [])
 
   // TODO: replace any with Artist | Tag (probably need a HOC here)
   const handleSearch = async (
@@ -246,7 +250,8 @@ export default function Gallery({
           <ImageCards
             images={images}
             endReached={endReached} />
-          {isLoading && <LoadingSpinner />}
+          {isLoading && <LoadingSpinner noMargin />}
+          {!isLoading && !endReached && <div className={styles['spacer']} />}
         </div>
       </div>
     </>
@@ -285,7 +290,8 @@ async function handleOnScroll({
   setImages
 }: HandleOnScroll) {
   const element = event.target
-  const endOfElementReached = element.scrollHeight - (element.scrollTop + 1) < element.offsetHeight
+  const bottomSpacerHeight = 64
+  const endOfElementReached = element.scrollHeight - (element.scrollTop + 1) - bottomSpacerHeight < element.offsetHeight
   if (endOfElementReached && !isLoading && !endReached) {
     setIsLoading(true)
     const oldImages = images

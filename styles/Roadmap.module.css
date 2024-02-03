@@ -1,0 +1,9 @@
+.roadmap-image-wrapper {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.roadmap-image {
+  max-width: 840px;
+  margin: 16px 0 0 0;
+}
