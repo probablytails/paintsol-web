@@ -2,8 +2,15 @@ import Head from 'next/head'
 import styles from '@/styles/Roadmap.module.css'
 import Image from '@/components/Image'
 import Footer from '@/components/Footer'
+import { useState } from 'react'
 
 export default function Roadmap() {
+  const [imageIsLoading, setImageIsLoading] = useState(true)
+
+  const handleImageOnLoad = () => {
+    setImageIsLoading(!imageIsLoading)
+  }
+
   const metaTitle = '$PAINT - Roadmap'
   const metaDescription = 'The $PAINT on SOL roadmap.'
   const metaImageUrl = `${process.env.NEXT_PUBLIC_WEB_BASE_URL}/public/roadmap.png`
@@ -30,13 +37,14 @@ export default function Roadmap() {
               alt='$PAINT on SOL roadmap'
               className={styles['roadmap-image']}
               imageSrc='/roadmap.png'
+              onLoad={handleImageOnLoad}
               priority
               stretchFill
               title='$PAINT on SOL roadmap'
             />
           </div>
         </div>
-        <Footer />
+        {!imageIsLoading && <Footer />}
       </div>
     </>
   )
