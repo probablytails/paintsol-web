@@ -64,6 +64,7 @@ export default function NavBar() {
   const pathname = usePathname()
   const isArtGallery = pathname === '/art'
   const isWhitepaper = pathname === '/whitepaper'
+  const isRoadmap = pathname === '/roadmap'
 
   const handleOutsideClick = (event: any) => {
     const menuIsExpanded = !!document.querySelector('.navbar-collapse.collapse.show')
@@ -131,6 +132,14 @@ export default function NavBar() {
                 {...(isWhitepaper ? { 'aria-current': 'page' } : {})}
                 href='/whitepaper'>
                 Whitepaper
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                className={`nav-link ${styles['nav-link-text']} ${isRoadmap ? 'active' : ''}`}
+                {...(isRoadmap ? { 'aria-current': 'page' } : {})}
+                href='/roadmap'>
+                Roadmap
               </Link>
             </li>
             <div className='flex-grow-1' />

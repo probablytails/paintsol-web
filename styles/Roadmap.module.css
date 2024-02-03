@@ -1,0 +1,27 @@
+.roadmap-image-wrapper {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.roadmap-image {
+  max-width: 840px;
+  margin: 16px 0 0 0;
+}
+
+@media (max-width: 575px) {
+  .roadmap-image {
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 440px) {
+  .roadmap-image {
+    max-width: 340px;
+  }
+}
+
+@media (max-width: 380px) {
+  .roadmap-image {
+    max-width: 280px;
+  }
+}
