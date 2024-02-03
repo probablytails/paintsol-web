@@ -8,7 +8,7 @@ import FAIcon from './FAIcon'
 import Icon from './Icon'
 
 import styles from '@/styles/components/NavBar.module.css'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 const navIconSize = 24
 
@@ -41,7 +41,7 @@ function NavLinkIcon({ imageSrc, title, url }: NavLinkIconProps) {
 
 type NavLinkFAIconProps = FontAwesomeIconProps & { url: string }
 
-function NavLinkFAIcon({ icon, title, url }: NavLinkFAIconProps) {
+function NavLinkFAIcon({ icon, style, title, url }: NavLinkFAIconProps) {
   return (
     <li className='nav-item'>
       <Link
@@ -49,6 +49,7 @@ function NavLinkFAIcon({ icon, title, url }: NavLinkFAIconProps) {
         className={`nav-link ${styles['nav-link-icon']}`}
         href={url}
         rel='noopener noreferrer'
+        style={style}
         target='_blank'>
         <FAIcon
           icon={icon}
@@ -145,6 +146,22 @@ export default function NavBar() {
             </li>
             <div className='flex-grow-1' />
             <div className={styles['social-links']}>
+              <NavLinkFAIcon
+                icon={faTelegram}
+                style={{ marginRight: '-1px' }}
+                title='Telegram'
+                url='https://t.co/OjMn6rdbaU'
+              />
+              <NavLinkFAIcon
+                icon={faXTwitter}
+                title='X - Twitter'
+                url='https://twitter.com/paintonsol'
+              />
+              <NavLinkIcon
+                imageSrc='/external-sites/farcaster.png'
+                title='Farcaster'
+                url='https://warpcast.com/paintsol'
+              />
               <NavLinkIcon
                 imageSrc='/external-sites/birdeye.svg'
                 title='Birdeye'
@@ -164,16 +181,6 @@ export default function NavBar() {
                 imageSrc='/external-sites/coingecko.svg'
                 title='CoinGecko'
                 url='https://www.coingecko.com/en/coins/ms-paint/usd'
-              />
-              <NavLinkFAIcon
-                icon={faXTwitter}
-                title='X - Twitter'
-                url='https://twitter.com/paintonsol'
-              />
-              <NavLinkFAIcon
-                icon={faTelegram}
-                title='Telegram'
-                url='https://t.co/OjMn6rdbaU'
               />
             </div>
           </ul>
