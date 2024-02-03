@@ -100,7 +100,11 @@ export default function Gallery({
   const [endReached, setEndReached] = useState<boolean>(false)
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedHandleOnScroll = useCallback(_debounce(handleOnScroll, 500), [])
+  const debouncedHandleOnScroll = useCallback(_debounce(handleOnScroll, 500, {
+    leading: true,
+    trailing: true,
+    maxWait: 500
+  }), [])
 
   // TODO: replace any with Artist | Tag (probably need a HOC here)
   const handleSearch = async (
