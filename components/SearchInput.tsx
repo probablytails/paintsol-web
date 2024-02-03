@@ -14,7 +14,7 @@ type Props = {
   allArtists: Artist[]
   allTags: Tag[]
   filterSelected: 'by-artist' | 'by-tag'
-  handleSearch: (
+  handleSelect: (
     selectedArtistOrTag: Artist | Tag | null,
     filterSelected: 'by-artist' | 'by-tag'
   ) => void
@@ -23,7 +23,7 @@ type Props = {
 }
 
 export default function SearchInput({ allArtists, allTags, filterSelected,
-  handleSearch, inputText, setInputText }: Props) {
+  handleSelect, inputText, setInputText }: Props) {
   const [inputHasFocus, setInputHasFocus] = useState(false)
   const [filteredArtists, setFilteredArtists] = useState<Artist[]>([])
   const [filteredTags, setFilteredTags] = useState<Tag[]>([])
@@ -61,22 +61,22 @@ export default function SearchInput({ allArtists, allTags, filterSelected,
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedFilter = useCallback(_debounce(handleFilter, 400), [])
 
-  async function handleSearchDefault() {
-    await handleSearch(null, filterSelected)
+  async function handleSelectDefault() {
+    await handleSelect(null, filterSelected)
   }
 
-  async function handleSearchByTag(tag: Tag) {
+  async function handleSelectByTag(tag: Tag) {
     debouncedFilter(filterSelected, tag.title)
     setInputHasFocus(false)
     setInputText(tag.title)
-    await handleSearch(tag, filterSelected)
+    await handleSelect(tag, filterSelected)
   }
 
-  async function handleSearchByArtist(artist: Artist) {
+  async function handleSelectByArtist(artist: Artist) {
     debouncedFilter(filterSelected, artist.name)
     setInputHasFocus(false)
     setInputText(artist.name)
-    await handleSearch(artist, filterSelected)
+    await handleSelect(artist, filterSelected)
   }
 
   function handleFilter(
@@ -116,33 +116,33 @@ export default function SearchInput({ allArtists, allTags, filterSelected,
     debouncedFilter(filterSelected, text)
     setInputHasFocus(!removeFocus)
     if (!text) {
-      handleSearchDefault()
+      handleSelectDefault()
     }
   }
 
   function handleClear () {
     const removeFocus = true
     handleChange('', removeFocus)
-    handleSearch(null, filterSelected)
+    handleSelect(null, filterSelected)
   }
 
   function artistLinkOnClick(artist: Artist) {
-    handleSearchByArtist(artist)
+    handleSelectByArtist(artist)
   }
 
   function artistLinkOnKeyUp (artist: Artist, event: KeyboardEvent<HTMLButtonElement>) {
     if (event.key === 'Enter') {
-      handleSearchByArtist(artist)
+      handleSelectByArtist(artist)
     }
   }
 
   function tagBadgeOnClick(tag: Tag) {
-    handleSearchByTag(tag)
+    handleSelectByTag(tag)
   }
 
   function tagBadgeOnKeyUp (tag: Tag, event: KeyboardEvent<HTMLButtonElement>) {
     if (event.key === 'Enter') {
-      handleSearchByTag(tag)
+      handleSelectByTag(tag)
     }
   }
 
@@ -152,12 +152,12 @@ export default function SearchInput({ allArtists, allTags, filterSelected,
       if (filterSelected === 'by-artist') {
         const artist = getArtistByName(val)
         if (artist) {
-          handleSearchByArtist(artist)
+          handleSelectByArtist(artist)
         }
       } else if (filterSelected === 'by-tag') {
         const tag = getTagByTitle(val)
         if (tag) {
-          handleSearchByTag(tag)
+          handleSelectByTag(tag)
         }
       }
     }

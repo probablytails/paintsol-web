@@ -107,7 +107,7 @@ export default function Gallery({
   }), [])
 
   // TODO: replace any with Artist | Tag (probably need a HOC here)
-  const handleSearch = async (
+  const handleSelect = async (
     selectedArtistOrTag: Artist | Tag | null,
     filterSelected: 'by-artist' | 'by-tag'
   ) => {
@@ -117,13 +117,13 @@ export default function Gallery({
     setFilterSelected(filterSelected)
     let data: [Image[], number] = [[], 0]
     if (!selectedArtistOrTag) {
-      data = await handleSearchDefault()
+      data = await handleSelectDefault()
       setImagesTotal(null)
     } else if (filterSelected === 'by-artist') {
-      data = await handleSearchByArtist(selectedArtistOrTag as Artist)
+      data = await handleSelectByArtist(selectedArtistOrTag as Artist)
       setImagesTotal(data?.[1] || 0)
     } else if (filterSelected === 'by-tag') {
-      data = await handleSearchByTag(selectedArtistOrTag as Tag)
+      data = await handleSelectByTag(selectedArtistOrTag as Tag)
       setImagesTotal(data?.[1] || 0)
     }
     
@@ -143,21 +143,21 @@ export default function Gallery({
     })
   }
 
-  const handleSearchDefault = async () => {
+  const handleSelectDefault = async () => {
     setInputText('')
     setSelectedArtist(null)
     setSelectedTag(null)
     return getImages({ page: 1 })
   }
 
-  const handleSearchByArtist = async (artist: Artist) => {
+  const handleSelectByArtist = async (artist: Artist) => {
     setSelectedArtist(artist)
     setSelectedTag(null)
     setInputText(artist.name)
     return getImagesByArtistId({ page: 1, artistId: artist.id })
   }
 
-  const handleSearchByTag = async (tag: Tag) => {
+  const handleSelectByTag = async (tag: Tag) => {
     setSelectedArtist(null)
     setSelectedTag(tag)
     setInputText(tag.title)
@@ -206,7 +206,7 @@ export default function Gallery({
             allTags={allTags}
             filterSelected={filterSelected}
             // TODO: remove duck typing
-            handleSearch={handleSearch}
+            handleSelect={handleSelect}
             inputText={inputText}
             setInputText={setInputText}/>
           <div className={styles['filter-selector-wrapper']}>
@@ -216,7 +216,7 @@ export default function Gallery({
                 className="form-check-input"
                 id="radioFilterSelectedTag"
                 name="radioFilterSelected"
-                onChange={() => handleSearch(null, 'by-tag')}
+                onChange={() => handleSelect(null, 'by-tag')}
                 type="radio"
               />
               <label className="form-check-label" htmlFor="radioFilterSelectedTag">
@@ -229,7 +229,7 @@ export default function Gallery({
                 className="form-check-input"
                 id="radioFilterSelectedArtist"
                 name="radioFilterSelected"
-                onChange={() => handleSearch(null, 'by-artist')}
+                onChange={() => handleSelect(null, 'by-artist')}
                 type="radio"
               />
               <label className="form-check-label" htmlFor="radioFilterSelectedArtist">
