@@ -6,7 +6,7 @@
   align-items: center;
   padding: 0.25em 0.75em;
   background-color: #faa;
-  z-index: 100;
+  z-index: 1000000;
 }
 
 .admin-text {
