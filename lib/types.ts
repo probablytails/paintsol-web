@@ -27,3 +27,5 @@ export type UserInfo = {
   nickname?: string
   picture?: string
 } | null
+
+export type FilterTypes = 'by-tag' | 'by-artist'

@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { useCallback, useState } from 'react'
 import ImageCards from '@/components/ImageCards'
 import SearchInput from '@/components/SearchInput'
-import { Artist, Image, Tag } from '@/lib/types'
+import { Artist, FilterTypes, Image, Tag } from '@/lib/types'
 import { getAllArtistsWithImages, getArtistById } from '@/services/artist'
 import { getImages, getImagesByArtistId, getImagesByTagId } from '@/services/image'
 import { getAllTagsWithImages, getTagById } from '@/services/tag'
@@ -11,6 +11,7 @@ import LoadingSpinner from '@/components/LoadingSpinner'
 import styles from '@/styles/Art.module.css'
 import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
+import FilterSelector from '@/components/FilterSelector'
 
 export const getServerSideProps = (async (context: GetServerSidePropsContext) => {
   const { query } = context
@@ -70,7 +71,7 @@ type Props = {
   allArtists: Artist[]
   allTags: Tag[]
   initialArtist: Artist | null
-  initialFilterSelected: 'by-artist' | 'by-tag'
+  initialFilterSelected: FilterTypes
   initialImages: Image[]
   initialImagesTotal: number | null
   initialInputText: string
@@ -91,7 +92,7 @@ export default function Gallery({
   const { pathname } = router
   const [isLoading, setIsLoading] = useState(false)
   const [inputText, setInputText] = useState(initialInputText)
-  const [filterSelected, setFilterSelected] = useState<'by-artist' | 'by-tag'>(initialFilterSelected)
+  const [filterSelected, setFilterSelected] = useState<FilterTypes>(initialFilterSelected)
   const [images, setImages] = useState<Image[]>(initialImages)
   const [imagesTotal, setImagesTotal] = useState<number | null>(initialImagesTotal)
   const [page, setPage] = useState<number>(1)
@@ -109,7 +110,7 @@ export default function Gallery({
   // TODO: replace any with Artist | Tag (probably need a HOC here)
   const handleSelect = async (
     selectedArtistOrTag: Artist | Tag | null,
-    filterSelected: 'by-artist' | 'by-tag'
+    filterSelected: FilterTypes
   ) => {
     setIsLoading(true)
     setPage(1)
@@ -209,35 +210,12 @@ export default function Gallery({
             handleSelect={handleSelect}
             inputText={inputText}
             setInputText={setInputText}/>
-          <div className={styles['filter-selector-wrapper']}>
-            <div className={`form-check ${styles['filter-radio-wrapper']}`}>
-              <input
-                checked={filterSelected === 'by-tag'}
-                className="form-check-input"
-                id="radioFilterSelectedTag"
-                name="radioFilterSelected"
-                onChange={() => handleSelect(null, 'by-tag')}
-                type="radio"
-              />
-              <label className="form-check-label" htmlFor="radioFilterSelectedTag">
-                Tag
-              </label>
-            </div>
-            <div className={`form-check ${styles['filter-radio-wrapper']}`}>
-              <input
-                checked={filterSelected === 'by-artist'}
-                className="form-check-input"
-                id="radioFilterSelectedArtist"
-                name="radioFilterSelected"
-                onChange={() => handleSelect(null, 'by-artist')}
-                type="radio"
-              />
-              <label className="form-check-label" htmlFor="radioFilterSelectedArtist">
-                Artist
-              </label>
-            </div>
-          </div>
-
+          <FilterSelector
+            filterSelected={filterSelected}
+            handleSelectFilter={(
+              newFilterSelected: FilterTypes) => handleSelect(null, newFilterSelected)
+            }
+          />
           {
             (!isLoading && imagesTotal !== null) && (
               <div className={styles['results-found']}>

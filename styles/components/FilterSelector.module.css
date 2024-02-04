@@ -1,0 +1,10 @@
+.filter-selector-wrapper {
+  margin: auto;
+  max-width: var(--form-max-width);
+  display: flex;
+  justify-content: center;
+}
+
+.filter-radio-wrapper {
+  margin: 12px 16px 0 16px;
+}

@@ -3,7 +3,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark'
 import { escapeRegExp } from 'lodash'
 import _debounce from 'lodash/debounce'
 import { Dispatch, KeyboardEvent, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
-import { Artist, Tag } from '@/lib/types'
+import { Artist, FilterTypes, Tag } from '@/lib/types'
 import FAIcon from './FAIcon'
 import ArtistLink from './ArtistLink'
 import TagBadge from './TagBadge'
@@ -13,10 +13,10 @@ import { usePrevious } from '@/lib/reactHelpers'
 type Props = {
   allArtists: Artist[]
   allTags: Tag[]
-  filterSelected: 'by-artist' | 'by-tag'
+  filterSelected: FilterTypes
   handleSelect: (
     selectedArtistOrTag: Artist | Tag | null,
-    filterSelected: 'by-artist' | 'by-tag'
+    filterSelected: FilterTypes
   ) => void
   inputText: string
   setInputText: Dispatch<SetStateAction<string>>
@@ -43,7 +43,7 @@ export default function SearchInput({ allArtists, allTags, filterSelected,
   useEffect(() => {
     if (
       !!prevState?.filterSelected
-      && filterSelected !== prevState?.filterSelected as 'by-artist' | 'by-tag'
+      && filterSelected !== prevState?.filterSelected as FilterTypes
     ) {
       debouncedFilter(filterSelected, '')
     }
@@ -80,7 +80,7 @@ export default function SearchInput({ allArtists, allTags, filterSelected,
   }
 
   function handleFilter(
-    filterSelected: 'by-artist' | 'by-tag',
+    filterSelected: FilterTypes,
     inputText: string) {
     if (filterSelected === 'by-artist') {
       handleFilterArtists(inputText)
