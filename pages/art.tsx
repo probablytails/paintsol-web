@@ -1,9 +1,11 @@
 import _debounce from 'lodash/debounce'
 import Head from 'next/head'
-import { useCallback, useState } from 'react'
+import * as serverSideCookieLib from 'cookie'
+import clientSideCookieLib from 'universal-cookie'
+import { useCallback, useEffect, useState } from 'react'
 import ImageCards from '@/components/ImageCards'
 import SearchInput from '@/components/SearchInput'
-import { Artist, FilterTypes, Image, Tag } from '@/lib/types'
+import { Artist, FilterTypes, Image, Tag, ViewTypes } from '@/lib/types'
 import { getAllArtistsWithImages, getArtistById } from '@/services/artist'
 import { getImages, getImagesByArtistId, getImagesByTagId } from '@/services/image'
 import { getAllTagsWithImages, getTagById } from '@/services/tag'
@@ -14,7 +16,8 @@ import { useRouter } from 'next/router'
 import FilterSelector from '@/components/FilterSelector'
 
 export const getServerSideProps = (async (context: GetServerSidePropsContext) => {
-  const { query } = context
+  const { query, req } = context
+  const { cookie: cookies } = req.headers
   const { artistId, tagId } = query
   let initialFilterSelected = 'by-tag'
   if (artistId) {
@@ -53,6 +56,9 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
     initialImagesTotal = data?.[1] || 0
   }
 
+  const parsedCookies = cookies ? serverSideCookieLib.parse(cookies) : {}
+  const initialViewType: ViewTypes = parsedCookies?.artViewTypeSelected as ViewTypes || 'large'
+
   return {
     props: {
       allArtists,
@@ -62,7 +68,8 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
       initialImages,
       initialImagesTotal,
       initialInputText,
-      initialTag
+      initialTag,
+      initialViewType
     }
   }
 })
@@ -76,6 +83,7 @@ type Props = {
   initialImagesTotal: number | null
   initialInputText: string
   initialTag: Tag | null
+  initialViewType: ViewTypes
 }
 
 export default function Gallery({
@@ -86,7 +94,8 @@ export default function Gallery({
   initialImages,
   initialImagesTotal,
   initialInputText,
-  initialTag
+  initialTag,
+  initialViewType
 }: Props) {
   const router = useRouter()
   const { pathname } = router
@@ -99,6 +108,8 @@ export default function Gallery({
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(initialArtist)
   const [selectedTag, setSelectedTag] = useState<Tag | null>(initialTag)
   const [endReached, setEndReached] = useState<boolean>(false)
+  const [viewTypeSelected, setViewTypeSelected] = useState<ViewTypes>(initialViewType)
+  const clientSideCookies = new clientSideCookieLib(null, { path: '/' });
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedHandleOnScroll = useCallback(_debounce(handleOnScroll, 500, {
@@ -108,7 +119,7 @@ export default function Gallery({
   }), [])
 
   // TODO: replace any with Artist | Tag (probably need a HOC here)
-  const handleSelect = async (
+  const handleSelectFilter = async (
     selectedArtistOrTag: Artist | Tag | null,
     filterSelected: FilterTypes
   ) => {
@@ -142,6 +153,11 @@ export default function Gallery({
       pathname,
       query: queryParams
     })
+  }
+
+  const handleSelectViewType = (newViewType: ViewTypes) => {
+    setViewTypeSelected(newViewType)
+    clientSideCookies.set('artViewTypeSelected', newViewType)
   }
 
   const handleSelectDefault = async () => {
@@ -207,14 +223,14 @@ export default function Gallery({
             allTags={allTags}
             filterSelected={filterSelected}
             // TODO: remove duck typing
-            handleSelect={handleSelect}
+            handleSelect={handleSelectFilter}
             inputText={inputText}
             setInputText={setInputText}/>
           <FilterSelector
             filterSelected={filterSelected}
-            handleSelectFilter={(
-              newFilterSelected: FilterTypes) => handleSelect(null, newFilterSelected)
-            }
+            handleSelectFilter={(newFilterSelected: FilterTypes) => handleSelectFilter(null, newFilterSelected)}
+            handleSelectViewType={(newViewType: ViewTypes) => handleSelectViewType(newViewType)}
+            viewTypeSelected={viewTypeSelected}
           />
           {
             (!isLoading && imagesTotal !== null) && (
@@ -226,8 +242,10 @@ export default function Gallery({
             )
           }
           <ImageCards
+            endReached={endReached}
             images={images}
-            endReached={endReached} />
+            viewType={viewTypeSelected}
+          />
           {isLoading && <LoadingSpinner noMargin />}
           {!isLoading && !endReached && <div className={styles['spacer']} />}
         </div>

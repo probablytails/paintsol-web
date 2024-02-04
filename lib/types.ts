@@ -29,3 +29,5 @@ export type UserInfo = {
 } | null
 
 export type FilterTypes = 'by-tag' | 'by-artist'
+
+export type ViewTypes = 'large' | 'small'

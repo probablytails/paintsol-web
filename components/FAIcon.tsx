@@ -1,20 +1,45 @@
 import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
+import styles from '@/styles/components/FAIcon.module.css'
 
-export default function FAIcon({ className, color, height, icon, onClick,
-  onKeyUp, role, spin, title, width }: FontAwesomeIconProps) {
-  return (
+type ExtendedFontAwesomeIconProps = FontAwesomeIconProps & {
+  activeColor?: string
+  buttonRef?: any
+  buttonClassName?: string
+  buttonWrapperName?: string
+  isActive?: boolean
+}
+
+export default function FAIcon({ activeColor, buttonClassName, buttonRef, buttonWrapperName,
+  className, color, height, icon, isActive, onClick, spin, tabIndex, title,
+  width }: ExtendedFontAwesomeIconProps) {
+
+  const element = (
     <FontAwesomeIcon
       className={className}
-      color={color}
+      color={isActive ? activeColor : color}
       height={height}
       icon={icon}
-      onClick={onClick}
-      onKeyUp={onKeyUp}
-      role={role}
       spin={spin}
       title={title}
       titleId={title}
       width={width}
     />
   )
+
+  if (onClick) {
+    return (
+      <div className={buttonWrapperName}>
+        <button
+          className={`${styles['button']} focus-style ${buttonClassName}`}
+          onClick={onClick as any}
+          ref={buttonRef}
+          tabIndex={tabIndex}
+          type='button'>
+          {element}
+        </button>
+      </div>
+    )
+  } else {
+    return element
+  }
 }
