@@ -109,7 +109,7 @@ export default function Gallery({
   const [selectedTag, setSelectedTag] = useState<Tag | null>(initialTag)
   const [endReached, setEndReached] = useState<boolean>(false)
   const [viewTypeSelected, setViewTypeSelected] = useState<ViewTypes>(initialViewType)
-  const clientSideCookies = new clientSideCookieLib(null, { path: '/' });
+  const clientSideCookies = new clientSideCookieLib(null, { path: '/' })
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedHandleOnScroll = useCallback(_debounce(handleOnScroll, 500, {
