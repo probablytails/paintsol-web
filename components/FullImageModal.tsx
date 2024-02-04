@@ -3,7 +3,7 @@ import styles from '@/styles/components/FullImageModal.module.css'
 import Image from './Image'
 import FAIcon from './FAIcon'
 import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark'
-import { Ref, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 type Props = {
   closeButtonRef: any
