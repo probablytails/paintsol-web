@@ -57,7 +57,7 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
   }
 
   const parsedCookies = cookies ? serverSideCookieLib.parse(cookies) : {}
-  const initialViewType: ViewTypes = parsedCookies?.artViewTypeSelected as ViewTypes || 'large'
+  const initialViewType: ViewTypes = parsedCookies?.artViewTypeSelected as ViewTypes || 'small'
 
   return {
     props: {
