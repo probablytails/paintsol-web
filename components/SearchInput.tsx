@@ -1,3 +1,11 @@
+/*
+  TODO: The SearchInput, SearchInputArtists, and SearchInputTags should be
+  combined into one component, but I was having problems getting the
+  state to update properly with debounce in useCallback in SearchInput,
+  and decided to just remove useCallback for SearchInputTags and
+  SearchInputArtists and add them to the upload-image page.
+*/
+
 import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch'
 import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark'
 import { escapeRegExp } from 'lodash'
