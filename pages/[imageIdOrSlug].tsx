@@ -18,6 +18,7 @@ import { getImageTitle } from '@/lib/utility'
 import { Artist, Image as ImageT, Tag, UserInfo } from '@/lib/types'
 import { getAvailableImageUrl, getImage } from '@/services/image'
 import styles from '@/styles/ImageIdOrSlug.module.css'
+import { faStar } from '@fortawesome/free-regular-svg-icons'
 
 type Props = {
   initialImage: ImageT | null
@@ -131,6 +132,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
     const artistName = artist?.name
     return (
       <ArtistLink
+        className={styles['artist-link']}
         name={artistName}
         onClick={() => artistLinkOnClick(artist)}
         onKeyUp={(event) => artistLinkOnKeyUp(event, artist)}
@@ -143,6 +145,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
     const tagTitle = tag?.title
     return (
       <TagBadge
+        className={styles['tab-badge']}
         onClick={() => tagBadgeOnClick(tag)}
         onKeyUp={(event) => tagBadgeOnKeyUp(event, tag)}
         key={`tag-${tagTitle}`}
@@ -210,10 +213,26 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
                 {isLoading && <LoadingSpinner />}
                 {!isLoading && (
                   <>
-                    <div className='row'>
-                      <h2>{title}</h2>
+                    <div className={`${styles['header-top-wrapper']}`}>
+                      <h2 className={styles['header-top-title']}>{title}</h2>
+                      {/* <div className={styles['header-top-buttons']}>
+                        <FAIcon
+                          className={styles['favorite-icon']}
+                          icon={faStar}
+                          title='Favorite'
+                        />
+                      </div> */}
                     </div>
-                    <div className='row'>
+                    {
+                      !!artistLinks?.length && (
+                        <div className='row'>
+                          <div className={`col-md-12 ${styles['artist-link-wrappers']}`}>
+                            {artistLinks}
+                          </div>
+                        </div>
+                      )
+                    }
+                    <div className='row mt-2'>
                       <div className='col-md-8'>
                         {tagBadges}
                       </div>
@@ -221,15 +240,6 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
                         <ImageVersionLinks image={image} />
                       </div>
                     </div>
-                    {
-                      !!artistLinks?.length && (
-                        <div className='row'>
-                          <div className='col-md-12'>
-                            {artistLinks}
-                          </div>
-                        </div>
-                      )
-                    }
                     {
                       !!userInfo && (
                         <button

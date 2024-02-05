@@ -4,6 +4,7 @@ import FAIcon from './FAIcon'
 import styles from '@/styles/components/TagBadge.module.css'
 
 type Props = {
+  className?: string
   onClick?: MouseEventHandler<HTMLButtonElement>
   onKeyUp?: KeyboardEventHandler<HTMLButtonElement>
   onRemoveClick?: MouseEventHandler<HTMLButtonElement>
@@ -11,10 +12,11 @@ type Props = {
   title: string
 }
 
-export default function TagBadge({ onClick, onRemoveClick, onKeyUp, onRemoveKeyUp, title }: Props) {
+export default function TagBadge({ className = '', onClick, onRemoveClick, onKeyUp,
+  onRemoveKeyUp, title }: Props) {
   return (
     <button
-      className={`btn rounded-pill btn-outline-success  ${styles['tag-badge']}`}
+      className={`btn rounded-pill btn-outline-success  ${styles['tag-badge']} ${className}`}
       onClick={onRemoveClick || onClick}
       onKeyUp={onRemoveKeyUp || onKeyUp}
       type='button'>

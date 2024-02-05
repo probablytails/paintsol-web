@@ -4,6 +4,7 @@ import FAIcon from './FAIcon'
 import styles from '@/styles/components/ArtistLink.module.css'
 
 type Props = {
+  className?: string
   name: string
   onClick?: MouseEventHandler<HTMLButtonElement>
   onKeyUp?: KeyboardEventHandler<HTMLButtonElement>
@@ -11,10 +12,11 @@ type Props = {
   onRemoveKeyUp?: KeyboardEventHandler<HTMLButtonElement>
 }
 
-export default function ArtistLink({ name, onClick, onRemoveClick, onKeyUp, onRemoveKeyUp }: Props) {
+export default function ArtistLink({ className = '', name, onClick, onRemoveClick,
+  onKeyUp, onRemoveKeyUp }: Props) {
   return (
     <button
-      className={`btn btn-link ${styles['artist-link']}`}
+      className={`btn btn-link ${styles['artist-link']} ${className}`}
       onClick={onRemoveClick || onClick}
       onKeyUp={onRemoveKeyUp || onKeyUp}
       type='button'>

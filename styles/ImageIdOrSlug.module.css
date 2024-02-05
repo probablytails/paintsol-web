@@ -1,3 +1,32 @@
+.header-top-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.header-top-title {
+  flex: 1;
+  margin-bottom: 0px;
+}
+
+.header-top-buttons {
+  flex: 0;
+  padding-top: 4px;
+  font-size: 18px;
+}
+
+.artist-link-wrappers {
+  font-size: 17px;
+  margin-top: 2px;
+}
+
+.artist-link {
+  font-size: 17px;
+}
+
+.tab-badge {
+  margin-top: 0;
+}
+
 .main-image-wrapper {
   display: flex;
   justify-content: center;
@@ -6,7 +35,7 @@
 }
 
 .main-image {
-  margin: 1.5rem 0;
+  margin: 18px 0;
   cursor: pointer;
 }
 
@@ -35,7 +64,7 @@
 }
 
 .edit-button {
-  margin: 1rem 0 0 0;
+  margin: 0.5rem 0 0 0;
 }
 
 .edit-icon {
