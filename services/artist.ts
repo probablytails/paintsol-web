@@ -34,8 +34,10 @@ export const getArtist = async (idOrSlug: number | string, isServerSideReq?: boo
 export const getArtistProfilePictureUrl = (id: number, artistVersion: ArtistProfilePictureVersion) => {
   if (artistVersion === 'preview') {
     return `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/artists/${id}-preview.png`
-  } else {
+  } else if (artistVersion === 'original') {
     return `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/artists/${id}-original.png`
+  } else {
+    return ''
   }
 }
 
