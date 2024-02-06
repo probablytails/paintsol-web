@@ -6,6 +6,10 @@
   margin-right: 12px;
 }
 
+.margin-bottom {
+  margin-bottom: 4px;
+}
+
 .artist-text-wrapper {
   display: flex;
 }

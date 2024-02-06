@@ -29,6 +29,9 @@
 }
 
 .search-dropdown-menu {
+  display: flex;
+  align-content: flex-start;
+  flex-wrap: wrap;
   position: absolute;
   bottom: 0;
   max-width: var(--form-max-width);

@@ -7,6 +7,7 @@ import Link from 'next/link'
 type Props = {
   className?: string
   href?: string
+  marginBottom?: boolean
   name: string
   onClick?: MouseEventHandler<HTMLButtonElement>
   onKeyUp?: KeyboardEventHandler<HTMLButtonElement>
@@ -14,11 +15,11 @@ type Props = {
   onRemoveKeyUp?: KeyboardEventHandler<HTMLButtonElement>
 }
 
-export default function ArtistLink({ className = '', href, name, onClick, onRemoveClick,
-  onKeyUp, onRemoveKeyUp }: Props) {
+export default function ArtistLink({ className = '', href, marginBottom, name, onClick,
+  onRemoveClick, onKeyUp, onRemoveKeyUp }: Props) {
   if (href) {
     return (
-      <Link className={`${styles['artist-link']} ${className}`} href={href}>
+      <Link className={`${styles['artist-link']} ${className} ${marginBottom ? styles['margin-bottom'] : ''}`} href={href}>
         <div className={styles['artist-text-wrapper']}>
           {name}
         </div>
@@ -27,7 +28,7 @@ export default function ArtistLink({ className = '', href, name, onClick, onRemo
   } else {
     return (
       <button
-        className={`btn btn-link ${styles['artist-link']} ${className}`}
+        className={`btn btn-link ${styles['artist-link']} ${className} ${marginBottom ? styles['margin-bottom'] : ''}`}
         onClick={onRemoveClick || onClick}
         onKeyUp={onRemoveKeyUp || onKeyUp}
         type='button'>

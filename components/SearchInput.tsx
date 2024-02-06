@@ -133,16 +133,6 @@ export default function SearchInput({ allArtists, allTags, filterSelected,
     handleSelect(null, filterSelected)
   }
 
-  function artistLinkOnClick(artist: Artist) {
-    handleSelectByArtist(artist)
-  }
-
-  function artistLinkOnKeyUp (artist: Artist, event: KeyboardEvent<HTMLButtonElement>) {
-    if (event.key === 'Enter') {
-      handleSelectByArtist(artist)
-    }
-  }
-
   function tagBadgeOnClick(tag: Tag) {
     handleSelectByTag(tag)
   }
@@ -187,6 +177,7 @@ export default function SearchInput({ allArtists, allTags, filterSelected,
       <ArtistLink 
         href={`/artist/${artist.id}`}
         key={`search-artist-${artist.id}`}
+        marginBottom
         name={artist.name}
       />
     )
