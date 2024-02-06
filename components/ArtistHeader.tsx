@@ -32,20 +32,24 @@ export default function ArtistHeader({ artist }: Props) {
       </div>
       <div className={styles['right-wrapper']}>
         <div className={styles['right-top-wrapper']}>
-          <Link
-            aria-label={'X / Twitter Profile'}
-            className={styles['social-icon-link']}
-            href={twitterLink}
-            rel='noopener noreferrer'
-            target='_blank'
-            title={'X / Twitter Profile'}>
-            <FAIcon
-              className={styles['social-icon']}
-              icon={faXTwitter}
-              height={18}
-              width={18}
-            />
-          </Link>
+          {
+            twitterLink && (
+              <Link
+                aria-label={'X / Twitter Profile'}
+                className={styles['social-icon-link']}
+                href={twitterLink}
+                rel='noopener noreferrer'
+                target='_blank'
+                title={'X / Twitter Profile'}>
+                <FAIcon
+                  className={styles['social-icon']}
+                  icon={faXTwitter}
+                  height={18}
+                  width={18}
+                />
+              </Link>
+            )
+          }
         </div>
         <div className={styles['right-middle-wrapper']}>
           <div className={styles['name']}>{artist.name}</div>
