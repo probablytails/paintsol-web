@@ -155,7 +155,7 @@ export default function NavBar() {
               <NavLinkFAIcon
                 icon={faXTwitter}
                 title='X - Twitter'
-                url='https://twitter.com/paintonsol'
+                url='https://twitter.com/mspaintsol'
               />
               <NavLinkIcon
                 imageSrc='/external-sites/farcaster.png'

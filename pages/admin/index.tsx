@@ -14,7 +14,7 @@ export default function Admin({ userInfo }: Props) {
         <title>$PAINT - Admin Panel</title>
         <meta name='description' content='The $PAINT on SOL Admin Panel' />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@paintonsol" />
+        <meta name="twitter:site" content="@mspaintsol" />
         <meta name="twitter:title" content="$PAINT" />
         <meta name="twitter:description" content="$PAINT on SOL" />
         <meta name="twitter:image" content={`${process.env.NEXT_PUBLIC_WEB_BASE_URL}/paint-logo-preview.png`} />

@@ -184,7 +184,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
         <title>{`$PAINT - ${title}`}</title>
         <meta name='description' content={metaDescription} />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@paintonsol" />
+        <meta name="twitter:site" content="@mspaintsol" />
         <meta name="twitter:title" content={metaTitle} />
         <meta name="twitter:description" content={metaDescription} />
         <meta name="twitter:image" content={metaImageUrl} />
@@ -217,7 +217,12 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
                       <h2 className={styles['header-top-title']}>{title}</h2>
                       {/* <div className={styles['header-top-buttons']}>
                         <FAIcon
-                          className={styles['favorite-icon']}
+                          className={styles['header-top-icon']}
+                          icon={faEdit}
+                          title='Suggest an edit'
+                        />
+                        <FAIcon
+                          className={styles['header-top-icon']}
                           icon={faStar}
                           title='Favorite'
                         />
