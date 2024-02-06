@@ -54,7 +54,6 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
 
 export default function ImagePage({ initialImage, userInfo }: Props) {
   const router = useRouter()
-  console.log('initialImage', initialImage)
   const searchParams = useSearchParams()
   const closeButtonRef = useRef<any>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
