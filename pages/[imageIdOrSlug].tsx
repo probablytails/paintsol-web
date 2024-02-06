@@ -40,7 +40,7 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
       if (data) {
         initialImage = data
       }
-      if (data?.id === parseInt(imageIdOrSlug) && data?.slug) {
+      if (data?.id === parseInt(imageIdOrSlug, 10) && data?.slug) {
         res.writeHead(302, { Location: `/${data.slug}` })
         res.end()
       }

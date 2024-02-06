@@ -31,7 +31,7 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
       if (data) {
         initialArtist = data
       }
-      if (initialArtist?.id === parseInt(artistIdOrSlug) && initialArtist?.slug) {
+      if (initialArtist?.id === parseInt(artistIdOrSlug, 10) && initialArtist?.slug) {
         shouldRedirect = true
       }
     } catch (error: any) {

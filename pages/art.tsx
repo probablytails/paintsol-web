@@ -27,8 +27,8 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
   const allArtists = await getAllArtistsWithImages()
   const allTags = await getAllTagsWithImages()
 
-  const parsedArtistId = parseInt(artistId as any)
-  const parsedTagId = parseInt(tagId as any)
+  const parsedArtistId = parseInt(artistId as any, 10)
+  const parsedTagId = parseInt(tagId as any, 10)
   
   let initialImages: Image[] = []
   let initialImagesTotal: number | null = 0
