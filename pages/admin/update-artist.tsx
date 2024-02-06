@@ -67,7 +67,7 @@ export default function UpdateArtist() {
     if (artist) {
       setEditingArtistId(artist.id)
       setName(artist.name)
-      setSlug(artist.slug || '')
+      setSlug(artist.slug?.toLowerCase() || '')
       setTwitterUsername(artist.twitter_username || '')
       const artistProfilePictureUrl = getArtistProfilePictureUrl(artist.id, 'original')
       if (artistProfilePictureUrl) {
@@ -78,7 +78,7 @@ export default function UpdateArtist() {
   }
 
   const handleSlugChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSlug(event.target.value)
+    setSlug(event.target.value?.toLowerCase())
   }
 
   const handleTwitterUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
