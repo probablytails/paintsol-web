@@ -5,10 +5,12 @@ import { Image, ViewTypes } from '@/lib/types'
 type Props = {
   endReached?: boolean
   images: Image[]
+  justifyContentCenter?: boolean
   viewType: ViewTypes
 }
 
-export default function ImageCards({ endReached, images, viewType }: Props) {
+export default function ImageCards({ endReached, images, justifyContentCenter,
+  viewType }: Props) {
   const className = viewType === 'small'
     ? `col-sm-4 col-md-3 col-lg-2 ${styles['smallest-card']}`
     : `col-sm-6 col-md-4 col-lg-3 ${styles['smallest-card']}`
@@ -24,7 +26,7 @@ export default function ImageCards({ endReached, images, viewType }: Props) {
   })
 
   return (
-    <div className='row gx-3 mt-3'>
+    <div className={`row gx-3 mt-3 ${justifyContentCenter ? 'justify-content-center' : ''}`}>
       {imageCards}
       {
         endReached && (

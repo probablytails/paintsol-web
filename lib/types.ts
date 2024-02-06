@@ -1,6 +1,9 @@
 export type Artist = {
+  has_profile_picture: boolean
   id: number
   name: string
+  slug: string | null
+  twitter_username: string | null
 }
 
 export type Image = {

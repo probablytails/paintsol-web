@@ -9,17 +9,19 @@ type ExtendedFontAwesomeIconProps = FontAwesomeIconProps & {
   isActive?: boolean
 }
 
-export default function FAIcon({ activeColor, buttonClassName, buttonRef, buttonWrapperName,
-  className, color, height, icon, isActive, onClick, spin, tabIndex, title,
-  width }: ExtendedFontAwesomeIconProps) {
+export default function FAIcon({ activeColor, buttonClassName, buttonRef,
+  buttonWrapperName, className, color, height, href, icon, isActive, onClick,
+  spin, tabIndex, target, title, width }: ExtendedFontAwesomeIconProps) {
 
   const element = (
     <FontAwesomeIcon
       className={className}
       color={isActive ? activeColor : color}
       height={height}
+      href={href}
       icon={icon}
       spin={spin}
+      target={target}
       title={title}
       titleId={title}
       width={width}

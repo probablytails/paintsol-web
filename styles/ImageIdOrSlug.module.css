@@ -20,6 +20,7 @@
 }
 
 .artist-link-wrappers {
+  display: flex;
   font-size: 17px;
   margin-top: 2px;
 }

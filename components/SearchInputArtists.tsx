@@ -16,7 +16,7 @@ import ArtistLink from './ArtistLink'
 
 type Props = {
   allArtists: Artist[]
-  handleSelectArtist: (selectedArtistName?: string) => void
+  handleSelectArtist: (selectedArtist?: string) => void
   inputText: string
   setInputText: Dispatch<SetStateAction<string>>
 }

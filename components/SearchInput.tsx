@@ -17,6 +17,7 @@ import ArtistLink from './ArtistLink'
 import TagBadge from './TagBadge'
 import styles from '@/styles/components/SearchInput.module.css'
 import { usePrevious } from '@/lib/reactHelpers'
+import { useRouter } from 'next/router'
 
 type Props = {
   allArtists: Artist[]
@@ -32,6 +33,7 @@ type Props = {
 
 export default function SearchInput({ allArtists, allTags, filterSelected,
   handleSelect, inputText, setInputText }: Props) {
+  const router = useRouter()
   const [inputHasFocus, setInputHasFocus] = useState(false)
   const [filteredArtists, setFilteredArtists] = useState<Artist[]>([])
   const [filteredTags, setFilteredTags] = useState<Tag[]>([])
@@ -81,10 +83,7 @@ export default function SearchInput({ allArtists, allTags, filterSelected,
   }
 
   async function handleSelectByArtist(artist: Artist) {
-    debouncedFilter(filterSelected, artist.name)
-    setInputHasFocus(false)
-    setInputText(artist.name)
-    await handleSelect(artist, filterSelected)
+    router.push(`/artist/${artist.id}`)
   }
 
   function handleFilter(
@@ -186,10 +185,9 @@ export default function SearchInput({ allArtists, allTags, filterSelected,
   const artistLinks = artists?.map((artist) => {
     return (
       <ArtistLink 
+        href={`/artist/${artist.id}`}
         key={`search-artist-${artist.id}`}
         name={artist.name}
-        onClick={() => artistLinkOnClick(artist)}
-        onKeyUp={(event) => artistLinkOnKeyUp(artist, event)}
       />
     )
   })

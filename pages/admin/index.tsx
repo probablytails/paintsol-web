@@ -4,10 +4,11 @@ import { UserInfo } from '@/lib/types'
 import Link from 'next/link'
 
 type Props = {
+  isUserInfoLoading: boolean
   userInfo: UserInfo
 }
 
-export default function Admin({ userInfo }: Props) {
+export default function Admin({ isUserInfoLoading, userInfo }: Props) {
   return (
     <>
       <Head>
@@ -25,10 +26,10 @@ export default function Admin({ userInfo }: Props) {
         <meta name="robots" content="noindex" />
       </Head>
       <div className='centered-column-grid'>
-        <div className='row mb-5 text-center'>
+        <div className='row mb-5 flex-column text-center'>
           <h3 className={styles['header-text']}>Admin Panel</h3>
           {
-            !userInfo && (
+            !userInfo && !isUserInfoLoading && (
               <button
                 className={`btn btn-primary ${styles['btn']}`}
                 onClick={handleLogin}
@@ -38,12 +39,17 @@ export default function Admin({ userInfo }: Props) {
             )
           }
           {
-            userInfo && (
+            (userInfo || !!isUserInfoLoading) && (
               <>
                 <Link
                   className={`btn btn-success ${styles['btn']}`}
                   href='/admin/upload-image'>
                   Upload Image
+                </Link>
+                <Link
+                  className={`btn btn-primary ${styles['btn']}`}
+                  href='/admin/update-artist'>
+                  Update Artist
                 </Link>
                 <button
                   className={`btn btn-warning ${styles['btn']}`}

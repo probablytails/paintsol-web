@@ -11,6 +11,7 @@ import { getUserInfo } from '@/services/admin'
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
+  const [isUserInfoLoading, setIsUserInfoLoading] = useState<boolean>(true)
   const [userInfo, setUserInfo] = useState<UserInfo>(null)
 
   useEffect(() => {
@@ -27,6 +28,7 @@ export default function App({ Component, pageProps }: AppProps) {
       } catch (error) {
         //
       }
+      setIsUserInfoLoading(false)
     })()
   }, [router.asPath])
 
@@ -39,6 +41,7 @@ export default function App({ Component, pageProps }: AppProps) {
       }
       <Component
         {...pageProps}
+        isUserInfoLoading={isUserInfoLoading}
         userInfo={userInfo}
       />
     </Layout>

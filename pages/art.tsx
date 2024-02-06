@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from 'react'
 import ImageCards from '@/components/ImageCards'
 import SearchInput from '@/components/SearchInput'
 import { Artist, FilterTypes, Image, Tag, ViewTypes } from '@/lib/types'
-import { getAllArtistsWithImages, getArtistById } from '@/services/artist'
+import { getAllArtistsWithImages, getArtist } from '@/services/artist'
 import { getImages, getImagesByArtistId, getImagesByTagId } from '@/services/image'
 import { getAllTagsWithImages, getTagById } from '@/services/tag'
 import LoadingSpinner from '@/components/LoadingSpinner'
@@ -43,7 +43,7 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
     initialImages = data?.[0] || []
     initialImagesTotal = null
   } else if (parsedArtistId) {
-    initialArtist = await getArtistById(parsedArtistId)
+    initialArtist = await getArtist(parsedArtistId)
     initialInputText = initialArtist?.name
     const data = await getImagesByArtistId({ page: 1, artistId: initialArtist.id })
     initialImages = data?.[0] || []

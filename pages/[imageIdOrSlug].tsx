@@ -54,6 +54,7 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
 
 export default function ImagePage({ initialImage, userInfo }: Props) {
   const router = useRouter()
+  console.log('initialImage', initialImage)
   const searchParams = useSearchParams()
   const closeButtonRef = useRef<any>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -103,7 +104,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
   }
 
   function artistNavigation(artist: Artist) {
-    router.push(`/art?artistId=${artist?.id}`)
+    router.push(`/artist/${artist?.id}`)
   }
 
   function tagBadgeOnClick(tag: Tag) {
@@ -133,10 +134,9 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
     return (
       <ArtistLink
         className={styles['artist-link']}
-        name={artistName}
-        onClick={() => artistLinkOnClick(artist)}
-        onKeyUp={(event) => artistLinkOnKeyUp(event, artist)}
+        href={`/artist/${artist.id}`}
         key={`artist-${artistName}`}
+        name={artistName}
       />
     )
   })
