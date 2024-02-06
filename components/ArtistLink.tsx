@@ -16,7 +16,6 @@ type Props = {
 
 export default function ArtistLink({ className = '', href, name, onClick, onRemoveClick,
   onKeyUp, onRemoveKeyUp }: Props) {
-    console.log('href', href)
   if (href) {
     return (
       <Link className={`${styles['artist-link']} ${className}`} href={href}>
