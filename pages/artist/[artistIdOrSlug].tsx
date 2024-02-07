@@ -10,6 +10,7 @@ import { getArtist, getArtistProfilePictureUrl } from '@/services/artist'
 import { getImagesByArtistId } from '@/services/image'
 import styles from '@/styles/Artist.module.css'
 import ArtistHeader from '@/components/ArtistHeader'
+import { checkIfValidInteger } from '@/lib/validation'
 
 type ServerSidePropsParams = {
   artistIdOrSlug?: string
@@ -31,7 +32,9 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
       if (data) {
         initialArtist = data
       }
-      if (initialArtist?.id === parseInt(artistIdOrSlug, 10) && initialArtist?.slug) {
+      const isValidInteger = checkIfValidInteger(artistIdOrSlug)
+      if (isValidInteger && initialArtist?.id === parseInt(artistIdOrSlug, 10)
+        && initialArtist?.slug) {
         shouldRedirect = true
       }
     } catch (error: any) {

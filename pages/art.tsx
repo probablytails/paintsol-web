@@ -14,6 +14,7 @@ import styles from '@/styles/Art.module.css'
 import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
 import FilterSelector from '@/components/FilterSelector'
+import { checkIfValidInteger } from '@/lib/validation'
 
 export const getServerSideProps = (async (context: GetServerSidePropsContext) => {
   const { query, req } = context
@@ -27,8 +28,8 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
   const allArtists = await getAllArtistsWithImages()
   const allTags = await getAllTagsWithImages()
 
-  const parsedArtistId = parseInt(artistId as any, 10)
-  const parsedTagId = parseInt(tagId as any, 10)
+  const artistIdIsValidInteger = checkIfValidInteger(artistId as string)
+  const tagIdIsValidInteger = checkIfValidInteger(tagId as string)
   
   let initialImages: Image[] = []
   let initialImagesTotal: number | null = 0
@@ -38,17 +39,19 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
 
   let initialInputText = ''
 
-  if (!parsedArtistId && !parsedTagId) {
+  if (!artistIdIsValidInteger && !tagIdIsValidInteger) {
     const data = await getImages({ page: 1 })
     initialImages = data?.[0] || []
     initialImagesTotal = null
-  } else if (parsedArtistId) {
+  } else if (artistIdIsValidInteger) {
+    const parsedArtistId = parseInt(artistId as string, 10)
     initialArtist = await getArtist(parsedArtistId)
     initialInputText = initialArtist?.name
     const data = await getImagesByArtistId({ page: 1, artistId: initialArtist.id })
     initialImages = data?.[0] || []
     initialImagesTotal = data?.[1] || 0
-  } else if (tagId) {
+  } else if (tagIdIsValidInteger) {
+    const parsedTagId = parseInt(tagId as string, 10)
     initialTag = await getTagById(parsedTagId)
     initialInputText = initialTag?.title
     const data = await getImagesByTagId({ page: 1, tagId: initialTag.id })

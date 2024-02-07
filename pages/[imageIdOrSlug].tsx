@@ -18,7 +18,7 @@ import { getImageTitle } from '@/lib/utility'
 import { Artist, Image as ImageT, Tag, UserInfo } from '@/lib/types'
 import { getAvailableImageUrl, getImage } from '@/services/image'
 import styles from '@/styles/ImageIdOrSlug.module.css'
-import { faStar } from '@fortawesome/free-regular-svg-icons'
+import { checkIfValidInteger } from '@/lib/validation'
 
 type Props = {
   initialImage: ImageT | null
@@ -40,7 +40,8 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
       if (data) {
         initialImage = data
       }
-      if (data?.id === parseInt(imageIdOrSlug, 10) && data?.slug) {
+      const isValidInteger = checkIfValidInteger(imageIdOrSlug)
+      if (isValidInteger && data?.id === parseInt(imageIdOrSlug, 10) && data?.slug) {
         res.writeHead(302, { Location: `/${data.slug}` })
         res.end()
       }
