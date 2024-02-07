@@ -91,10 +91,13 @@ export default function SearchInputArtists({ allArtists, handleSelectArtist,
   const artistLinks = filteredArtists?.map((artist) => {
     return (
       <ArtistLink
+        has_profile_picture={artist.has_profile_picture}
+        id={artist.id}
         key={`search-artist-${artist.id}`}
         name={artist.name}
         onClick={() => artistLinkOnClick(artist)}
         onKeyUp={(event) => artistLinkOnKeyUp(artist, event)}
+        withBorder
       />
     )
   })

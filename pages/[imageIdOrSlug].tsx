@@ -133,9 +133,11 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
     return (
       <ArtistLink
         className={styles['artist-link']}
+        has_profile_picture={artist.has_profile_picture}
         href={`/artist/${artist.id}`}
+        id={artist.id}
         key={`artist-${artistName}`}
-        name={artistName}
+        name={artist.name}
       />
     )
   })

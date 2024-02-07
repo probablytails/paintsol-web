@@ -175,10 +175,13 @@ export default function SearchInput({ allArtists, allTags, filterSelected,
   const artistLinks = artists?.map((artist) => {
     return (
       <ArtistLink 
+        has_profile_picture={artist.has_profile_picture}
         href={`/artist/${artist.id}`}
+        id={artist.id}
         key={`search-artist-${artist.id}`}
         marginBottom
         name={artist.name}
+        withBorder
       />
     )
   })
