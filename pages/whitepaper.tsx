@@ -5,7 +5,7 @@ import Footer from '@/components/Footer'
 export default function Whitepaper() {
   const metaTitle = '$PAINT - Whitepaper'
   const metaDescription = 'The $PAINT on SOL whitepaper.'
-  const metaImageUrl = `${process.env.NEXT_PUBLIC_WEB_BASE_URL}/public/whitepaper.jpg`
+  const metaImageUrl = `${process.env.NEXT_PUBLIC_WEB_BASE_URL}/whitepaper.jpg`
 
   return (
     <>
