@@ -290,12 +290,16 @@ export default function UploadImage() {
   })
 
   const artistLinks = artistNames.map((artistName) => {
+    const existingArtist = allArtists.find((artist) => artistName === artist.name)
     return (
       <ArtistLink
+        has_profile_picture={existingArtist?.has_profile_picture}
         key={`artist-${artistName}`}
+        id={existingArtist?.id}
         name={artistName}
         onRemoveClick={() => handleRemoveArtist(artistName)}
         onRemoveKeyUp={(event) => handleArtistEnterPress(artistName, event)}
+        withBorder
       />
     )
   })
