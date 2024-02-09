@@ -177,7 +177,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
   const artistNames = artists?.map((artist) => artist?.name)?.join(', ')
 
   const metaTitle = title
-  const metaDescription = `${title} ${artistNames ? `– by ${artistNames}` : ''}`
+  const metaDescription = artistNames ? `painting by ${artistNames}` : ''
   const metaImageUrl = getAvailableImageUrl('preview', image)
 
   return (
