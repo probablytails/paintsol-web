@@ -160,7 +160,7 @@ export default function UploadImage() {
   const handleAddTag = (selectedTagTitle?: string) => {
     const newTagTitle = selectedTagTitle || tagInputText
     if (newTagTitle && !tagTitles.includes(newTagTitle)) {
-      const newTagTitles = tagTitles.concat(newTagTitle)
+      const newTagTitles = tagTitles.concat(newTagTitle?.trim())
       setTagTitles(newTagTitles)
       setTagInputText('')
     }
