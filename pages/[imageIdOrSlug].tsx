@@ -178,7 +178,9 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
 
   const metaTitle = title
   const metaDescription = artistNames ? `painting by ${artistNames}` : ''
-  const metaImageUrl = getAvailableImageUrl('preview', image) || getAvailableImageUrl('border', image) || getAvailableImageUrl('no-border', image)
+  const metaImageUrl = image?.has_no_border
+    ? getAvailableImageUrl('preview', image)
+    : getAvailableImageUrl('border', image)
 
   return (
     <>
