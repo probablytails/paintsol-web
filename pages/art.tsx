@@ -7,7 +7,7 @@ import ImageCards from '@/components/ImageCards'
 import SearchInput from '@/components/SearchInput'
 import { Artist, FilterTypes, Image, Tag, ViewTypes } from '@/lib/types'
 import { getAllArtistsWithImages, getArtist } from '@/services/artist'
-import { getImages, getImagesByArtistId, getImagesByTagId } from '@/services/image'
+import { getImages, getImagesByArtistId, getImagesByTagId, getImagesWithoutArtists } from '@/services/image'
 import { getAllTagsWithImages, getTagById } from '@/services/tag'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import styles from '@/styles/Art.module.css'
@@ -15,13 +15,15 @@ import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
 import FilterSelector from '@/components/FilterSelector'
 import { checkIfValidInteger } from '@/lib/validation'
+import InfoBox from '@/components/InfoBox'
+import { CurationInfoText, curationInfoText } from '@/lib/constants/curationInfoText'
 
 export const getServerSideProps = (async (context: GetServerSidePropsContext) => {
   const { query, req } = context
   const { cookie: cookies } = req.headers
-  const { artistId, tagId } = query
+  const { artistId, noArtist, tagId } = query
   let initialFilterSelected = 'by-tag'
-  if (artistId) {
+  if (artistId || noArtist) {
     initialFilterSelected = 'by-artist'
   }
 
@@ -39,7 +41,11 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
 
   let initialInputText = ''
 
-  if (!artistIdIsValidInteger && !tagIdIsValidInteger) {
+  if (!artistIdIsValidInteger && noArtist) {
+    const data = await getImagesWithoutArtists({ page: 1 })
+    initialImages = data?.[0] || []
+    initialImagesTotal = data?.[1] || 0
+  } else if (!artistIdIsValidInteger && !tagIdIsValidInteger) {
     const data = await getImages({ page: 1 })
     initialImages = data?.[0] || []
     initialImagesTotal = null
@@ -72,7 +78,8 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
       initialImagesTotal,
       initialInputText,
       initialTag,
-      initialViewType
+      initialViewType,
+      noArtist: noArtist || null
     }
   }
 })
@@ -87,6 +94,7 @@ type Props = {
   initialInputText: string
   initialTag: Tag | null
   initialViewType: ViewTypes
+  noArtist: boolean
 }
 
 export default function Gallery({
@@ -98,7 +106,8 @@ export default function Gallery({
   initialImagesTotal,
   initialInputText,
   initialTag,
-  initialViewType
+  initialViewType,
+  noArtist
 }: Props) {
   const router = useRouter()
   const { pathname } = router
@@ -217,7 +226,8 @@ export default function Gallery({
             selectedArtist,
             selectedTag,
             setPage,
-            setImages
+            setImages,
+            noArtist
           })
         }}>
         <div className='main-content-inner-wrapper'>
@@ -242,6 +252,13 @@ export default function Gallery({
                   `${imagesTotal} ${imagesTotal && imagesTotal > 1 ? ' paintings' : ' painting'}`
                 }
               </div>
+            )
+          }
+          {
+            noArtist && !selectedArtist && !selectedTag && (
+              <InfoBox>
+                <CurationInfoText />
+              </InfoBox>
             )
           }
           <ImageCards
@@ -269,6 +286,7 @@ type HandleOnScroll = {
   page: number
   setPage: any
   setImages: any
+  noArtist: boolean
 }
 
 /*
@@ -282,6 +300,7 @@ async function handleOnScroll({
   isLoading,
   endReached,
   images,
+  noArtist,
   selectedArtist,
   selectedTag,
   page,
@@ -297,7 +316,9 @@ async function handleOnScroll({
     const nextPage = page + 1
     let nextPageData = []
 
-    if (selectedArtist) {
+    if (noArtist && !selectedArtist) {
+      nextPageData = await getImagesWithoutArtists({ page: nextPage })
+    } else if (selectedArtist) {
       nextPageData = await getImagesByArtistId({ page: nextPage, artistId: selectedArtist.id })
     } else if (selectedTag) {
       nextPageData = await getImagesByTagId({ page: nextPage, tagId: selectedTag.id })

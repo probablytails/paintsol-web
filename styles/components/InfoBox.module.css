@@ -1,0 +1,15 @@
+.info-box {
+  background-color: #c3e7f5;
+  font-size: 13px;
+  margin: auto auto 24px auto;
+  max-width: 560px;
+  padding: 16px;
+}
+
+.info-box p {
+  margin-bottom: 4px;
+}
+
+.info-box ul {
+  margin-bottom: 0;
+}
