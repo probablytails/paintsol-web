@@ -16,7 +16,7 @@ import TagBadge from '@/components/TagBadge'
 import FAIcon from '@/components/FAIcon'
 import { getImageTitle } from '@/lib/utility'
 import { Artist, Image as ImageT, Tag, UserInfo } from '@/lib/types'
-import { getAvailableImageUrl, getImage } from '@/services/image'
+import { ImageVersion, getAvailableImageUrl, getImage } from '@/services/image'
 import styles from '@/styles/ImageIdOrSlug.module.css'
 import { checkIfValidInteger } from '@/lib/validation'
 
@@ -62,7 +62,8 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
   const [isFullView, setIsFullView] = useState<boolean>(false)
   const [image, setImage] = useState<ImageT | null>(initialImage)
   const [imageSrc, setImageSrc] = useState('')
-  const { artists, nextData, prevData, tags } = image || {}
+  const [imageVersion, setImageVersion] = useState<ImageVersion | null>(null)
+  const { artists, has_video, nextData, prevData, tags } = image || {}
   const title = getImageTitle(image?.title || null)
 
   useEffect(() => {
@@ -80,9 +81,11 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
               : paramImageVersion
           const data = await getImage(idOrSlug)
           setImage(data)
-          const imageUrl = getAvailableImageUrl(paramImageVersion, data)
+          const finalImageVersion = image?.has_video && !paramImageVersion
+            ? 'video' : paramImageVersion
+          const imageUrl = getAvailableImageUrl(finalImageVersion, data)
           setImageSrc(imageUrl)
-
+          setImageVersion(finalImageVersion)
         } catch (error: any) {
           if (error?.response?.status === 404) {
             router.replace('/art')
@@ -92,20 +95,6 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
       }
     })()
   }, [router.isReady, searchParams])
-
-  function artistLinkOnClick(artist: Artist) {
-    artistNavigation(artist)
-  }
-
-  function artistLinkOnKeyUp(event: any, artist: Artist) {
-    if (event?.key === 'Enter'){
-      artistNavigation(artist)
-    }
-  }
-
-  function artistNavigation(artist: Artist) {
-    router.push(`/artist/${artist?.id}`)
-  }
 
   function tagBadgeOnClick(tag: Tag) {
     tagNavigation(tag)
@@ -177,10 +166,16 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
   const artistNames = artists?.map((artist) => artist?.name)?.join(', ')
 
   const metaTitle = title
-  const metaDescription = artistNames ? `painting by ${artistNames}` : ''
-  const metaImageUrl = image?.has_no_border
-    ? getAvailableImageUrl('preview', image)
-    : getAvailableImageUrl('border', image)
+  const metaDescription = artistNames ? (
+    image?.has_video
+      ? `video by ${artistNames}`
+      : `painting by ${artistNames}`
+  ) : ''
+  const metaImageUrl = image?.has_video
+    ? `${process.env.NEXT_PUBLIC_WEB_BASE_URL}/paint-logo-preview.png`
+    : image?.has_no_border
+      ? getAvailableImageUrl('preview', image)
+      : getAvailableImageUrl('border', image)
 
   return (
     <>
@@ -270,6 +265,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
                           <Image
                             alt={title}
                             className={`${styles['main-image']}`}
+                            isVideo={imageVersion === 'video'}
                             imageSrc={imageSrc}
                             onClick={handleImageClick}
                             onLoad={handleImageFinishedLoading}

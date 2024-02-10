@@ -16,7 +16,7 @@ import { getAllTags } from '@/services/tag'
 import { getAllArtists } from '@/services/artist'
 import SearchInputArtists from '@/components/SearchInputArtists'
 
-type ImageType = 'no-border' | 'border' | 'animation'
+type ImageType = 'no-border' | 'border' | 'animation' | 'video'
 type LastUpdatedData = {
   id: number
   slug?: string
@@ -33,6 +33,7 @@ export default function UploadImage() {
   const [imageNoBorderSrc, setImageNoBorderSrc] = useState<string>('')
   const [imageBorderSrc, setImageBorderSrc] = useState<string>('')
   const [imageAnimationSrc, setImageAnimationSrc] = useState<string>('')
+  const [imageVideoSrc, setImageVideoSrc] = useState<string>('')
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isSaving, setIsSaving] = useState<boolean>(false)
@@ -40,6 +41,7 @@ export default function UploadImage() {
   const [removeAnimation, setRemoveAnimation] = useState<boolean>(false)
   const [removeBorder, setRemoveBorder] = useState<boolean>(false)
   const [removeNoBorder, setRemoveNoBorder] = useState<boolean>(false)
+  const [removeVideo, setRemoveVideo] = useState<boolean>(false)
   const [slug, setSlug] = useState<string>('')
   const [title, setTitle] = useState<string>('')
   const [tagInputText, setTagInputText] = useState<string>('')
@@ -78,7 +80,7 @@ export default function UploadImage() {
     const image = paramImage ? paramImage : editingImage
     if (image) {
       const { artists, has_animation, has_border, has_no_border,
-        id, slug, tags, title } = image
+        has_video, id, slug, tags, title } = image
 
       setTitle(title || '')
         
@@ -101,6 +103,10 @@ export default function UploadImage() {
       if (has_no_border) {
         setImageNoBorderSrc(getImageUrl(id, 'no-border'))
       }
+
+      if (has_video) {
+        setImageVideoSrc(getImageUrl(id, 'video'))
+      }
     }
   }
   
@@ -118,6 +124,8 @@ export default function UploadImage() {
             setImageBorderSrc(result)
           } else if (imageType === 'animation') {
             setImageAnimationSrc(result)
+          } else if (imageType === 'video') {
+            setImageVideoSrc(result)
           }
         }
       }
@@ -213,6 +221,12 @@ export default function UploadImage() {
       formData.append('fileImageAnimations', imageAnimationFile)
     }
 
+    const imageVideoFileInput = document.getElementById('image-video-file') as any
+    const imageVideoFile = imageVideoFileInput?.files?.[0]
+    if (imageVideoFile) {
+      formData.append('fileImageVideos', imageVideoFile)
+    }
+
     if (removeAnimation) {
       formData.append('remove_animation', 'true')
     }
@@ -223,6 +237,10 @@ export default function UploadImage() {
 
     if (removeNoBorder) {
       formData.append('remove_no_border', 'true')
+    }
+
+    if (removeVideo) {
+      formData.append('remove_video', 'true')
     }
 
     try {
@@ -259,6 +277,7 @@ export default function UploadImage() {
       const imageNoBorderInput = document.getElementById('image-no-border-file') as any
       const imageBorderInput = document.getElementById('image-border-file') as any
       const imageAnimationInput = document.getElementById('image-animation-file') as any
+      const imageVideoInput = document.getElementById('image-video-file') as any
   
       setImageNoBorderSrc('')
       if (imageNoBorderInput) imageNoBorderInput.value = ''
@@ -268,6 +287,9 @@ export default function UploadImage() {
       
       if (imageAnimationInput) imageAnimationInput.value = ''
       setImageAnimationSrc('')
+
+      if (imageVideoInput) imageVideoInput.value = ''
+      setImageVideoSrc('')
   
       setTitle('')
       setTagInputText('')
@@ -314,6 +336,7 @@ export default function UploadImage() {
     let deleteCheckId = ''
     let removeValue = ''
     let onChange: any = null
+    let isVideo = false
 
     if (imageType === 'no-border') {
       id = 'image-no-border-file'
@@ -351,6 +374,19 @@ export default function UploadImage() {
       onChange = (event: any) => {
         setRemoveAnimation(event.target.checked)
       }
+    } else if (imageType === 'video') {
+      id = 'image-video-file'
+      label = 'Select MP4'
+      isImageSelected = !!imageVideoSrc
+      imageSrc = imageVideoSrc
+      imageAlt = 'MP4 preview'
+      deleteText = 'Delete video'
+      deleteCheckId = 'image-video-delete'
+      removeValue = String(removeVideo)
+      onChange = (event: any) => {
+        setRemoveVideo(event.target.checked)
+      }
+      isVideo = true
     }
 
     return (
@@ -394,6 +430,7 @@ export default function UploadImage() {
                 alt={imageAlt}
                 className={styles['image-preview']}
                 imageSrc={imageSrc}
+                isVideo={isVideo}
                 stretchFill
                 title={imageAlt}
               />
@@ -463,6 +500,7 @@ export default function UploadImage() {
                 {generateImageNodes('no-border')}
                 {generateImageNodes('border')}
                 {generateImageNodes('animation')}
+                {generateImageNodes('video')}
                 <div className="mb-3">
                   <label htmlFor="title" className="form-label">Title</label>
                   <input

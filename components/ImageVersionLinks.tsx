@@ -17,7 +17,9 @@ function ImageVersionLink({ imageVersion }: ImageVersionLinkProps) {
       ? 'border'
       : imageVersion === 'no-border'
         ? 'original'
-        : null
+        : imageVersion === 'video'
+          ? 'video'
+          : null
 
   const onClick = () => {
     let newQueryParam: any = imageVersion === 'border' ? null : imageVersion
@@ -46,6 +48,7 @@ export default function ImageVersionLinks({ image }: Props) {
   if (image?.has_animation) totalLinks++
   if (image?.has_border) totalLinks++
   if (image?.has_no_border) totalLinks++
+  if (image?.has_video) totalLinks++
   const shouldShowVersions = totalLinks > 1
 
   return (
@@ -56,6 +59,7 @@ export default function ImageVersionLinks({ image }: Props) {
             {image?.has_animation && <ImageVersionLink image={image} imageVersion='animation' />}
             {image?.has_border && <ImageVersionLink image={image} imageVersion='border' />}
             {image?.has_no_border && <ImageVersionLink image={image} imageVersion='no-border' />}
+            {image?.has_video && <ImageVersionLink image={image} imageVersion='video' />}
           </div>
         )
       }
