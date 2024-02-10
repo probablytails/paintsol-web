@@ -16,7 +16,7 @@ import { useRouter } from 'next/router'
 import FilterSelector from '@/components/FilterSelector'
 import { checkIfValidInteger } from '@/lib/validation'
 import InfoBox from '@/components/InfoBox'
-import { CurationInfoText, curationInfoText } from '@/lib/constants/curationInfoText'
+import { CurationInfoText } from '@/lib/constants/curationInfoText'
 
 export const getServerSideProps = (async (context: GetServerSidePropsContext) => {
   const { query, req } = context
