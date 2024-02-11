@@ -289,6 +289,8 @@ export default function UploadImage() {
       setArtistInputText('')
       setArtistNames([])
       setSlug('')
+      setPreventBorderImage('false')
+      setBorderPreviewCropPosition('middle')
     }
   }
 
