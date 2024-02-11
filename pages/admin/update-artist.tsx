@@ -26,6 +26,10 @@ export default function UpdateArtist() {
   const [name, setName] = useState<string>('')
   const [slug, setSlug] = useState<string>('')
   const [twitterUsername, setTwitterUsername] = useState<string>('')
+  const [decaUsername, setDecaUsername] = useState<string>('')
+  const [foundationUsername, setFoundationUsername] = useState<string>('')
+  const [instagramUsername, setInstagramUsername] = useState<string>('')
+  const [superrareUsername, setSuperRareUsername] = useState<string>('')
 
   useEffect(() => {
     (async () => {
@@ -69,6 +73,10 @@ export default function UpdateArtist() {
       setName(artist.name)
       setSlug(artist.slug?.toLowerCase() || '')
       setTwitterUsername(artist.twitter_username || '')
+      setDecaUsername(artist.deca_username || '')
+      setFoundationUsername(artist.foundation_username || '')
+      setInstagramUsername(artist.instagram_username || '')
+      setSuperRareUsername(artist.superrare_username || '')
       const artistProfilePictureUrl = getArtistProfilePictureUrl(artist.id, 'original')
       if (artistProfilePictureUrl) {
         setArtistProfilePictureSrc(artistProfilePictureUrl)
@@ -83,6 +91,22 @@ export default function UpdateArtist() {
 
   const handleTwitterUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTwitterUsername(event.target.value)
+  }
+
+  const handleDecaUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setDecaUsername(event.target.value)
+  }
+
+  const handleFoundationUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setFoundationUsername(event.target.value)
+  }
+
+  const handleInstagramUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInstagramUsername(event.target.value)
+  }
+
+  const handleSuperRareUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSuperRareUsername(event.target.value)
   }
   
   // const handleDelete = async () => {
@@ -99,6 +123,10 @@ export default function UpdateArtist() {
     formData.append('slug', slug?.toLowerCase())
     formData.append('name', name)
     formData.append('twitter_username', twitterUsername)
+    formData.append('deca_username', decaUsername)
+    formData.append('foundation_username', foundationUsername)
+    formData.append('instagram_username', instagramUsername)
+    formData.append('superrare_username', superrareUsername)
 
     const artistProfilePictureFileInput = document
       .getElementById('artist-profile-picture-file') as any
@@ -288,6 +316,50 @@ export default function UpdateArtist() {
                 placeholder='without the @'
                 type="text"
                 value={twitterUsername}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="deca_username" className="form-label">Deca Username</label>
+              <input
+                className="form-control"
+                id="deca_username"
+                onChange={(e) => handleDecaUsernameChange(e)}
+                placeholder='without the @'
+                type="text"
+                value={decaUsername}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="foundation_username" className="form-label">Foundation Username</label>
+              <input
+                className="form-control"
+                id="foundation_username"
+                onChange={(e) => handleFoundationUsernameChange(e)}
+                placeholder='without the @'
+                type="text"
+                value={foundationUsername}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="instagram_username" className="form-label">Instagram Username</label>
+              <input
+                className="form-control"
+                id="instagram_username"
+                onChange={(e) => handleInstagramUsernameChange(e)}
+                placeholder='without the @'
+                type="text"
+                value={instagramUsername}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="superrare_username" className="form-label">SuperRare Username</label>
+              <input
+                className="form-control"
+                id="superrare_username"
+                onChange={(e) => handleSuperRareUsernameChange(e)}
+                placeholder='without the @'
+                type="text"
+                value={superrareUsername}
               />
             </div>
             {generateArtistProfilePictureNodes()}

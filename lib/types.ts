@@ -1,8 +1,12 @@
 export type Artist = {
+  deca_username: string | null
+  foundation_username: string | null
   has_profile_picture: boolean
   id: number
+  instagram_username: string | null
   name: string
   slug: string | null
+  superrare_username: string | null
   twitter_username: string | null
 }
 

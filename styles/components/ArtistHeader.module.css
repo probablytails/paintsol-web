@@ -41,6 +41,13 @@
   margin: 0 0 0 12px;
 }
 
+.social-icon-image-link {
+  align-self: flex-start;
+  display: flex;
+  flex: 0 0 auto;
+  margin: 0 0 0 12px;
+}
+
 .social-icon {
   height: 22px !important;
   width: 22px !important;

@@ -30,6 +30,12 @@ svg[data-icon="x-twitter"] {
   width: 24px;
 }
 
+svg[data-icon="instagram"] {
+  color: #000000;
+  height: 24px;
+  width: 24px;
+}
+
 /* Misc / Utility */
 
 .centered-column-grid {
