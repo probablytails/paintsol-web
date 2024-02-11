@@ -7,7 +7,7 @@ import Button from '@/components/Button'
 import Image from '@/components/Image'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import TagBadge from '@/components/TagBadge'
-import { Artist, Image as ImageT, Tag } from '@/lib/types'
+import { Artist, BooleanString, Image as ImageT, Tag } from '@/lib/types'
 import { createImage, deleteImage, getImage, getImageUrl, updateImage } from '@/services/image'
 import styles from '@/styles/AdminUploadImage.module.css'
 import { useRouter } from 'next/router'
@@ -29,6 +29,8 @@ export default function UploadImage() {
   const [allArtists, setAllArtists] = useState<Artist[]>([])
   const [artistInputText, setArtistInputText] = useState<string>('')
   const [artistNames, setArtistNames] = useState<string[]>([])
+  const [borderPreviewCropPosition, setBorderPreviewCropPosition] =
+    useState<'top' | 'middle' | 'bottom'>('middle')
   const [editingImage, setEditingImage] = useState<ImageT | null>(null)
   const [imageNoBorderSrc, setImageNoBorderSrc] = useState<string>('')
   const [imageBorderSrc, setImageBorderSrc] = useState<string>('')
@@ -37,13 +39,17 @@ export default function UploadImage() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isSaving, setIsSaving] = useState<boolean>(false)
   const [lastUpdatedData, setLastUpdatedData] = useState<LastUpdatedData>(null)
-  const [removeAnimation, setRemoveAnimation] = useState<boolean>(false)
-  const [removeBorder, setRemoveBorder] = useState<boolean>(false)
-  const [removeNoBorder, setRemoveNoBorder] = useState<boolean>(false)
+  const [preventBorderImage, setPreventBorderImage] = useState<BooleanString>('false')
+  const [removeAnimation, setRemoveAnimation] = useState<BooleanString>('false')
+  const [removeBorder, setRemoveBorder] = useState<BooleanString>('false')
+  const [removeNoBorder, setRemoveNoBorder] = useState<BooleanString>('false')
   const [slug, setSlug] = useState<string>('')
   const [title, setTitle] = useState<string>('')
   const [tagInputText, setTagInputText] = useState<string>('')
   const [tagTitles, setTagTitles] = useState<string[]>([])
+
+  const willCropPreviewImage = preventBorderImage === 'true'
+    || (!imageNoBorderSrc && imageBorderSrc)
 
   useEffect(() => {
     (async () => {
@@ -213,16 +219,24 @@ export default function UploadImage() {
       formData.append('fileImageAnimations', imageAnimationFile)
     }
 
-    if (removeAnimation) {
+    if (removeAnimation === 'true') {
       formData.append('remove_animation', 'true')
     }
 
-    if (removeBorder) {
+    if (removeBorder === 'true') {
       formData.append('remove_border', 'true')
     }
 
-    if (removeNoBorder) {
+    if (removeNoBorder === 'true') {
       formData.append('remove_no_border', 'true')
+    }
+
+    if (preventBorderImage === 'true') {
+      formData.append('prevent_border_image', 'true')
+    }
+
+    if (willCropPreviewImage && borderPreviewCropPosition) {
+      formData.append('border_preview_crop_position', borderPreviewCropPosition)
     }
 
     try {
@@ -325,7 +339,7 @@ export default function UploadImage() {
       deleteCheckId = 'image-no-border-delete'
       removeValue = String(removeNoBorder)
       onChange = (event: any) => {
-        setRemoveNoBorder(event.target.checked)
+        setRemoveNoBorder(event.target.checked?.toString())
       }
     } else if (imageType === 'border') {
       id = 'image-border-file'
@@ -337,7 +351,7 @@ export default function UploadImage() {
       deleteCheckId = 'image-border-delete'
       removeValue = String(removeBorder)
       onChange = (event: any) => {
-        setRemoveBorder(event.target.checked)
+        setRemoveBorder(event.target.checked?.toString())
       }
     } else if (imageType === 'animation') {
       id = 'image-animation-file'
@@ -349,7 +363,7 @@ export default function UploadImage() {
       deleteCheckId = 'image-animation-delete'
       removeValue = String(removeAnimation)
       onChange = (event: any) => {
-        setRemoveAnimation(event.target.checked)
+        setRemoveAnimation(event.target.checked?.toString())
       }
     }
 
@@ -408,7 +422,7 @@ export default function UploadImage() {
   const pageTitle = isEditing ? 'Edit Image' : 'Upload Image'
   const saveButtonTitle = isEditing ? 'Update' : 'Save'
   const clearButtonTitle = isEditing ? 'Reset' : 'Clear'
-  
+
   return (
     <>
       <Head>
@@ -518,6 +532,44 @@ export default function UploadImage() {
                   />
                   <div id="emailHelp" className="form-text">{'Alphanumeric and hyphens only. Slug is used for a custom url path.'}</div>
                 </div>
+                {
+                  (imageNoBorderSrc && !imageBorderSrc) && (
+                    <div className={`form-check ${styles['form-toggle-wrapper']}`}>
+                      <input
+                        className={`form-check-input ${styles['remove-image-toggle']}`}
+                        id='prevent-border-image'
+                        onChange={(event: any) => {
+                          setPreventBorderImage(event.target.checked?.toString())
+                        }}
+                        type="checkbox"
+                        value={preventBorderImage?.toString()}
+                      />
+                      <label className="form-check-label" htmlFor={'prevent-border-image'}>
+                        Prevent border image
+                      </label>
+                    </div>
+                  )
+                }
+                {
+                  willCropPreviewImage && (
+                    <div className={`${styles['form-select-wrapper']}`}>
+                      <label htmlFor='link-preview-crop-position'>
+                        Preview crop position
+                      </label>
+                      <select
+                        aria-label='Link preview crop position'
+                        className='form-select'
+                        id='link-preview-crop-position'
+                        onChange={(event: any) => {
+                          setBorderPreviewCropPosition(event.target.value)
+                        }}>
+                        <option selected={borderPreviewCropPosition === 'top'} value="top">Top</option>
+                        <option selected={borderPreviewCropPosition === 'middle'} value="middle">Middle</option>
+                        <option selected={borderPreviewCropPosition === 'bottom'} value="bottom">Bottom</option>
+                      </select>
+                    </div>
+                  )
+                }
                 <div className={`mt-5 mb-5 text-end ${styles['bottom-button-row']}`}>
                   {
                     isEditing && (

@@ -34,3 +34,5 @@ export type UserInfo = {
 export type FilterTypes = 'by-tag' | 'by-artist'
 
 export type ViewTypes = 'large' | 'small'
+
+export type BooleanString = 'true' | 'false'

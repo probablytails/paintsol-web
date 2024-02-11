@@ -39,3 +39,19 @@
   min-width: 100px;
   margin-right: auto
 }
+
+.form-toggle-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  margin: 16px 0 0 0;
+}
+
+.form-select-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0 0 0;
+}
+
+.form-select-wrapper label {
+  margin: 0 0 0.5rem 0;
+}
