@@ -268,7 +268,7 @@ export default function Gallery({
             images={images}
             viewType={viewTypeSelected}
           />
-          {isLoading && <LoadingSpinner noMargin />}
+          {isLoading && <LoadingSpinner />}
           {!isLoading && !endReached && <div className={styles['spacer']} />}
         </div>
       </div>

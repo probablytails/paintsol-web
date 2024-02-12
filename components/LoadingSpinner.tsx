@@ -3,12 +3,12 @@ import FAIcon from './FAIcon'
 import styles from '@/styles/components/LoadingSpinner.module.css'
 
 type Props = {
-  noMargin?: boolean
+  fullHeight?: boolean
 }
 
-export default function LoadingSpinner({ noMargin }: Props) {
-  const classNames = noMargin
-    ? `${styles['loading-wrapper']} ${styles['no-margin']}`
+export default function LoadingSpinner({ fullHeight }: Props) {
+  const classNames = fullHeight
+    ? `${styles['loading-wrapper-full-height']}`
     : styles['loading-wrapper']
   return (
     <div className={classNames}>

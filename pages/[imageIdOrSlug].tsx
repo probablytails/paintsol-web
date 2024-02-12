@@ -197,96 +197,98 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
         title={title}
       />
       <div className='container-fluid main-content-column overflow-y-scroll'>
-        <div className={`main-content-inner-wrapper ${styles['main-content-inner-wrapper-mobile']}`}>
-          <div className='container-fluid'>
-            <div className={`${styles['header-wrapper']} ${isShortMaxWidth ? styles['short-max-width'] : ''}`}>
-              <div className={`${styles['header-top-wrapper']}`}>
-                <h2 className={styles['header-top-title']}>{title}</h2>
-                {/* <div className={styles['header-top-buttons']}>
-                  <FAIcon
-                    className={styles['header-top-icon']}
-                    icon={faEdit}
-                    title='Suggest an edit'
-                  />
-                  <FAIcon
-                    className={styles['header-top-icon']}
-                    icon={faStar}
-                    title='Favorite'
-                  />
-                </div> */}
-              </div>
-              {
-                !!artistLinks?.length && (
-                  <div className='row'>
-                    <div className={`col-md-12 ${styles['artist-link-wrappers']}`}>
-                      {artistLinks}
+        {isLoading && <LoadingSpinner fullHeight />}
+        {
+          !isLoading && (
+            <div className={`main-content-inner-wrapper ${styles['main-content-inner-wrapper-mobile']}`}>
+              <div className='container-fluid'>
+                <div className={`${styles['header-wrapper']} ${isShortMaxWidth ? styles['short-max-width'] : ''}`}>
+                  <div className={`${styles['header-top-wrapper']}`}>
+                    <h2 className={styles['header-top-title']}>{title}</h2>
+                    {/* <div className={styles['header-top-buttons']}>
+                      <FAIcon
+                        className={styles['header-top-icon']}
+                        icon={faEdit}
+                        title='Suggest an edit'
+                      />
+                      <FAIcon
+                        className={styles['header-top-icon']}
+                        icon={faStar}
+                        title='Favorite'
+                      />
+                    </div> */}
+                  </div>
+                  {
+                    !!artistLinks?.length && (
+                      <div className='row'>
+                        <div className={`col-md-12 ${styles['artist-link-wrappers']}`}>
+                          {artistLinks}
+                        </div>
+                      </div>
+                    )
+                  }
+                  <div className='row mt-2'>
+                    <div className='col-md-8'>
+                      {tagBadges}
+                    </div>
+                    <div className='col-md-4 ml'>
+                      <ImageVersionLinks image={image} />
                     </div>
                   </div>
-                )
-              }
-              <div className='row mt-2'>
-                <div className='col-md-8'>
-                  {tagBadges}
+                  {
+                    !!userInfo && (
+                      <button
+                        className={`btn btn-warning btn-rounded ${styles['edit-button']}`}
+                        onClick={() => router.push(`/admin/upload-image?editId=${image?.id}`)}
+                        type="button">
+                        <FAIcon
+                          className={styles['edit-icon']}
+                          icon={faEdit}
+                          title='Edit'
+                        />
+                        Edit
+                      </button>
+                    )
+                  }
                 </div>
-                <div className='col-md-4 ml'>
-                  <ImageVersionLinks image={image} />
-                </div>
-              </div>
-              {
-                !!userInfo && (
-                  <button
-                    className={`btn btn-warning btn-rounded ${styles['edit-button']}`}
-                    onClick={() => router.push(`/admin/upload-image?editId=${image?.id}`)}
-                    type="button">
-                    <FAIcon
-                      className={styles['edit-icon']}
-                      icon={faEdit}
-                      title='Edit'
-                    />
-                    Edit
-                  </button>
-                )
-              }
-            </div>
-            <div className='row'>
-              <div className='col-xs-12'>
-                {isLoading && <LoadingSpinner />}
-                {!isLoading && (
-                  <>
-                    {
-                      imageSrc && (
-                        <div className={`${styles['main-image-wrapper']} ${isShortMaxWidth ? styles['short-max-width'] : ''}`}>
-                          <Image
-                            alt={title}
-                            className={`${styles['main-image']}`}
-                            imageSrc={imageSrc}
-                            onClick={handleImageClick}
-                            onLoad={handleImageFinishedLoading}
-                            priority
-                            stretchFill
-                            title={title}
-                          />
-                        </div>
-                      )
-                    }
-                  </>
-                )}
-              </div>
-            </div>
-            {
-              imagedFinishedLoading && (
-                <div className={`${styles['navs-wrapper']} ${isShortMaxWidth ? styles['short-max-width'] : ''}`}>
-                  <div className={styles['prev']}>
-                    {prevData?.id && prevNav}
-                  </div>
-                  <div className={styles['next']}>
-                    {nextData?.id && nextNav}
+                <div className='row'>
+                  <div className='col-xs-12'>
+                    <>
+                      {
+                        imageSrc && (
+                          <div className={`${styles['main-image-wrapper']} ${isShortMaxWidth ? styles['short-max-width'] : ''}`}>
+                            <Image
+                              alt={title}
+                              className={`${styles['main-image']}`}
+                              imageSrc={imageSrc}
+                              onClick={handleImageClick}
+                              onLoad={handleImageFinishedLoading}
+                              priority
+                              stretchFill
+                              title={title}
+                            />
+                          </div>
+                        )
+                      }
+                    </>
                   </div>
                 </div>
-              )
-            }
-          </div>
-        </div>
+                {
+                  imagedFinishedLoading && (
+                    <div className={`${styles['navs-wrapper']} ${isShortMaxWidth ? styles['short-max-width'] : ''}`}>
+                      <div className={styles['prev']}>
+                        {prevData?.id && prevNav}
+                      </div>
+                      <div className={styles['next']}>
+                        {nextData?.id && nextNav}
+                      </div>
+                    </div>
+                  )
+                }
+              </div>
+            </div>
+          )
+        }
       </div>
     </>
   )

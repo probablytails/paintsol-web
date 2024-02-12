@@ -4,8 +4,16 @@
   margin: 16px 0;
 }
 
-.loading-wrapper.no-margin {
-  margin: 0;
+.loading-wrapper-full-height {
+  align-items: center;
+  display: flex;
+  height: calc(100vh - var(--navbar-height));
+  height: calc(100dvh - var(--navbar-height));
+  justify-content: center;
+}
+
+.loading-wrapper-full-height svg {
+  margin-bottom: 42px;
 }
 
 .loading-icon {
