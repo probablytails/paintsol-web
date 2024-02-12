@@ -21,7 +21,7 @@ export default function ImageCards({ endReached, hideTags, images,
       <div
         className={className}
         key={`image-card-${image.id}`}>
-        <ImageCard hideTags image={image} />
+        <ImageCard hideTags={hideTags} image={image} />
       </div>
     )
   })
