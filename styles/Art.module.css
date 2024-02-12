@@ -1,5 +1,9 @@
+.filters-wrapper {
+  margin: 16px 0;
+}
+
 .results-found {
-  margin: 6px 0 1rem 0;
+  margin: -6px 0 1rem 0;
   text-align: center;
   color: #555;
 }

@@ -1,32 +1,10 @@
 .filter-selector-wrapper {
   align-items: center;
   display: flex;
-  height: 38px;
   justify-content: center;
-  margin: 8px auto -4px auto;
   max-width: var(--form-max-width);
 }
 
 .filter-radio-wrapper {
   margin: 0 16px;
-}
-
-.view-type-wrapper {
-  align-items: center;
-  display: flex;
-  height: 38px;
-  justify-content: flex-end;
-  margin: 8px auto -4px auto;
-}
-
-.view-type-icon-button-wrapper {
-  margin-left: 0.75rem;
-  display: flex;
-}
-
-.view-type-icon {
-  height: 24px;
-  width: 24px;
-  display: flex;
-  justify-content: center;
 }

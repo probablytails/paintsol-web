@@ -1,0 +1,17 @@
+.view-type-wrapper {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.view-type-icon-button-wrapper {
+  margin-left: 0.75rem;
+  display: flex;
+}
+
+.view-type-icon {
+  height: 24px;
+  width: 24px;
+  display: flex;
+  justify-content: center;
+}

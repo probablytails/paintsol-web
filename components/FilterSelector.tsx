@@ -1,8 +1,6 @@
 import { FilterTypes, ViewTypes } from '@/lib/types'
 import styles from '@/styles/components/FilterSelector.module.css'
-import FAIcon from './FAIcon'
-import { faTableCells } from '@fortawesome/free-solid-svg-icons/faTableCells'
-import { faTableCellsLarge } from '@fortawesome/free-solid-svg-icons/faTableCellsLarge'
+import ViewTypeSelector from './ViewTypeSelector'
 
 type Props = {
   filterSelected: FilterTypes
@@ -51,28 +49,10 @@ export default function FilterSelector({
         </div>
       </div>
       <div className='d-none d-sm-block col-sm-2'>
-        <div className={styles['view-type-wrapper']}>
-          <FAIcon
-            activeColor='#333'
-            buttonWrapperName={styles['view-type-icon-button-wrapper']}
-            className={styles['view-type-icon']}
-            color='#aaa'
-            icon={faTableCellsLarge}
-            isActive={viewTypeSelected === 'large'}
-            onClick={() => handleSelectViewType('large')}
-            title='Large view'
-          />
-          <FAIcon
-            activeColor='#333'
-            buttonWrapperName={styles['view-type-icon-button-wrapper']}
-            className={styles['view-type-icon']}
-            color='#aaa'
-            icon={faTableCells}
-            isActive={viewTypeSelected === 'small'}
-            onClick={() => handleSelectViewType('small')}
-            title='Small view'
-          />
-        </div>
+        <ViewTypeSelector
+          handleSelectViewType={handleSelectViewType}
+          viewTypeSelected={viewTypeSelected}
+        />
       </div>
     </div>
   )

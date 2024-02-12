@@ -38,3 +38,15 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.hide-tags.card-body {
+  padding: 14px 8px;
+}
+
+.hide-tags .image-title {
+  margin-bottom: 0;
+}
+
+.hide-tags .card-text {
+  display: none;
+}

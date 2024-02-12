@@ -7,15 +7,18 @@ import { getImageTitle } from '@/lib/utility'
 import { nonBreakingSpace } from '@/lib/reactHelpers'
 
 type Props = {
+  hideTags?: boolean
   image: ImageT
 }
 
-export default function ImageCard({ image }: Props) {
+export default function ImageCard({ hideTags, image }: Props) {
   const { tags } = image
   const title = getImageTitle(image.title)
   const tagsText = tags?.map?.((tag) => tag?.title).join(', ') || nonBreakingSpace
   const pageUrl = getPreferredImagePageUrl(image)
   const imageSrc = getAvailableImageUrl('no-border', image)
+
+  const cardBodyClass = hideTags ? styles['hide-tags'] : ''
 
   return (
     <Link href={pageUrl} className='remove-text-decoration'>
@@ -29,7 +32,7 @@ export default function ImageCard({ image }: Props) {
             title={title}
           />
         </div>
-        <div className='card-body'>
+        <div className={`card-body ${cardBodyClass}`}>
           <h6 className={`card-title ${styles['image-title']}`}>{title}</h6>
           <div className={`card-text ${styles['card-text']}`}>{tagsText}</div>
         </div>

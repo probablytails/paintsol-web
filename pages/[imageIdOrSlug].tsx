@@ -58,6 +58,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
   const searchParams = useSearchParams()
   const closeButtonRef = useRef<any>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [isShortMaxWidth, setIsShortMaxWidth] = useState<boolean>(true)
   const [imagedFinishedLoading, setImagedFinishedLoading] = useState<boolean>(false)
   const [isFullView, setIsFullView] = useState<boolean>(false)
   const [image, setImage] = useState<ImageT | null>(initialImage)
@@ -93,19 +94,6 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
     })()
   }, [router.isReady, searchParams])
 
-  function artistLinkOnClick(artist: Artist) {
-    artistNavigation(artist)
-  }
-
-  function artistLinkOnKeyUp(event: any, artist: Artist) {
-    if (event?.key === 'Enter'){
-      artistNavigation(artist)
-    }
-  }
-
-  function artistNavigation(artist: Artist) {
-    router.push(`/artist/${artist?.id}`)
-  }
 
   function tagBadgeOnClick(tag: Tag) {
     tagNavigation(tag)
@@ -125,7 +113,11 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
     setIsFullView(true)
   }
 
-  function handleImageFinishedLoading() {
+  function handleImageFinishedLoading(event: any) {
+    const naturalHeight = event?.target?.naturalHeight
+    const naturalWidth = event?.target?.naturalWidth
+    const isShortMaxWidth = naturalWidth / naturalHeight < 1.9
+    setIsShortMaxWidth(isShortMaxWidth)
     setImagedFinishedLoading(true)
   }
 
@@ -207,66 +199,63 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
       <div className='container-fluid main-content-column overflow-y-scroll'>
         <div className={`main-content-inner-wrapper ${styles['main-content-inner-wrapper-mobile']}`}>
           <div className='container-fluid'>
-            <div className='row'>
-              <div className='col-lg-2 col-md-1 d-none d-md-block'>
-                <div className={styles['prev']}>
-                  {prevData?.id && prevNav}
+            <div className={`${styles['header-wrapper']} ${isShortMaxWidth ? styles['short-max-width'] : ''}`}>
+              <div className={`${styles['header-top-wrapper']}`}>
+                <h2 className={styles['header-top-title']}>{title}</h2>
+                {/* <div className={styles['header-top-buttons']}>
+                  <FAIcon
+                    className={styles['header-top-icon']}
+                    icon={faEdit}
+                    title='Suggest an edit'
+                  />
+                  <FAIcon
+                    className={styles['header-top-icon']}
+                    icon={faStar}
+                    title='Favorite'
+                  />
+                </div> */}
+              </div>
+              {
+                !!artistLinks?.length && (
+                  <div className='row'>
+                    <div className={`col-md-12 ${styles['artist-link-wrappers']}`}>
+                      {artistLinks}
+                    </div>
+                  </div>
+                )
+              }
+              <div className='row mt-2'>
+                <div className='col-md-8'>
+                  {tagBadges}
+                </div>
+                <div className='col-md-4 ml'>
+                  <ImageVersionLinks image={image} />
                 </div>
               </div>
-              <div className='col-lg-8 col-md-10'>
+              {
+                !!userInfo && (
+                  <button
+                    className={`btn btn-warning btn-rounded ${styles['edit-button']}`}
+                    onClick={() => router.push(`/admin/upload-image?editId=${image?.id}`)}
+                    type="button">
+                    <FAIcon
+                      className={styles['edit-icon']}
+                      icon={faEdit}
+                      title='Edit'
+                    />
+                    Edit
+                  </button>
+                )
+              }
+            </div>
+            <div className='row'>
+              <div className='col-xs-12'>
                 {isLoading && <LoadingSpinner />}
                 {!isLoading && (
                   <>
-                    <div className={`${styles['header-top-wrapper']}`}>
-                      <h2 className={styles['header-top-title']}>{title}</h2>
-                      {/* <div className={styles['header-top-buttons']}>
-                        <FAIcon
-                          className={styles['header-top-icon']}
-                          icon={faEdit}
-                          title='Suggest an edit'
-                        />
-                        <FAIcon
-                          className={styles['header-top-icon']}
-                          icon={faStar}
-                          title='Favorite'
-                        />
-                      </div> */}
-                    </div>
-                    {
-                      !!artistLinks?.length && (
-                        <div className='row'>
-                          <div className={`col-md-12 ${styles['artist-link-wrappers']}`}>
-                            {artistLinks}
-                          </div>
-                        </div>
-                      )
-                    }
-                    <div className='row mt-2'>
-                      <div className='col-md-8'>
-                        {tagBadges}
-                      </div>
-                      <div className='col-md-4 ml'>
-                        <ImageVersionLinks image={image} />
-                      </div>
-                    </div>
-                    {
-                      !!userInfo && (
-                        <button
-                          className={`btn btn-warning btn-rounded ${styles['edit-button']}`}
-                          onClick={() => router.push(`/admin/upload-image?editId=${image?.id}`)}
-                          type="button">
-                          <FAIcon
-                            className={styles['edit-icon']}
-                            icon={faEdit}
-                            title='Edit'
-                          />
-                          Edit
-                        </button>
-                      )
-                    }
                     {
                       imageSrc && (
-                        <div className={styles['main-image-wrapper']}>
+                        <div className={`${styles['main-image-wrapper']} ${isShortMaxWidth ? styles['short-max-width'] : ''}`}>
                           <Image
                             alt={title}
                             className={`${styles['main-image']}`}
@@ -283,15 +272,10 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
                   </>
                 )}
               </div>
-              <div className='col-lg-2 col-md-1 d-none d-md-block'>
-                <div className={styles['next']}>
-                  {nextData?.id && nextNav}
-                </div>
-              </div>
             </div>
             {
               imagedFinishedLoading && (
-                <div className={`d-block d-md-none d-lg-none d-xl-none d-xxl-none ${styles['small-screen-navs']}`}>
+                <div className={`${styles['navs-wrapper']} ${isShortMaxWidth ? styles['short-max-width'] : ''}`}>
                   <div className={styles['prev']}>
                     {prevData?.id && prevNav}
                   </div>

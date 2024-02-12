@@ -364,12 +364,6 @@ export default function UpdateArtist() {
             </div>
             {generateArtistProfilePictureNodes()}
             <div className={`mt-5 mb-5 text-end ${styles['bottom-button-row']}`}>
-              {/* <Button
-                className={`btn btn-danger ${styles['bottom-button-left']}`}
-                onClick={() => console.log('handle delete')}
-                type="button">
-                Delete
-              </Button> */}
               <Button
                 className={`btn btn-primary ms-3 ${styles['bottom-button']}`}
                 isLoading={isSaving}

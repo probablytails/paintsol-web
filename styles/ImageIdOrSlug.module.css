@@ -1,3 +1,7 @@
+.header-wrapper {
+  margin: auto;
+}
+
 .header-top-wrapper {
   display: flex;
   flex-direction: row;
@@ -38,6 +42,7 @@
   justify-content: center;
   align-items: center;
   padding: 0;
+  margin: auto;
 }
 
 .main-image {
@@ -48,25 +53,25 @@
 .prev {
   font-size: 32px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .prev-svg {
   color: #000;
   margin: 0;
-  padding: 1rem; 
+  padding: 0.5rem 1rem; 
 }
 
 .next {
   font-size: 32px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 .next-svg {
   color: #000;
   margin: 0;
-  padding: 1rem; 
+  padding: 0.5rem 1rem; 
 }
 
 .edit-button {
@@ -77,12 +82,13 @@
   margin-right: 0.5rem;
 }
 
-@media(max-width: 767px) {
-  .small-screen-navs {
-    display: flex !important;
-    justify-content: space-between;
-  }
+.navs-wrapper {
+  display: flex !important;
+  justify-content: space-between;
+  margin: auto;
+}
 
+@media(max-width: 767px) {
   .main-content-inner-wrapper-mobile {
     /* margin-top: 1rem; */
   }
@@ -103,4 +109,18 @@
   .next-svg {
     padding: 0 0 0.75rem 1rem;
   }
+}
+
+/* styles for non-horizontal rectangle image ratios */
+
+.short-max-width.header-wrapper {
+  max-width: 700px;
+}
+
+.short-max-width.main-image-wrapper {
+  max-width: 700px;
+}
+
+.short-max-width.navs-wrapper {
+  max-width: 700px;
 }

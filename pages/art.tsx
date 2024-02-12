@@ -2,7 +2,7 @@ import _debounce from 'lodash/debounce'
 import Head from 'next/head'
 import * as serverSideCookieLib from 'cookie'
 import clientSideCookieLib from 'universal-cookie'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import ImageCards from '@/components/ImageCards'
 import SearchInput from '@/components/SearchInput'
 import { Artist, FilterTypes, Image, Tag, ViewTypes } from '@/lib/types'
@@ -239,12 +239,14 @@ export default function Gallery({
             handleSelect={handleSelectFilter}
             inputText={inputText}
             setInputText={setInputText}/>
-          <FilterSelector
-            filterSelected={filterSelected}
-            handleSelectFilter={(newFilterSelected: FilterTypes) => handleSelectFilter(null, newFilterSelected)}
-            handleSelectViewType={(newViewType: ViewTypes) => handleSelectViewType(newViewType)}
-            viewTypeSelected={viewTypeSelected}
-          />
+          <div className={styles['filters-wrapper']}>
+            <FilterSelector
+              filterSelected={filterSelected}
+              handleSelectFilter={(newFilterSelected: FilterTypes) => handleSelectFilter(null, newFilterSelected)}
+              handleSelectViewType={(newViewType: ViewTypes) => handleSelectViewType(newViewType)}
+              viewTypeSelected={viewTypeSelected}
+            />
+          </div>
           {
             (!isLoading && imagesTotal !== null) && (
               <div className={styles['results-found']}>

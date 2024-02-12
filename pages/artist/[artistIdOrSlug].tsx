@@ -3,6 +3,7 @@ import _debounce from 'lodash/debounce'
 import { GetServerSidePropsContext } from 'next'
 import Head from 'next/head'
 import { useCallback, useState } from 'react'
+import clientSideCookieLib from 'universal-cookie'
 import ImageCards from '@/components/ImageCards'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import { Artist, Image, Tag, ViewTypes } from '@/lib/types'
@@ -11,6 +12,7 @@ import { getImagesByArtistId } from '@/services/image'
 import styles from '@/styles/Artist.module.css'
 import ArtistHeader from '@/components/ArtistHeader'
 import { checkIfValidInteger } from '@/lib/validation'
+import ViewTypeSelector from '@/components/ViewTypeSelector'
 
 type ServerSidePropsParams = {
   artistIdOrSlug?: string
@@ -84,6 +86,8 @@ export default function ArtistPage({
   const [images, setImages] = useState<Image[]>(initialImages)
   const [page, setPage] = useState<number>(1)
   const [endReached, setEndReached] = useState<boolean>(false)
+  const [viewTypeSelected, setViewTypeSelected] = useState<ViewTypes>(initialViewType)
+  const clientSideCookies = new clientSideCookieLib(null, { path: '/' })
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedHandleOnScroll = useCallback(_debounce(handleOnScroll, 500, {
@@ -91,6 +95,11 @@ export default function ArtistPage({
     trailing: true,
     maxWait: 500
   }), [])
+
+  const handleSelectViewType = (newViewType: ViewTypes) => {
+    setViewTypeSelected(newViewType)
+    clientSideCookies.set('artViewTypeSelected', newViewType)
+  }
 
   const imageTotalText = `${initialImagesTotal} ${initialImagesTotal === 1 ? 'painting' : 'paintings'}`
 
@@ -133,14 +142,26 @@ export default function ArtistPage({
         }}>
         <div className='main-content-inner-wrapper'>
           <ArtistHeader artist={artist} />
-          <div className={styles['results-found']}>
-            {imageTotalText}
+          <div className={`row ${styles['list-header']}`}>
+            <div className='d-none d-sm-block col-sm-2'></div>
+            <div className='col-sm-8'>
+              <div className={styles['results-found']}>
+                {imageTotalText}
+              </div>
+            </div>
+            <div className='d-none d-sm-block col-sm-2'>
+              <ViewTypeSelector
+                handleSelectViewType={handleSelectViewType}
+                viewTypeSelected={viewTypeSelected}
+              />
+            </div>
           </div>
           <ImageCards
             endReached={endReached}
+            hideTags
             justifyContentCenter
             images={images}
-            viewType={initialViewType}
+            viewType={viewTypeSelected}
           />
           {isLoading && <LoadingSpinner noMargin />}
           {!isLoading && !endReached && <div className={styles['spacer']} />}
