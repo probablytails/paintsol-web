@@ -15,7 +15,7 @@ import LoadingSpinner from '@/components/LoadingSpinner'
 import TagBadge from '@/components/TagBadge'
 import FAIcon from '@/components/FAIcon'
 import { getImageTitle } from '@/lib/utility'
-import { Artist, Image as ImageT, Tag, UserInfo } from '@/lib/types'
+import { Image as ImageT, Tag, UserInfo } from '@/lib/types'
 import { getAvailableImageUrl, getImage } from '@/services/image'
 import styles from '@/styles/ImageIdOrSlug.module.css'
 import { checkIfValidInteger } from '@/lib/validation'
@@ -70,6 +70,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
     (async () => {
       setIsLoading(true)
       setImagedFinishedLoading(false)
+      setImageSrc('')
       if (router.isReady) {
         try {
           const idOrSlug = router.asPath?.replace(/\//, '')
@@ -84,12 +85,14 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
           const imageUrl = getAvailableImageUrl(paramImageVersion, data)
           setImageSrc(imageUrl)
 
+          setTimeout(() => {
+            setIsLoading(false)
+          }, 0)
         } catch (error: any) {
           if (error?.response?.status === 404) {
             router.replace('/art')
           }
         }
-        setIsLoading(false)
       }
     })()
   }, [router.isReady, searchParams])
