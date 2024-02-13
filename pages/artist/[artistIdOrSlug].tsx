@@ -6,7 +6,7 @@ import { useCallback, useState } from 'react'
 import clientSideCookieLib from 'universal-cookie'
 import ImageCards from '@/components/ImageCards'
 import LoadingSpinner from '@/components/LoadingSpinner'
-import { Artist, Image, Tag, ViewTypes } from '@/lib/types'
+import { Artist, Image, ViewTypes } from '@/lib/types'
 import { getArtist, getArtistProfilePictureUrl } from '@/services/artist'
 import { getImagesByArtistId } from '@/services/image'
 import styles from '@/styles/Artist.module.css'
@@ -140,7 +140,7 @@ export default function ArtistPage({
             setImages
           })
         }}>
-        <div className='main-content-inner-wrapper'>
+        <div className={`main-content-inner-wrapper ${viewTypeSelected === 'tiny' ? 'main-content-end-may-not-be-reached' : ''}`}>
           <ArtistHeader artist={artist} />
           <div className={`row ${styles['list-header']}`}>
             <div className='d-none d-sm-block col-sm-2'></div>

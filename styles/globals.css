@@ -56,6 +56,12 @@ svg[data-icon="instagram"] {
   align-items: center;
 }
 
+/* Card */
+
+.tiniest-card .card-body {
+  display: none;
+}
+
 /* Misc / Utility */
 
 .centered-column-grid {
@@ -77,6 +83,11 @@ svg[data-icon="instagram"] {
 
 .main-content-inner-wrapper {
   margin: 1.5rem auto;
+}
+
+.main-content-inner-wrapper.main-content-end-may-not-be-reached {
+  height: calc(100vh - var(--navbar-height));
+  height: calc(100dvh - var(--navbar-height));
 }
 
 .flex-spacer {

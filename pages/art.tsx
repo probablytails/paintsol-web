@@ -230,7 +230,7 @@ export default function Gallery({
             noArtist
           })
         }}>
-        <div className='main-content-inner-wrapper'>
+        <div className={`main-content-inner-wrapper ${viewTypeSelected === 'tiny' ? 'main-content-end-may-not-be-reached' : ''}`}>
           <SearchInput
             allArtists={allArtists}
             allTags={allTags}

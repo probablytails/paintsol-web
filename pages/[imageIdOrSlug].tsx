@@ -203,7 +203,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
         {isLoading && <LoadingSpinner fullHeight />}
         {
           !isLoading && (
-            <div className={`main-content-inner-wrapper ${styles['main-content-inner-wrapper-mobile']}`}>
+            <div className='main-content-inner-wrapper'>
               <div className='container-fluid'>
                 <div className={`${styles['header-wrapper']} ${isShortMaxWidth ? styles['short-max-width'] : ''}`}>
                   <div className={`${styles['header-top-wrapper']}`}>
