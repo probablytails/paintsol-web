@@ -36,6 +36,26 @@ svg[data-icon="instagram"] {
   width: 24px;
 }
 
+/* react zoom */
+
+.react-transform-wrapper {
+  height: 100vh !important;
+  height: 100dvh !important;
+  width: 100vw !important;
+  width: 100dvw !important;
+  justify-content: center;
+  align-items: center;
+}
+
+.react-transform-component {
+  height: 100vh !important;
+  height: 100dvh !important;
+  width: 100vw !important;
+  width: 100dvw !important;
+  justify-content: center;
+  align-items: center;
+}
+
 /* Misc / Utility */
 
 .centered-column-grid {

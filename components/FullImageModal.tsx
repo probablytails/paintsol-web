@@ -4,6 +4,10 @@ import Image from './Image'
 import FAIcon from './FAIcon'
 import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark'
 import { useEffect, useRef } from 'react'
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
+import { faMagnifyingGlassPlus } from '@fortawesome/free-solid-svg-icons/faMagnifyingGlassPlus'
+import { faMagnifyingGlassMinus } from '@fortawesome/free-solid-svg-icons/faMagnifyingGlassMinus'
+import { faRotateLeft } from '@fortawesome/free-solid-svg-icons/faRotateLeft'
 
 type Props = {
   closeButtonRef: any
@@ -16,7 +20,6 @@ type Props = {
 export default function FullImageModal({ closeButtonRef, handleHide,
   imageSrc, show, title }: Props) {
   const imageRef = useRef<any>(null)
-  useDetectOutsideClicks(imageRef)
   
   useEffect(() => {
     if (closeButtonRef?.current) {
@@ -25,20 +28,6 @@ export default function FullImageModal({ closeButtonRef, handleHide,
   }, [closeButtonRef])
   
   if (!show) return null
-
-  function useDetectOutsideClicks(imageRef: any) {
-    useEffect(() => {
-      function handleClickOutside(event: any) {
-        if (imageRef?.current && !imageRef.current.contains(event.target)) {
-          handleHide()
-        }
-      }
-      document.addEventListener('mousedown', handleClickOutside)
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside)
-      }
-    }, [imageRef])
-  }
 
   return (
     <div className={styles['full-image-modal']}>
@@ -55,15 +44,50 @@ export default function FullImageModal({ closeButtonRef, handleHide,
           title='Hide full size image'
         />
       </button>
-      <div className={styles['full-image-inner-wrapper']}>
-        <Image
-          alt={title}
-          className={styles['full-image']}
-          imageSrc={imageSrc}
-          innerRef={imageRef}
-          priority
-          title={title}
-        />
+      <div className={styles['full-image-wrapper']}>
+        <TransformWrapper
+          initialScale={1}
+          initialPositionX={0}
+          initialPositionY={0}
+        >
+          {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+            <>
+              <div className={styles['image-tools']}>
+                <FAIcon
+                  className={styles['image-tool-btn']}
+                  color="fff"
+                  icon={faMagnifyingGlassPlus}
+                  onClick={() => zoomIn()}
+                  title='Zoom in'
+                />
+                <FAIcon
+                  className={styles['image-tool-btn']}
+                  color="fff"
+                  icon={faMagnifyingGlassMinus}
+                  onClick={() => zoomOut()}
+                  title='Zoom out'
+                />
+                <FAIcon
+                  className={styles['image-tool-btn']}
+                  color="fff"
+                  icon={faRotateLeft}
+                  onClick={() => resetTransform()}
+                  title='Reset zoom'
+                />
+              </div>
+              <TransformComponent>
+                <Image
+                  alt={title}
+                  className={styles['full-image']}
+                  imageSrc={imageSrc}
+                  innerRef={imageRef}
+                  priority
+                  title={title}
+                />
+              </TransformComponent>
+            </>
+          )}
+        </TransformWrapper>
       </div>
     </div>
   )
