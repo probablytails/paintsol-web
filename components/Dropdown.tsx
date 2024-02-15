@@ -28,7 +28,7 @@ export default function Dropdown({ alignRight, dropdownClassName = '', dropdownT
 
     if (dropdownItem.iconRow) {
       return dropdownItem.iconRow
-    } else {
+    } else if (dropdownItem.href) {
       return (
         <li key={`nav-dropdown-item-${index}`}>
           <Link
@@ -39,6 +39,8 @@ export default function Dropdown({ alignRight, dropdownClassName = '', dropdownT
           </Link>
         </li>
       )
+    } else {
+      return null
     }
   })
 
