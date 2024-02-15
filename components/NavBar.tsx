@@ -9,6 +9,7 @@ import Icon from './Icon'
 
 import styles from '@/styles/components/NavBar.module.css'
 import { useEffect, useRef } from 'react'
+import Dropdown, { DropdownItem } from './Dropdown'
 
 const navIconSize = 24
 
@@ -60,6 +61,33 @@ function NavLinkFAIcon({ icon, style, title, url }: NavLinkFAIconProps) {
   )
 }
 
+type NavDropdownIconProps = {
+  imageSrc: string
+  title: string
+  url: string
+}
+
+function NavDropdownIcon({ imageSrc, title, url }: NavDropdownIconProps) {
+  return (
+    <li>
+      <Link
+        aria-label={title}
+        className={`dropdown-item ${styles['dropdown-item-icon']}`}
+        href={url}
+        rel='noopener noreferrer'
+        target='_target'
+        title={title}>
+        <Icon
+          height={navIconSize}
+          imageSrc={imageSrc}
+          title={title}
+          width={navIconSize}
+        />
+      </Link>
+    </li>
+  )
+}
+
 export default function NavBar() {
   const buttonRef = useRef<any>(null)
   const pathname = usePathname()
@@ -71,7 +99,9 @@ export default function NavBar() {
     const menuIsExpanded = !!document.querySelector('.navbar-collapse.collapse.show')
     if (menuIsExpanded) {
       const btn = document.querySelector('#navbar-button-toggle') as any
-      btn?.click()
+      setTimeout(() => {
+        btn?.click()
+      }, 100)
     }
   }
 
@@ -81,6 +111,41 @@ export default function NavBar() {
       document.removeEventListener('mousedown', handleOutsideClick)
     }
   }, [])
+
+  const dropdownItems: DropdownItem[] = [
+    {
+      className: styles['dropdown-item'],
+      href: '/resources',
+      label: 'Resources',
+      target: '_self'
+    },
+    {
+      iconRow: (
+        <div className={styles['nav-dropdown-icons']}>
+          <NavDropdownIcon
+            imageSrc='/external-sites/birdeye.svg'
+            title='Birdeye'
+            url='https://birdeye.so/token/8x9c5qa4nvakKo5wHPbPa5xvTVMKmS26w4DRpCQLCLk3?chain=solana'
+          />
+          <NavDropdownIcon
+            imageSrc='/external-sites/dexscreener.svg'
+            title='DEX Screener'
+            url='https://dexscreener.com/solana/8x9c5qa4nvakKo5wHPbPa5xvTVMKmS26w4DRpCQLCLk3'
+          />
+          <NavDropdownIcon
+            imageSrc='/external-sites/dextools.svg'
+            title='DEXTools'
+            url='https://www.dextools.io/app/en/solana/pair-explorer/NniGZMgEpXL9jTmEATcKMxUbmH5cSNALngJKAQLTXzB'
+          />
+          <NavDropdownIcon
+            imageSrc='/external-sites/coingecko.svg'
+            title='CoinGecko'
+            url='https://www.coingecko.com/en/coins/ms-paint/usd'
+          />
+        </div>
+      )
+    }
+  ]
 
   return (
     <nav
@@ -144,6 +209,14 @@ export default function NavBar() {
                 Roadmap
               </Link>
             </li>
+            <li className='nav-item d-block d-sm-none'>
+              <Link
+                className={`nav-link ${styles['nav-link-text']} ${isRoadmap ? 'active' : ''}`}
+                {...(isRoadmap ? { 'aria-current': 'page' } : {})}
+                href='/resources'>
+                Resources
+              </Link>
+            </li>
             <div className='flex-grow-1' />
             <div className={styles['social-links']}>
               <NavLinkFAIcon
@@ -162,26 +235,37 @@ export default function NavBar() {
                 title='Farcaster'
                 url='https://warpcast.com/paintsol'
               />
-              <NavLinkIcon
-                imageSrc='/external-sites/birdeye.svg'
-                title='Birdeye'
-                url='https://birdeye.so/token/8x9c5qa4nvakKo5wHPbPa5xvTVMKmS26w4DRpCQLCLk3?chain=solana'
-              />
-              <NavLinkIcon
-                imageSrc='/external-sites/dexscreener.svg'
-                title='DEX Screener'
-                url='https://dexscreener.com/solana/8x9c5qa4nvakKo5wHPbPa5xvTVMKmS26w4DRpCQLCLk3'
-              />
-              <NavLinkIcon
-                imageSrc='/external-sites/dextools.svg'
-                title='DEXTools'
-                url='https://www.dextools.io/app/en/solana/pair-explorer/NniGZMgEpXL9jTmEATcKMxUbmH5cSNALngJKAQLTXzB'
-              />
-              <NavLinkIcon
-                imageSrc='/external-sites/coingecko.svg'
-                title='CoinGecko'
-                url='https://www.coingecko.com/en/coins/ms-paint/usd'
-              />
+              <div className={`d-block d-sm-none ${styles['social-links-mini']}`}>
+                <NavLinkIcon
+                  imageSrc='/external-sites/birdeye.svg'
+                  title='Birdeye'
+                  url='https://birdeye.so/token/8x9c5qa4nvakKo5wHPbPa5xvTVMKmS26w4DRpCQLCLk3?chain=solana'
+                />
+                <NavLinkIcon
+                  imageSrc='/external-sites/dexscreener.svg'
+                  title='DEX Screener'
+                  url='https://dexscreener.com/solana/8x9c5qa4nvakKo5wHPbPa5xvTVMKmS26w4DRpCQLCLk3'
+                />
+                <NavLinkIcon
+                  imageSrc='/external-sites/dextools.svg'
+                  title='DEXTools'
+                  url='https://www.dextools.io/app/en/solana/pair-explorer/NniGZMgEpXL9jTmEATcKMxUbmH5cSNALngJKAQLTXzB'
+                />
+                <NavLinkIcon  
+                  imageSrc='/external-sites/coingecko.svg'
+                  title='CoinGecko'
+                  url='https://www.coingecko.com/en/coins/ms-paint/usd'
+                />
+              </div>
+              <div className='d-none d-sm-block'>
+                <Dropdown
+                  alignRight
+                  dropdownClassName={styles['dropdown']}
+                  dropdownToggleClassName={styles['dropdown-toggle']}
+                  dropdownMenuClassName={styles['dropdown-menu']}
+                  dropdownItems={dropdownItems}
+                />
+              </div>
             </div>
           </ul>
         </div>
