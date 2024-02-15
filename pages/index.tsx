@@ -3,8 +3,12 @@ import styles from '@/styles/Home.module.css'
 import Link from 'next/link'
 import Image from '@/components/Image'
 import Footer from '@/components/Footer'
+import { useState } from 'react'
 
-export default function Home() {  
+export default function Home() {
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const splashLogoClass = isLoading ? styles['splash-logo-is-loading'] : styles['splash-logo']
+
   return (
     <>
       <Head>
@@ -27,26 +31,37 @@ export default function Home() {
             href='/art'>
             <Image
               alt='$PAINT Logo'
-              className={styles['splash-logo']}
+              className={splashLogoClass}
               imageSrc='/paint-splash-logo.png'
+              onLoad={() => setIsLoading(false)}
               priority
               stretchFill
               title='$PAINT Logo'
             />
           </Link>
-          <div className={styles['art-link-wrapper']}>
-            <Link
-              className={`link-primary ${styles['art-link']}`}
-              href='/art'>
-              Visit the Art Gallery
-            </Link>
-          </div>
-          <div className={styles['contract-wrapper']}>
-            <h2 className={styles['contract-label']}>CONTRACT:</h2>
-            <h2 className={styles['contract-address']}>8x9c5qa4nvakKo5wHPbPa5xvTVMKmS26w4DRpCQLCLk3</h2>
-          </div>
+          {
+            !isLoading && (
+              <>
+                <div className={styles['art-link-wrapper']}>
+                  <Link
+                    className={`link-primary ${styles['art-link']}`}
+                    href='/art'>
+                    Visit the Art Gallery
+                  </Link>
+                </div>
+                <div className={styles['contract-wrapper']}>
+                  <h2 className={styles['contract-label']}>CONTRACT:</h2>
+                  <h2 className={styles['contract-address']}>8x9c5qa4nvakKo5wHPbPa5xvTVMKmS26w4DRpCQLCLk3</h2>
+                </div>
+              </>
+            )
+          }
         </div>
-        <Footer />
+        {
+          !isLoading && (
+            <Footer />
+          )
+        }
       </div>
     </>
   )
