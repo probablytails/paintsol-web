@@ -14,7 +14,7 @@ import ImageVersionLinks from '@/components/ImageVersionLinks'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import TagBadge from '@/components/TagBadge'
 import FAIcon from '@/components/FAIcon'
-import { getImageTitle } from '@/lib/utility'
+import { getTitleOrUntitled } from '@/lib/utility'
 import { Image as ImageT, Tag, UserInfo } from '@/lib/types'
 import { getAvailableImageUrl, getImage } from '@/services/image'
 import styles from '@/styles/ImageIdOrSlug.module.css'
@@ -64,7 +64,7 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
   const [image, setImage] = useState<ImageT | null>(initialImage)
   const [imageSrc, setImageSrc] = useState('')
   const { artists, nextData, prevData, tags } = image || {}
-  const title = getImageTitle(image?.title || null)
+  const title = getTitleOrUntitled(image?.title || null)
 
   useEffect(() => {
     (async () => {

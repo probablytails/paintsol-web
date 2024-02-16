@@ -159,6 +159,24 @@ export const getImagesWithoutArtists = async ({ page = 1 }: GetImagesWithoutArti
   return response?.data
 }
 
+type GetImagesByCollectionId = {
+  page: number
+  collection_id: number
+}
+
+export const getImagesByCollectionId = async ({ page = 1, collection_id }: GetImagesByCollectionId) => {
+  const response = await apiRequest({
+    method: 'GET',
+    url: '/images/by-collection',
+    params: {
+      page,
+      id: collection_id
+    }
+  })
+
+  return response?.data
+}
+
 type GetImagesByTagId = {
   page: number
   tagId: number

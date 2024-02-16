@@ -1,11 +1,11 @@
-.artist-header {
+.collection-header {
   border: 2px solid var(--bs-border-color);
   border-radius: 8px;
   display: flex;
   flex-direction: row;
   max-width: 560px;
   margin: 32px auto 16px auto;
-  padding: 16px;
+  padding: 1rem;
 }
 
 .left-wrapper {
@@ -13,13 +13,6 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-}
-
-.profile-picture {
-  border-radius: 8px;
-  height: 100px;
-  width: 100px;
-  margin-right: 16px;
 }
 
 .right-wrapper {
@@ -35,33 +28,23 @@
   justify-content: flex-end;
 }
 
-.social-icon-link {
-  align-self: flex-start;
-  flex: 0 0 auto;
-  margin: 0 0 0 12px;
-}
-
-.social-icon-image-link {
-  align-self: flex-start;
-  display: flex;
-  flex: 0 0 auto;
-  margin: 0 0 0 12px;
-}
-
-.social-icon {
-  height: 22px !important;
-  width: 22px !important;
-}
-
 .right-middle-wrapper {
   display: flex;
   flex: 1;
+  justify-content: center;
 }
 
-.name {
+.title {
   font-size: 24px;
 }
 
 .right-bottom-wrapper {
+  display: flex;
   flex: 1;
+  justify-content: center;
+}
+
+.link {
+  margin: 0.25rem 0 0.5rem 0;
+  display: inline-block;
 }

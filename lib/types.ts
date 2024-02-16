@@ -1,3 +1,5 @@
+import { ImageVersion } from '@/services/image'
+
 export type Artist = {
   deca_username: string | null
   foundation_username: string | null
@@ -10,12 +12,33 @@ export type Artist = {
   twitter_username: string | null
 }
 
+type CollectionImage = {
+  collection_id: number
+  image_id: number
+  image_position: number
+  image_type: ImageVersion
+  preview_position: number | null
+  image: Image
+}
+
+type CollectionImageTypes = 'general' | 'telegram-stickers' | 'discord-stickers'
+
+export type Collection = {
+  id: number
+  preview_images: CollectionImage[]
+  slug: string | null
+  stickers_url: string | null
+  title: string | null
+  type: CollectionImageTypes
+}
+
 export type Image = {
   artists: Artist[]
   id: number
   has_animation: boolean
   has_border: boolean
   has_no_border: boolean
+  preview_image_type?: ImageVersion
   slug: string | null
   title: string | null
   tags: Tag[]
