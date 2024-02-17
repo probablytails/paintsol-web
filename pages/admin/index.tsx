@@ -51,6 +51,11 @@ export default function Admin({ isUserInfoLoading, userInfo }: Props) {
                   href='/admin/update-artist'>
                   Update Artist
                 </Link>
+                <Link
+                  className={`btn btn-outline-success ${styles['btn']}`}
+                  href='/admin/collection'>
+                  Create Collection
+                </Link>
                 <button
                   className={`btn btn-warning ${styles['btn']}`}
                   onClick={handleLogout}

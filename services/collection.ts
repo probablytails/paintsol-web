@@ -35,16 +35,42 @@ export const getCollection = async (idOrSlug: number | string, isServerSideReq?:
   return response?.data as Collection
 }
 
-export const createCollection = async (id: number, formData: FormData) => {
-  formData.append('id', id.toString())
-
+export const createCollection = async (formData: any) => {
   const response = await apiRequest({
     method: 'POST',
     url: '/collection',
     withCredentials: true,
     data: formData,
     headers: {
-      'Content-Type': 'multipart/form-data'
+      'Content-Type': 'application/json'
+    }
+  })
+
+  return response?.data
+}
+
+export const updateCollection = async (id: number, formData: any) => {
+  formData.id = id
+
+  const response = await apiRequest({
+    method: 'POST',
+    url: '/collection/update',
+    withCredentials: true,
+    data: formData,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  return response?.data
+}
+
+export const deleteCollection = async (id: number) => {
+  const response = await apiRequest({
+    method: 'POST',
+    url: `/collection/delete/${id}`,
+    headers: {
+      'Content-Type': 'application/json'
     }
   })
 
