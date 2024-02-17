@@ -1,5 +1,6 @@
 import CollectionCard from '@/components/CollectionCard'
 import { Collection } from '@/lib/types'
+import styles from '@/styles/components/CollectionCards.module.css'
 
 type Props = {
   collections: Collection[]
@@ -26,7 +27,7 @@ export default function CollectionCards({ collections, endReached }: Props) {
         </div>
         {
           endReached && (
-            <div>
+            <div className={styles['end-reached']}>
               End of results
             </div>
           )

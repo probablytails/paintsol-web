@@ -13,11 +13,11 @@ type Props = {
 export default function CollectionCard({ collection }: Props) {
   const title = getTitleOrUntitled(collection.title)
   const pageUrl = getPreferredCollectionPageUrl(collection)
-  let typeText = 'Art collection'
+  let typeText = 'Art Collection'
   if (collection?.type === 'discord-stickers') {
-    typeText = 'Discord stickers'
+    typeText = 'Discord Stickers'
   } else if (collection?.type === 'telegram-stickers') {
-    typeText = 'Telegram stickers'
+    typeText = 'Telegram Stickers'
   }
 
   const first6PreviewImages = collection?.preview_images?.slice(0, 3) || []

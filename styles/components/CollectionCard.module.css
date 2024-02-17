@@ -3,7 +3,7 @@
   border-radius: 8px;
   display: block;
   margin: 0 0 1.5rem 0;
-  padding: 0.5rem 1rem 1rem 1rem;
+  padding: 0.5rem 1rem 0.75rem 1rem;
   text-align: center;
 }
 
@@ -29,5 +29,5 @@
 }
 
 .collection-image-wrapper {
-  padding: 0 8px;
+  padding: 0 0.5rem 0.25rem 0;
 }
