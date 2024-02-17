@@ -7,7 +7,7 @@ export const getAllCollections = async () => {
     url: '/collections/all'
   })
 
-  return response?.data as Collection[]
+  return response?.data
 }
 
 type GetCollections = {
@@ -83,4 +83,33 @@ export const getPreferredCollectionPageUrl = (collection: Collection) => {
   } else {
     return `/collection/${collection.id}`
   }
+}
+
+type AddImageToCollection = {
+  collection_id: number
+  image_id: number
+  isPreview: boolean
+}
+
+export const addImageToCollection = async ({
+  collection_id,
+  image_id,
+  isPreview
+}: AddImageToCollection) => {
+  const data = {
+    collection_id,
+    image_id,
+    isPreview
+  }
+  const response = await apiRequest({
+    method: 'POST',
+    url: '/collection/image/add',
+    withCredentials: true,
+    data,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  return response?.data
 }

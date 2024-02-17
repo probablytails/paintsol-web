@@ -88,6 +88,10 @@ svg[data-icon="instagram"] {
   border-top-right-radius: 6px;
 }
 
+.image-element-all-border-radius {
+  border-radius: 6px;
+}
+
 /* Misc / Utility */
 
 .centered-column-grid {

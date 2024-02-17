@@ -36,7 +36,7 @@ export default function CollectionCard({ collection }: Props) {
             <div className='square-wrapper'>
               <Image
                 alt={title}
-                className='image-element'
+                className='image-element image-element-all-border-radius'
                 imageSrc={preferredImageSrc}
                 priority
                 stretchFill
