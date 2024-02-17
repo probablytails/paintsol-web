@@ -74,12 +74,37 @@
   padding: 0.5rem 1rem; 
 }
 
+.admin-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
 .edit-button {
-  margin: 0.5rem 0 0 0;
+  flex: 0 0 auto;
+  margin: 0 1rem 1rem 0;
+  align-self: flex-start;
 }
 
 .edit-icon {
   margin-right: 0.5rem;
+}
+
+.edit-collection {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.edit-select {
+  display: flex;
+}
+
+.edit-toggle-input {
+  margin-left: -0.5rem !important;
+}
+
+.edit-toggle-input-label {
+  margin-left: 0.5rem;
 }
 
 .navs-wrapper {

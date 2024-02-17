@@ -1,4 +1,4 @@
-export const getImageTitle = (title: string | null) => {
+export const getTitleOrUntitled = (title: string | null) => {
   if (title) {
     return title
   }

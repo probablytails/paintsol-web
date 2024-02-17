@@ -3,7 +3,7 @@ import Image from '@/components/Image'
 import { Image as ImageT, Tag } from '@/lib/types'
 import { getAvailableImageUrl, getPreferredImagePageUrl } from '@/services/image'
 import styles from '@/styles/components/ImageCard.module.css'
-import { getImageTitle } from '@/lib/utility'
+import { getTitleOrUntitled } from '@/lib/utility'
 import { nonBreakingSpace } from '@/lib/reactHelpers'
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 
 export default function ImageCard({ hideTags, image }: Props) {
   const { tags } = image
-  const title = getImageTitle(image.title)
+  const title = getTitleOrUntitled(image.title)
   const tagsText = tags?.map?.((tag) => tag?.title).join(', ') || nonBreakingSpace
   const pageUrl = getPreferredImagePageUrl(image)
   const imageSrc = getAvailableImageUrl('no-border', image)
@@ -23,10 +23,10 @@ export default function ImageCard({ hideTags, image }: Props) {
   return (
     <Link href={pageUrl} className='remove-text-decoration'>
       <div className={`card ${styles.card}`}>
-        <div className={`${styles['square-wrapper']}`}>
+        <div className='square-wrapper'>
           <Image
             alt={title}
-            className={styles['image-element']}
+            className='image-element'
             imageSrc={imageSrc}
             stretchFill
             title={title}

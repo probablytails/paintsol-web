@@ -66,6 +66,32 @@ svg[data-icon="instagram"] {
   display: none;
 }
 
+/* Image */
+
+.square-wrapper {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.image-element {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100% !important;
+  object-fit: cover;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.image-element-all-border-radius {
+  border-radius: 6px;
+}
+
 /* Misc / Utility */
 
 .centered-column-grid {

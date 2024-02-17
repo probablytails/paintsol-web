@@ -14,11 +14,13 @@ import ImageVersionLinks from '@/components/ImageVersionLinks'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import TagBadge from '@/components/TagBadge'
 import FAIcon from '@/components/FAIcon'
-import { getImageTitle } from '@/lib/utility'
-import { Image as ImageT, Tag, UserInfo } from '@/lib/types'
+import { getTitleOrUntitled } from '@/lib/utility'
+import { BooleanString, Collection, Image as ImageT, Tag, UserInfo } from '@/lib/types'
 import { getAvailableImageUrl, getImage } from '@/services/image'
 import styles from '@/styles/ImageIdOrSlug.module.css'
 import { checkIfValidInteger } from '@/lib/validation'
+import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus'
+import { addImageToCollection, getAllCollections } from '@/services/collection'
 
 type Props = {
   initialImage: ImageT | null
@@ -63,8 +65,11 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
   const [isFullView, setIsFullView] = useState<boolean>(false)
   const [image, setImage] = useState<ImageT | null>(initialImage)
   const [imageSrc, setImageSrc] = useState('')
+  const [collections, setCollections] = useState<Collection[]>([])
+  const [selectedCollection, setSelectedCollection] = useState<string>('')
+  const [selectedCollectionIsPreview, setSelectedCollectionIsPreview] = useState<BooleanString>('false')
   const { artists, nextData, prevData, tags } = image || {}
-  const title = getImageTitle(image?.title || null)
+  const title = getTitleOrUntitled(image?.title || null)
 
   useEffect(() => {
     (async () => {
@@ -85,8 +90,11 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
           const imageUrl = getAvailableImageUrl(paramImageVersion, data)
           setImageSrc(imageUrl)
 
-          setTimeout(() => {
+          setTimeout(async () => {
             setIsLoading(false)
+            const data = await getAllCollections()
+            const collections = data?.[0] || []
+            setCollections(collections)
           }, 0)
         } catch (error: any) {
           if (error?.response?.status === 404) {
@@ -122,6 +130,21 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
     const isShortMaxWidth = naturalWidth / naturalHeight < 1.9
     setIsShortMaxWidth(isShortMaxWidth)
     setImagedFinishedLoading(true)
+  }
+
+  async function handleShowAddToCollectionModal() {
+    if (!selectedCollection) {
+      alert('You must select a collection')
+    } else if (!image?.id) {
+      alert('Invalid image id')
+    } else {
+      await addImageToCollection({
+        collection_id: parseInt(selectedCollection, 10),
+        image_id: image.id,
+        isPreview: selectedCollectionIsPreview === 'true'
+      })
+      alert('Successfully added to collection')
+    }
   }
 
   const artistLinks = artists?.map((artist) => {
@@ -168,6 +191,34 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
       />
     </Link>
   )
+
+  const generateCollectionOptions = () => {
+    const options = collections?.map((collection) => {
+      return (
+        <option
+          key={`add-to-collection-option-${collection.id}`}
+          selected={selectedCollection === collection?.id?.toString()}
+          value={collection?.id}>
+          {collection?.title}
+        </option>
+      )
+    })
+
+    const unselectedOption = (
+      <option
+        key='add-to-collection-option-empty'
+        selected={!selectedCollection}
+        value=''>
+        Select a collection
+      </option>
+    )
+
+    options.unshift(unselectedOption)
+
+    return options
+  }
+
+  const collectionOptions = generateCollectionOptions()
 
   const artistNames = artists?.map((artist) => artist?.name)?.join(', ')
 
@@ -240,17 +291,57 @@ export default function ImagePage({ initialImage, userInfo }: Props) {
                   </div>
                   {
                     !!userInfo && (
-                      <button
-                        className={`btn btn-warning btn-rounded ${styles['edit-button']}`}
-                        onClick={() => router.push(`/admin/upload-image?editId=${image?.id}`)}
-                        type="button">
-                        <FAIcon
-                          className={styles['edit-icon']}
-                          icon={faEdit}
-                          title='Edit'
-                        />
-                        Edit
-                      </button>
+                      <div className={styles['admin-buttons']}>
+                        <button
+                          className={`btn btn-warning btn-rounded ${styles['edit-button']}`}
+                          onClick={() => router.push(`/admin/upload-image?editId=${image?.id}`)}
+                          type="button">
+                          <FAIcon
+                            className={styles['edit-icon']}
+                            icon={faEdit}
+                            title='Edit'
+                          />
+                          Edit
+                        </button>
+                        <div className={styles['edit-collection']}>
+                          <button
+                            className='btn btn-warning btn-rounded'
+                            onClick={handleShowAddToCollectionModal}
+                            type="button">
+                            <FAIcon
+                              className={styles['edit-icon']}
+                              icon={faPlus}
+                              title='Add to Collection'
+                            />
+                            Add to Collection
+                          </button>
+                          <div className='form-check'>
+                            <input
+                              className={`form-check-input ${styles['edit-toggle-input']}`}
+                              id='selected-collection-is-preview'
+                              onChange={(event: any) => {
+                                setSelectedCollectionIsPreview(event.target.checked?.toString())
+                              }}
+                              type="checkbox"
+                              value={selectedCollectionIsPreview}
+                            />
+                            <label className={`form-check-label ${styles['edit-toggle-input-label']}`} htmlFor='selected-collection-is-preview'>
+                              is image preview
+                            </label>
+                          </div>
+                        </div>
+                        <div className={`mb-3 ${styles['edit-select']}`}>
+                          <select
+                            aria-label='Select add to collection'
+                            className='form-select'
+                            id='select-add-to-collection'
+                            onChange={(event: any) => {
+                              setSelectedCollection(event.target.value)
+                            }}>
+                            {collectionOptions}
+                          </select>
+                        </div>
+                      </div>
                     )
                   }
                 </div>
