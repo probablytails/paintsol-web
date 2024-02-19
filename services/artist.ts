@@ -21,6 +21,22 @@ export const getAllArtistsWithImages = async () => {
   return response?.data as Artist[]
 }
 
+type GetArtists = {
+  page: number
+}
+
+export const getArtists = async ({ page }: GetArtists) => {
+  const response = await apiRequest({
+    method: 'GET',
+    url: '/artists',
+    params: {
+      page
+    }
+  })
+
+  return response?.data
+}
+
 export const getArtist = async (idOrSlug: number | string, isServerSideReq?: boolean) => {
   const response = await apiRequest({
     method: 'GET',
@@ -55,4 +71,12 @@ export const updateArtist = async (id: number, formData: FormData) => {
   })
 
   return response?.data
+}
+
+export const getPreferredArtistPageUrl = (artist: Artist) => {
+  if (artist?.slug) {
+    return `/artist/${artist.slug}`
+  } else {
+    return `/artist/${artist.id}`
+  }
 }

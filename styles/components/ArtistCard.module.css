@@ -1,0 +1,43 @@
+.artist-card-wrapper {
+  border: 2px solid var(--bs-border-color);
+  border-radius: 8px;
+  display: block;
+  margin: 0 0 1.5rem 0;
+  padding: 1rem 1rem 0.75rem 1rem;
+  text-align: center;
+}
+
+.artist-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.artist-card-header {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 0.25rem 0;
+}
+
+.profile-picture {
+  border-radius: 60px;
+  height: 60px;
+  width: 60px;
+  margin-right: 16px;
+}
+
+.artist-name {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  color: black;
+}
+
+.artist-images {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.75rem;
+}
+
+.artist-images-wrapper {
+  padding: 0 8px 8px 8px;
+}
