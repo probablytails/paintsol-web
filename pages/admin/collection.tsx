@@ -68,7 +68,7 @@ export default function AdminCollection() {
       setSlug(slug || '')
       setStickersUrl(stickers_url || '')
       setCollectionType(type || '')
-      await handleLoadCollectionImages(collection.id, collection.preview_images)
+      await handleLoadCollectionImages(collection.id)
     }
   }
 
