@@ -194,7 +194,7 @@ export default function AdminCollection() {
           newPreviewPositions
         })
 
-        location.href = `/${editingCollection.id}`
+        location.href = `/collection/${editingCollection.id}`
         return
       } else {
         data = await createCollection(formData)
