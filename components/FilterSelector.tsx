@@ -48,7 +48,7 @@ export default function FilterSelector({
           </div>
         </div>
       </div>
-      <div className='col-sm-2 justify-center'>
+      <div className='col-sm-2'>
         <ViewTypeSelector
           handleSelectViewType={handleSelectViewType}
           viewTypeSelected={viewTypeSelected}
