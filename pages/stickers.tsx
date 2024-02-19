@@ -2,7 +2,6 @@
   NOTE: STICKERS IS NEARLY IDENTICAL TO COLLECTIONS.
   A HOC SHOULD BE CREATED AND REUSED.
 */
-
 import _debounce from 'lodash/debounce'
 import Head from 'next/head'
 import { useCallback, useState } from 'react'
@@ -13,7 +12,7 @@ import { getCollections } from '@/services/collection'
 import styles from '@/styles/Collections.module.css'
 
 export const getServerSideProps = (async () => { 
-  const data = await getCollections({ page: 1, sort: 'alphabetical', type: 'general' })
+  const data = await getCollections({ page: 1, sort: 'alphabetical', type: 'stickers' })
   const initialCollections: Collection[] = data?.[0] || []
 
   return {
@@ -27,7 +26,7 @@ type Props = {
   initialCollections: Collection[]
 }
 
-export default function Collections({
+export default function Stickers({
   initialCollections
 }: Props) {
   const [isLoading, setIsLoading] = useState(false)
@@ -42,8 +41,8 @@ export default function Collections({
     maxWait: 500
   }), [])
 
-  const metaTitle = '$PAINT - Collections and Sticker Sets'
-  const metaDescription = 'Collections and sticker sets by the $PAINT community.'
+  const metaTitle = '$PAINT - Sticker Sets'
+  const metaDescription = 'Sticker sets by the $PAINT community.'
   const metaImageUrl = `${process.env.NEXT_PUBLIC_WEB_BASE_URL}/paint-logo-preview.png`
 
   return (
@@ -123,7 +122,7 @@ async function handleOnScroll({
     setIsLoading(true)
     const oldCollections = collections
     const nextPage = page + 1
-    let nextPageData = await getCollections({ page: nextPage, sort: 'alphabetical', type: 'general' })
+    let nextPageData = await getCollections({ page: nextPage, sort: 'alphabetical', type: 'stickers' })
 
     if (nextPageData?.[0].length === 0) {
       setEndReached(true)

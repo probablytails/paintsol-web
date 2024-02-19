@@ -1,4 +1,4 @@
-import { Collection } from '@/lib/types'
+import { Collection, CollectionQuerySort, CollectionQueryType } from '@/lib/types'
 import { apiRequest } from './apiRequest'
 
 export const getAllCollections = async () => {
@@ -12,14 +12,18 @@ export const getAllCollections = async () => {
 
 type GetCollections = {
   page: number
+  sort: CollectionQuerySort
+  type: CollectionQueryType
 }
 
-export const getCollections = async ({ page = 1 }: GetCollections) => {
+export const getCollections = async ({ page = 1, sort, type }: GetCollections) => {
   const response = await apiRequest({
     method: 'GET',
     url: '/collections',
     params: {
-      page
+      page,
+      sort,
+      type
     }
   })
 

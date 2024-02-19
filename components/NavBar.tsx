@@ -14,14 +14,15 @@ import Dropdown, { DropdownItem } from './Dropdown'
 const navIconSize = 24
 
 type NavLinkIconProps = {
+  className?: string
   imageSrc: string
   title: string
   url: string
 }
 
-function NavLinkIcon({ imageSrc, title, url }: NavLinkIconProps) {
+function NavLinkIcon({ className, imageSrc, title, url }: NavLinkIconProps) {
   return (
-    <li className='nav-item'>
+    <li className={`nav-item ${className}`}>
       <Link
         aria-label={title}
         className={`nav-link ${styles['nav-link-icon']}`}
@@ -92,9 +93,10 @@ export default function NavBar() {
   const buttonRef = useRef<any>(null)
   const pathname = usePathname()
   const isArtGallery = pathname === '/art'
+  const isArtists = pathname === '/artists'
+  const isStickers = pathname === '/stickers'
   const isWhitepaper = pathname === '/whitepaper'
   const isRoadmap = pathname === '/roadmap'
-  const isArtists = pathname === '/artists'
   // const isResources = pathname === '/resources'
 
   const handleOutsideClick = (event: any) => {
@@ -115,12 +117,18 @@ export default function NavBar() {
   }, [])
 
   const dropdownItems: DropdownItem[] = [
-    // {
-    //   className: styles['dropdown-item'],
-    //   href: '/resources',
-    //   label: 'Resources',
-    //   target: '_self'
-    // },
+    {
+      className: `${styles['dropdown-item']} d-md-none`,
+      href: '/whitepaper',
+      label: 'Whitepaper',
+      target: '_self'
+    },
+    {
+      className: `${styles['dropdown-item']} d-md-none`,
+      href: '/roadmap',
+      label: 'Roadmap',
+      target: '_self'
+    },
     {
       iconRow: (
         <div className={styles['nav-dropdown-icons']} key="nav-dropdown-icons">
@@ -201,21 +209,29 @@ export default function NavBar() {
             </li>
             <li className='nav-item'>
               <Link
-                className={`nav-link ${styles['nav-link-text']} ${isWhitepaper ? 'active' : ''}`}
-                {...(isWhitepaper ? { 'aria-current': 'page' } : {})}
-                href='/whitepaper'>
-                Whitepaper
-              </Link>
-            </li>
-            <li className='nav-item'>
-              <Link
                 className={`nav-link ${styles['nav-link-text']} ${isArtists ? 'active' : ''}`}
                 {...(isArtists ? { 'aria-current': 'page' } : {})}
                 href='/artists'>
                 Artists
               </Link>
             </li>
-            <li className='nav-item d-block d-sm-none'>
+            <li className='nav-item'>
+              <Link
+                className={`nav-link ${styles['nav-link-text']} ${isStickers ? 'active' : ''}`}
+                {...(isStickers ? { 'aria-current': 'page' } : {})}
+                href='/stickers'>
+                Stickers
+              </Link>
+            </li>
+            <li className='nav-item d-block d-sm-none d-md-block d-lg-block d-xl-block'>
+              <Link
+                className={`nav-link ${styles['nav-link-text']} ${isWhitepaper ? 'active' : ''}`}
+                {...(isWhitepaper ? { 'aria-current': 'page' } : {})}
+                href='/whitepaper'>
+                Whitepaper
+              </Link>
+            </li>
+            <li className='nav-item d-block d-sm-none d-md-block d-lg-block d-xl-block'>
               <Link
                 className={`nav-link ${styles['nav-link-text']} ${isRoadmap ? 'active' : ''}`}
                 {...(isRoadmap ? { 'aria-current': 'page' } : {})}
@@ -249,29 +265,33 @@ export default function NavBar() {
                 title='Farcaster'
                 url='https://warpcast.com/paintsol'
               />
-              <div className={`d-block d-sm-none ${styles['social-links-mini']}`}>
-                <NavLinkIcon
-                  imageSrc='/external-sites/birdeye.svg'
-                  title='Birdeye'
-                  url='https://birdeye.so/token/8x9c5qa4nvakKo5wHPbPa5xvTVMKmS26w4DRpCQLCLk3?chain=solana'
-                />
-                <NavLinkIcon
-                  imageSrc='/external-sites/dexscreener.svg'
-                  title='DEX Screener'
-                  url='https://dexscreener.com/solana/8x9c5qa4nvakKo5wHPbPa5xvTVMKmS26w4DRpCQLCLk3'
-                />
-                <NavLinkIcon
-                  imageSrc='/external-sites/dextools.svg'
-                  title='DEXTools'
-                  url='https://www.dextools.io/app/en/solana/pair-explorer/NniGZMgEpXL9jTmEATcKMxUbmH5cSNALngJKAQLTXzB'
-                />
-                <NavLinkIcon  
-                  imageSrc='/external-sites/coingecko.svg'
-                  title='CoinGecko'
-                  url='https://www.coingecko.com/en/coins/ms-paint/usd'
-                />
-              </div>
-              <div className='d-none d-sm-block'>
+            </div>
+            <div className={styles['social-links']}>
+              <NavLinkIcon
+                className='d-sm-none d-md-none d-lg-block d-xl-block'
+                imageSrc='/external-sites/birdeye.svg'
+                title='Birdeye'
+                url='https://birdeye.so/token/8x9c5qa4nvakKo5wHPbPa5xvTVMKmS26w4DRpCQLCLk3?chain=solana'
+              />
+              <NavLinkIcon
+                className='d-sm-none d-md-none d-lg-block d-xl-block'
+                imageSrc='/external-sites/dexscreener.svg'
+                title='DEX Screener'
+                url='https://dexscreener.com/solana/8x9c5qa4nvakKo5wHPbPa5xvTVMKmS26w4DRpCQLCLk3'
+              />
+              <NavLinkIcon
+                className='d-sm-none d-md-none d-lg-block d-xl-block'
+                imageSrc='/external-sites/dextools.svg'
+                title='DEXTools'
+                url='https://www.dextools.io/app/en/solana/pair-explorer/NniGZMgEpXL9jTmEATcKMxUbmH5cSNALngJKAQLTXzB'
+              />
+              <NavLinkIcon
+                className='d-sm-none d-md-none d-lg-block d-xl-block'
+                imageSrc='/external-sites/coingecko.svg'
+                title='CoinGecko'
+                url='https://www.coingecko.com/en/coins/ms-paint/usd'
+              />
+              <div className='d-none d-sm-block d-lg-none d-xl-none'>
                 <Dropdown
                   alignRight
                   dropdownClassName={styles['dropdown']}
