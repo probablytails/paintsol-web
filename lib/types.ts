@@ -13,7 +13,7 @@ export type Artist = {
   twitter_username: string | null
 }
 
-type CollectionImage = {
+export type CollectionImage = {
   collection_id: number
   image_id: number
   image_position: number

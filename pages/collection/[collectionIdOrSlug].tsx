@@ -8,11 +8,14 @@ import CollectionHeader from '@/components/CollectionHeader'
 import ImageCards from '@/components/ImageCards'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import ViewTypeSelector from '@/components/ViewTypeSelector'
-import { Collection, Image, ViewTypes } from '@/lib/types'
+import { Collection, Image, UserInfo, ViewTypes } from '@/lib/types'
 import { checkIfValidInteger } from '@/lib/validation'
 import { getCollection } from '@/services/collection'
 import { getAvailableImageUrl, getImagesByCollectionId } from '@/services/image'
 import styles from '@/styles/Collection.module.css'
+import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit'
+import FAIcon from '@/components/FAIcon'
+import { useRouter } from 'next/router'
 
 type ServerSidePropsParams = {
   collectionIdOrSlug?: string
@@ -74,14 +77,17 @@ type Props = {
   initialImages: Image[]
   initialImagesTotal: number
   initialViewType: ViewTypes
+  userInfo: UserInfo
 }
 
 export default function CollectionPage({
   collection,
   initialImages,
   initialImagesTotal,
-  initialViewType
+  initialViewType,
+  userInfo
 }: Props) {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [images, setImages] = useState<Image[]>(initialImages)
   const [page, setPage] = useState<number>(1)
@@ -144,6 +150,23 @@ export default function CollectionPage({
         }}>
         <div className={`main-content-inner-wrapper ${viewTypeSelected === 'tiny' ? 'main-content-end-may-not-be-reached' : ''}`}>
           <CollectionHeader collection={collection} />
+          {
+            !!userInfo && (
+              <div className={styles['admin-buttons']}>
+                <button
+                  className={`btn btn-warning btn-rounded ${styles['edit-button']}`}
+                  onClick={() => router.push(`/admin/collection?editId=${collection?.id}`)}
+                  type="button">
+                  <FAIcon
+                    className={styles['edit-icon']}
+                    icon={faEdit}
+                    title='Edit'
+                  />
+                  Edit
+                </button>
+              </div>
+            )
+          }
           <div className={`row ${styles['list-header']}`}>
             <div className='d-none d-sm-block col-sm-2'></div>
             <div className='col-sm-8'>

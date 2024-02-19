@@ -7,3 +7,19 @@
   font-size: 16px;
   text-align: center;
 }
+
+.admin-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.edit-button {
+  flex: 0 0 auto;
+  margin: 0.25rem auto 1rem auto;
+  min-width: 90px;
+}
+
+.edit-icon {
+  margin-right: 0.5rem;
+}

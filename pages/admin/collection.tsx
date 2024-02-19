@@ -5,9 +5,12 @@ import { useRouter } from 'next/router'
 import { ChangeEvent, useEffect, useState } from 'react'
 import Button from '@/components/Button'
 import LoadingSpinner from '@/components/LoadingSpinner'
-import { Collection } from '@/lib/types'
-import { createCollection, deleteCollection, getCollection, updateCollection } from '@/services/collection'
+import { Collection, CollectionImage, Image } from '@/lib/types'
+import { addImageToCollection, createCollection, deleteCollection, getCollection, removeImageFromCollection, updateCollection, updateCollectionImagePositions, updateCollectionPreviewImagePositions } from '@/services/collection'
 import styles from '@/styles/AdminUploadImage.module.css'
+import { getImagesAllByCollectionId } from '@/services/image'
+import AdminImageListItems from '@/components/AdminImageListItems'
+import { moveItem } from '@/lib/array'
 
 type LastUpdatedData = {
   id: number
@@ -23,6 +26,8 @@ export default function AdminCollection() {
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isSaving, setIsSaving] = useState<boolean>(false)
+  const [imagesInOrder, setImagesInOrder] = useState<Image[]>([])
+  const [previewImagesInOrder, setPreviewImagesInOrder] = useState<Image[]>([])
   const [lastUpdatedData, setLastUpdatedData] = useState<LastUpdatedData>(null)
   const [slug, setSlug] = useState<string>('')
   const [stickersUrl, setStickersUrl] = useState<string>('')
@@ -55,7 +60,7 @@ export default function AdminCollection() {
     })()
   }, [searchParams])
 
-  const populateEditData = (paramCollection: Collection | null) => {
+  const populateEditData = async (paramCollection: Collection | null) => {
     const collection = paramCollection ? paramCollection : editingCollection
     if (collection) {
       const { slug, stickers_url, title, type } = collection
@@ -63,6 +68,7 @@ export default function AdminCollection() {
       setSlug(slug || '')
       setStickersUrl(stickers_url || '')
       setCollectionType(type || '')
+      await handleLoadCollectionImages(collection.id, collection.preview_images)
     }
   }
 
@@ -85,6 +91,80 @@ export default function AdminCollection() {
     }
   }
 
+  const handleLoadCollectionImages = async (collection_id: number) => {
+    const allImagesData = await getImagesAllByCollectionId({ collection_id })
+    const allImages = allImagesData?.[0]
+    setImagesInOrder(allImages)
+    const updatedCollection = await getCollection(collection_id)
+    const new_preview_images = updatedCollection?.preview_images.map((preview_image) => preview_image.image) || []
+    setPreviewImagesInOrder(new_preview_images)
+  }
+
+  const handleRemoveCollectionImage = async (image_id: number) => {
+    if (editingCollection?.id) {
+      await removeImageFromCollection({
+        collection_id: editingCollection.id,
+        image_id
+      })
+      await handleLoadCollectionImages(editingCollection.id)
+    }
+  }
+
+  const handleRemovePreviewCollectionImage = async (image_id: number) => {
+    if (editingCollection?.id) {
+      await addImageToCollection({
+        collection_id: editingCollection.id,
+        image_id,
+        isPreview: false
+      })
+      await handleLoadCollectionImages(editingCollection.id)
+    }
+  }
+
+  const handleMoveCollectionImage = (id: number, toPosition: 'up' | 'down') => {
+    const newSortedImagesInOrder = moveItem(imagesInOrder, id, toPosition)
+    const element = document.querySelector('.main-content-column')
+    if (element) {
+      if (toPosition === 'up') {
+        element.scrollTop -= 94
+      } else {
+        element.scrollTop += 94
+      }
+    }
+    setImagesInOrder([...newSortedImagesInOrder])
+  }
+
+  const handleMovePreviewCollectionImage = (id: number, toPosition: 'up' | 'down') => {
+    const newSortedPreviewImagesInOrder = moveItem(previewImagesInOrder, id, toPosition)
+    const element = document.querySelector('.main-content-column')
+    if (element) {
+      if (toPosition === 'up') {
+        element.scrollTop -= 94
+      } else {
+        element.scrollTop += 94
+      }
+    }
+    setPreviewImagesInOrder([...newSortedPreviewImagesInOrder])
+  }
+
+  const generateNewImagePositions = () => {
+    return imagesInOrder.map((image: Image, index: number) => {
+      return {
+        image_id: image.id,
+        image_position: index + 1
+      }
+    })
+  }
+
+  const generateNewPreviewImagePositions = () => {
+    return previewImagesInOrder.map((image: Image, index: number) => {
+      return {
+        image_id: image.id,
+        preview_position: index + 1
+      }
+    })
+  }
+
   const handleSubmit = async () => {
     setIsSaving(true)
 
@@ -100,6 +180,20 @@ export default function AdminCollection() {
 
       if (isEditing && editingCollection) {
         data = await updateCollection(editingCollection.id, formData)
+
+        const newImagePositions = generateNewImagePositions()
+        const newPreviewPositions = generateNewPreviewImagePositions()
+
+        await updateCollectionImagePositions({
+          collection_id: editingCollection.id,
+          newImagePositions
+        })
+
+        await updateCollectionPreviewImagePositions({
+          collection_id: editingCollection.id,
+          newPreviewPositions
+        })
+
         location.href = `/${editingCollection.id}`
         return
       } else {
@@ -130,6 +224,8 @@ export default function AdminCollection() {
       setSlug('')
       setCollectionType('general')
       setStickersUrl('')
+      setImagesInOrder([])
+      setPreviewImagesInOrder([])
     }
   }
 
@@ -239,6 +335,32 @@ export default function AdminCollection() {
                         type="text"
                         value={stickersUrl}
                       />
+                    </div>
+                  )
+                }
+                {
+                  imagesInOrder?.length > 0 && (
+                    <div className='mb-3'>
+                      <label htmlFor='link-preview-crop-position'>
+                        Images in Collection
+                      </label>
+                      <AdminImageListItems
+                        handleMove={handleMoveCollectionImage}
+                        handleRemoveListItem={handleRemoveCollectionImage}
+                        images={imagesInOrder} />
+                    </div>
+                  )
+                }
+                {
+                  previewImagesInOrder?.length > 0 && (
+                    <div className='mb-3'>
+                      <label htmlFor='link-preview-crop-position'>
+                        Preview Images in Collection
+                      </label>
+                      <AdminImageListItems
+                        handleMove={handleMovePreviewCollectionImage}
+                        handleRemoveListItem={handleRemovePreviewCollectionImage}
+                        images={previewImagesInOrder} />
                     </div>
                   )
                 }

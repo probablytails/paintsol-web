@@ -117,3 +117,89 @@ export const addImageToCollection = async ({
 
   return response?.data
 }
+
+type RemoveImageFromCollection = {
+  collection_id: number
+  image_id: number
+}
+
+export const removeImageFromCollection = async ({
+  collection_id,
+  image_id
+}: RemoveImageFromCollection) => {
+  const data = {
+    collection_id,
+    image_id
+  }
+  const response = await apiRequest({
+    method: 'POST',
+    url: '/collection/image/remove',
+    withCredentials: true,
+    data,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  return response?.data
+}
+
+type NewImagePosition = {
+  image_id: number
+  image_position: number
+}
+
+type UpdateCollectionImagePositions = {
+  collection_id: number
+  newImagePositions: NewImagePosition[]
+}
+
+export const updateCollectionImagePositions = async ({
+  collection_id,
+  newImagePositions
+}: UpdateCollectionImagePositions) => {
+  const response = await apiRequest({
+    method: 'POST',
+    url: '/collection/image/image-positions/update',
+    withCredentials: true,
+    data: {
+      collection_id,
+      newImagePositions
+    },
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  return response?.data
+}
+
+type NewPreviewImagePosition = {
+  image_id: number
+  preview_position: number
+}
+
+type UpdateCollectionPreviewImagePositions = {
+  collection_id: number
+  newPreviewPositions: NewPreviewImagePosition[]
+}
+
+export const updateCollectionPreviewImagePositions = async ({
+  collection_id,
+  newPreviewPositions
+}: UpdateCollectionPreviewImagePositions) => {
+  const response = await apiRequest({
+    method: 'POST',
+    url: '/collection/image/preview-positions/update',
+    withCredentials: true,
+    data: {
+      collection_id,
+      newPreviewPositions
+    },
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  return response?.data
+}
