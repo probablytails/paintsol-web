@@ -121,24 +121,28 @@ export default function NavBar() {
     },
     {
       iconRow: (
-        <div className={styles['nav-dropdown-icons']}>
+        <div className={styles['nav-dropdown-icons']} key="nav-dropdown-icons">
           <NavDropdownIcon
             imageSrc='/external-sites/birdeye.svg'
+            key='nav-birdeye-icon'
             title='Birdeye'
             url='https://birdeye.so/token/8x9c5qa4nvakKo5wHPbPa5xvTVMKmS26w4DRpCQLCLk3?chain=solana'
           />
           <NavDropdownIcon
             imageSrc='/external-sites/dexscreener.svg'
+            key='nav-dexscreener-icon'
             title='DEX Screener'
             url='https://dexscreener.com/solana/8x9c5qa4nvakKo5wHPbPa5xvTVMKmS26w4DRpCQLCLk3'
           />
           <NavDropdownIcon
             imageSrc='/external-sites/dextools.svg'
+            key='nav-dextools-icon'
             title='DEXTools'
             url='https://www.dextools.io/app/en/solana/pair-explorer/NniGZMgEpXL9jTmEATcKMxUbmH5cSNALngJKAQLTXzB'
           />
           <NavDropdownIcon
             imageSrc='/external-sites/coingecko.svg'
+            key='nav-coingecko-icon'
             title='CoinGecko'
             url='https://www.coingecko.com/en/coins/ms-paint/usd'
           />
