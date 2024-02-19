@@ -4,7 +4,7 @@ import { getTitleOrUntitled } from '@/lib/utility'
 import { getPreferredCollectionPageUrl } from '@/services/collection'
 import styles from '@/styles/components/CollectionCard.module.css'
 import Image from './Image'
-import { getAvailableImageUrl, getImageUrl } from '@/services/image'
+import { getImageUrl } from '@/services/image'
 
 type Props = {
   collection: Collection
@@ -20,7 +20,7 @@ export default function CollectionCard({ collection }: Props) {
     typeText = 'Telegram Stickers'
   }
 
-  const first6PreviewImages = collection?.preview_images?.slice(0, 3) || []
+  const first6PreviewImages = collection?.preview_images?.slice(0, 6) || []
 
   const generatePreviewImageElements = () => {
     let elements = []

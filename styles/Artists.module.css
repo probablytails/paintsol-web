@@ -1,0 +1,9 @@
+.results-found {
+  margin: -6px auto 1rem auto;
+  text-align: center;
+  color: #555;
+}
+
+.spacer {
+  height: 32px;
+}

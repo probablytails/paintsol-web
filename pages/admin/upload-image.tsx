@@ -187,7 +187,7 @@ export default function UploadImage() {
 
   const handleDelete = async () => {
     if (editingImage?.id && confirm('Are you sure you want to delete this image?') === true) {
-      deleteImage(editingImage.id)
+      await deleteImage(editingImage.id)
       router.push('/admin')
     }
   }
