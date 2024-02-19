@@ -94,6 +94,8 @@ export default function NavBar() {
   const isArtGallery = pathname === '/art'
   const isWhitepaper = pathname === '/whitepaper'
   const isRoadmap = pathname === '/roadmap'
+  const isArtists = pathname === '/artists'
+  // const isResources = pathname === '/resources'
 
   const handleOutsideClick = (event: any) => {
     const menuIsExpanded = !!document.querySelector('.navbar-collapse.collapse.show')
@@ -113,12 +115,12 @@ export default function NavBar() {
   }, [])
 
   const dropdownItems: DropdownItem[] = [
-    {
-      className: styles['dropdown-item'],
-      href: '/resources',
-      label: 'Resources',
-      target: '_self'
-    },
+    // {
+    //   className: styles['dropdown-item'],
+    //   href: '/resources',
+    //   label: 'Resources',
+    //   target: '_self'
+    // },
     {
       iconRow: (
         <div className={styles['nav-dropdown-icons']} key="nav-dropdown-icons">
@@ -207,20 +209,28 @@ export default function NavBar() {
             </li>
             <li className='nav-item'>
               <Link
-                className={`nav-link ${styles['nav-link-text']} ${isRoadmap ? 'active' : ''}`}
-                {...(isRoadmap ? { 'aria-current': 'page' } : {})}
-                href='/roadmap'>
-                Roadmap
+                className={`nav-link ${styles['nav-link-text']} ${isArtists ? 'active' : ''}`}
+                {...(isArtists ? { 'aria-current': 'page' } : {})}
+                href='/artists'>
+                Artists
               </Link>
             </li>
             <li className='nav-item d-block d-sm-none'>
               <Link
                 className={`nav-link ${styles['nav-link-text']} ${isRoadmap ? 'active' : ''}`}
                 {...(isRoadmap ? { 'aria-current': 'page' } : {})}
+                href='/roadmap'>
+                Roadmap
+              </Link>
+            </li>
+            {/* <li className='nav-item d-block d-sm-none'>
+              <Link
+                className={`nav-link ${styles['nav-link-text']} ${isResources ? 'active' : ''}`}
+                {...(isResources ? { 'aria-current': 'page' } : {})}
                 href='/resources'>
                 Resources
               </Link>
-            </li>
+            </li> */}
             <div className='flex-grow-1' />
             <div className={styles['social-links']}>
               <NavLinkFAIcon

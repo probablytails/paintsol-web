@@ -94,7 +94,8 @@ export const updateImage = async (id: number, formData: FormData) => {
 export const deleteImage = async (id: number) => {
   const response = await apiRequest({
     method: 'POST',
-    url: `/image/delete/${id}`
+    url: `/image/delete/${id}`,
+    withCredentials: true
   })
 
   return response?.data
