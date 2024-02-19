@@ -32,7 +32,7 @@ export default function CollectionCard({ collection }: Props) {
           : ''
         
         elements.push(
-          <div className={`col-sm-2 ${styles['collection-image-wrapper']}`} key={`${previewImage.image_id}`}>
+          <div className={`${styles['collection-image-wrapper']}`} key={`${previewImage.image_id}`}>
             <div className='square-wrapper'>
               <Image
                 alt={title}
