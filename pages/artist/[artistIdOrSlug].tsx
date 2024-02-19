@@ -149,7 +149,7 @@ export default function ArtistPage({
                 {imageTotalText}
               </div>
             </div>
-            <div className='d-none d-sm-block col-sm-2'>
+            <div className='col-sm-2'>
               <ViewTypeSelector
                 handleSelectViewType={handleSelectViewType}
                 viewTypeSelected={viewTypeSelected}
