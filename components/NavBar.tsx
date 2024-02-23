@@ -94,6 +94,7 @@ export default function NavBar() {
   const pathname = usePathname()
   const isArtGallery = pathname === '/art'
   const isArtists = pathname === '/artists'
+  const isCollections = pathname === '/collections'
   const isStickers = pathname === '/stickers'
   const isWhitepaper = pathname === '/whitepaper'
   const isRoadmap = pathname === '/roadmap'
@@ -119,12 +120,18 @@ export default function NavBar() {
   const dropdownItems: DropdownItem[] = [
     {
       className: `${styles['dropdown-item']} d-md-none`,
+      href: '/stickers',
+      label: 'Stickers',
+      target: '_self'
+    },
+    {
+      className: `${styles['dropdown-item']} d-lg-none`,
       href: '/whitepaper',
       label: 'Whitepaper',
       target: '_self'
     },
     {
-      className: `${styles['dropdown-item']} d-md-none`,
+      className: `${styles['dropdown-item']} d-lg-none`,
       href: '/roadmap',
       label: 'Roadmap',
       target: '_self'
@@ -217,13 +224,21 @@ export default function NavBar() {
             </li>
             <li className='nav-item'>
               <Link
+                className={`nav-link ${styles['nav-link-text']} ${isCollections ? 'active' : ''}`}
+                {...(isCollections ? { 'aria-current': 'page' } : {})}
+                href='/collections'>
+                Collections
+              </Link>
+            </li>
+            <li className='nav-item d-block d-sm-none d-md-block d-lg-block d-xl-block'>
+              <Link
                 className={`nav-link ${styles['nav-link-text']} ${isStickers ? 'active' : ''}`}
                 {...(isStickers ? { 'aria-current': 'page' } : {})}
                 href='/stickers'>
                 Stickers
               </Link>
             </li>
-            <li className='nav-item d-block d-sm-none d-md-block d-lg-block d-xl-block'>
+            <li className='nav-item d-block d-sm-none d-md-none d-lg-block d-xl-block'>
               <Link
                 className={`nav-link ${styles['nav-link-text']} ${isWhitepaper ? 'active' : ''}`}
                 {...(isWhitepaper ? { 'aria-current': 'page' } : {})}
@@ -231,7 +246,7 @@ export default function NavBar() {
                 Whitepaper
               </Link>
             </li>
-            <li className='nav-item d-block d-sm-none d-md-block d-lg-block d-xl-block'>
+            <li className='nav-item d-block d-sm-none d-md-none d-lg-block d-xl-block'>
               <Link
                 className={`nav-link ${styles['nav-link-text']} ${isRoadmap ? 'active' : ''}`}
                 {...(isRoadmap ? { 'aria-current': 'page' } : {})}
