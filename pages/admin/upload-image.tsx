@@ -40,6 +40,7 @@ export default function UploadImage() {
   const [isSaving, setIsSaving] = useState<boolean>(false)
   const [lastUpdatedData, setLastUpdatedData] = useState<LastUpdatedData>(null)
   const [preventBorderImage, setPreventBorderImage] = useState<BooleanString>('false')
+  const [allowPreviewImage, setAllowPreviewImage] = useState<BooleanString>('true')
   const [removeAnimation, setRemoveAnimation] = useState<BooleanString>('false')
   const [removeBorder, setRemoveBorder] = useState<BooleanString>('false')
   const [removeNoBorder, setRemoveNoBorder] = useState<BooleanString>('false')
@@ -48,7 +49,8 @@ export default function UploadImage() {
   const [tagInputText, setTagInputText] = useState<string>('')
   const [tagTitles, setTagTitles] = useState<string[]>([])
 
-  const willCropPreviewImage = preventBorderImage === 'true'
+  const shouldPreventBorderImage = preventBorderImage === 'true'
+  const willCropPreviewImage = (shouldPreventBorderImage && allowPreviewImage === 'false')
     || (!imageNoBorderSrc && imageBorderSrc)
 
   useEffect(() => {
@@ -235,6 +237,10 @@ export default function UploadImage() {
       formData.append('prevent_border_image', 'true')
     }
 
+    if (allowPreviewImage === 'true') {
+      formData.append('allow_preview_image', 'true')
+    }
+
     if (willCropPreviewImage && borderPreviewCropPosition) {
       formData.append('border_preview_crop_position', borderPreviewCropPosition)
     }
@@ -290,6 +296,7 @@ export default function UploadImage() {
       setArtistNames([])
       setSlug('')
       setPreventBorderImage('false')
+      setAllowPreviewImage('true')
       setBorderPreviewCropPosition('middle')
     }
   }
@@ -538,6 +545,7 @@ export default function UploadImage() {
                   (imageNoBorderSrc && !imageBorderSrc) && (
                     <div className={`form-check ${styles['form-toggle-wrapper']}`}>
                       <input
+                        checked={preventBorderImage === 'true'}
                         className={`form-check-input ${styles['remove-image-toggle']}`}
                         id='prevent-border-image'
                         onChange={(event: any) => {
@@ -548,6 +556,25 @@ export default function UploadImage() {
                       />
                       <label className="form-check-label" htmlFor={'prevent-border-image'}>
                         Prevent border image
+                      </label>
+                    </div>
+                  )
+                }
+                {
+                  (imageNoBorderSrc && !imageBorderSrc && shouldPreventBorderImage) && (
+                    <div className={`form-check ${styles['form-toggle-wrapper']}`}>
+                      <input
+                        checked={allowPreviewImage === 'true'}
+                        className={`form-check-input ${styles['remove-image-toggle']}`}
+                        id='allow-preview-image'
+                        onChange={(event: any) => {
+                          setAllowPreviewImage(event.target.checked?.toString())
+                        }}
+                        type="checkbox"
+                        value={allowPreviewImage?.toString()}
+                      />
+                      <label className="form-check-label" htmlFor={'allow-preview-image'}>
+                        Allow preview border image
                       </label>
                     </div>
                   )
