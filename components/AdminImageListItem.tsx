@@ -51,7 +51,7 @@ export default function AdminImageListItem({ handleMove, handleRemoveListItem, i
       <FAIcon
         className={styles['list-item-remove']}
         icon={faTimes}
-        onClick={handleRemoveListItem as any}
+        onClick={() => handleRemoveListItem(image.id)}
         title='Remove from collection'
       />
     </div>

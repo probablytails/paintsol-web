@@ -13,8 +13,8 @@ export default function AdminImageListItems({ handleMove, handleRemoveListItem, 
     return images.map((image) => (
       <AdminImageListItem
         key={`admin-image-list-item-${image.id}`}
-        handleMove={(id: number, toPosition: 'up' | 'down') => handleMove(id, toPosition)}
-        handleRemoveListItem={(id: number) => handleRemoveListItem(id)}
+        handleMove={handleMove}
+        handleRemoveListItem={handleRemoveListItem}
         image={image} />
     ))
   }
