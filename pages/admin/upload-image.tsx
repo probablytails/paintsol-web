@@ -8,7 +8,7 @@ import Image from '@/components/Image'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import TagBadge from '@/components/TagBadge'
 import { Artist, BooleanString, Image as ImageT, Tag } from '@/lib/types'
-import { createImage, deleteImage, getImage, getImageUrl, updateImage } from '@/services/image'
+import { ImageType, createImage, deleteImage, getImage, getImageUrl, updateImage } from '@/services/image'
 import styles from '@/styles/AdminUploadImage.module.css'
 import { useRouter } from 'next/router'
 import SearchInputTags from '@/components/SearchInputTags'
@@ -16,7 +16,7 @@ import { getAllTags } from '@/services/tag'
 import { getAllArtists } from '@/services/artist'
 import SearchInputArtists from '@/components/SearchInputArtists'
 
-type ImageType = 'no-border' | 'border' | 'animation'
+type ImageMediumType = 'no-border' | 'border' | 'animation'
 type LastUpdatedData = {
   id: number
   slug?: string
@@ -35,6 +35,7 @@ export default function UploadImage() {
   const [imageNoBorderSrc, setImageNoBorderSrc] = useState<string>('')
   const [imageBorderSrc, setImageBorderSrc] = useState<string>('')
   const [imageAnimationSrc, setImageAnimationSrc] = useState<string>('')
+  const [imageType, setImageType] = useState<ImageType>('painting')
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isSaving, setIsSaving] = useState<boolean>(false)
@@ -86,7 +87,7 @@ export default function UploadImage() {
     const image = paramImage ? paramImage : editingImage
     if (image) {
       const { artists, has_animation, has_border, has_no_border,
-        id, slug, tags, title } = image
+        id, slug, tags, title, type } = image
 
       setTitle(title || '')
         
@@ -97,6 +98,8 @@ export default function UploadImage() {
       setArtistNames(artistNames)
 
       setSlug(slug || '')
+
+      setImageType(type || 'painting')
 
       if (has_animation) {
         setImageAnimationSrc(getImageUrl(id, 'animation'))
@@ -111,8 +114,18 @@ export default function UploadImage() {
       }
     }
   }
+
+  const handleTypeChange = (event: any) => {
+    setImageType(event.target.value)
+    if (event.target.value === 'meme') {
+      setPreventBorderImage('true')
+    } else {
+      setPreventBorderImage('false')
+      setAllowPreviewImage('true')
+    }
+  }
   
-  const handleChooseImage = (imageType: ImageType, event: ChangeEvent<HTMLInputElement>) => {
+  const handleChooseImage = (imageMediumType: ImageMediumType, event: ChangeEvent<HTMLInputElement>) => {
     const fileInput = event.target
     if (fileInput.files && fileInput.files[0]) {
       const reader = new FileReader()
@@ -120,11 +133,11 @@ export default function UploadImage() {
       reader.onload = function(e) {
         if (e?.target?.result) {
           const result = e.target.result as string
-          if (imageType === 'no-border') {
+          if (imageMediumType === 'no-border') {
             setImageNoBorderSrc(result)
-          } else if (imageType === 'border') {
+          } else if (imageMediumType === 'border') {
             setImageBorderSrc(result)
-          } else if (imageType === 'animation') {
+          } else if (imageMediumType === 'animation') {
             setImageAnimationSrc(result)
           }
         }
@@ -197,6 +210,7 @@ export default function UploadImage() {
   const handleSubmit = async () => {
     setIsSaving(true)
     const formData = new FormData()
+    formData.append('type', imageType)
     formData.append('slug', slug?.toLowerCase())
     formData.append('tagTitles', JSON.stringify(tagTitles))
     formData.append('artistNames', JSON.stringify(artistNames))
@@ -289,6 +303,7 @@ export default function UploadImage() {
       if (imageAnimationInput) imageAnimationInput.value = ''
       setImageAnimationSrc('')
   
+      setImageType('painting')
       setTitle('')
       setTagInputText('')
       setTagTitles([])
@@ -327,7 +342,7 @@ export default function UploadImage() {
     )
   })
 
-  const generateImageNodes = (imageType: ImageType) => {
+  const generateImageNodes = (imageMediumType: ImageMediumType) => {
     let id = ''
     let label = ''
     let isImageSelected = false
@@ -338,7 +353,7 @@ export default function UploadImage() {
     let removeValue = ''
     let onChange: any = null
 
-    if (imageType === 'no-border') {
+    if (imageMediumType === 'no-border') {
       id = 'image-no-border-file'
       label = 'Select Image'
       isImageSelected = !!imageNoBorderSrc
@@ -350,7 +365,7 @@ export default function UploadImage() {
       onChange = (event: any) => {
         setRemoveNoBorder(event.target.checked?.toString())
       }
-    } else if (imageType === 'border') {
+    } else if (imageMediumType === 'border') {
       id = 'image-border-file'
       label = 'Select Border Image'
       isImageSelected = !!imageBorderSrc
@@ -362,7 +377,7 @@ export default function UploadImage() {
       onChange = (event: any) => {
         setRemoveBorder(event.target.checked?.toString())
       }
-    } else if (imageType === 'animation') {
+    } else if (imageMediumType === 'animation') {
       id = 'image-animation-file'
       label = 'Select GIF'
       isImageSelected = !!imageAnimationSrc
@@ -390,7 +405,7 @@ export default function UploadImage() {
             <input
               className='form-control d-none'
               id={id}
-              onChange={(event) => handleChooseImage(imageType, event)}
+              onChange={(event) => handleChooseImage(imageMediumType, event)}
               type="file" />
           </button>
           {
@@ -483,6 +498,21 @@ export default function UploadImage() {
                   )
                 }
                 <h2>{pageTitle}</h2>
+                <div className={`${styles['form-select-wrapper']} mb-4`}>
+                  <label htmlFor='image-type'>
+                    Image type
+                  </label>
+                  <select
+                    aria-label='Image type'
+                    className='form-select'
+                    id='link-image-type'
+                    onChange={handleTypeChange}>
+                    <option selected={imageType === 'painting'} value="painting">Painting</option>
+                    <option selected={imageType === 'meme'} value="meme">Meme</option>
+                    <option selected={imageType === 'painting-and-meme'} value="painting-and-meme">Painting and Meme</option>
+                  </select>
+                </div>
+                <hr />
                 {generateImageNodes('no-border')}
                 {generateImageNodes('border')}
                 {generateImageNodes('animation')}

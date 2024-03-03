@@ -2,7 +2,7 @@ import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
 import { faTelegram } from '@fortawesome/free-brands-svg-icons/faTelegram'
 import { faXTwitter } from '@fortawesome/free-brands-svg-icons/faXTwitter'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import Image from '@/components/Image'
 import FAIcon from './FAIcon'
 import Icon from './Icon'
@@ -92,13 +92,15 @@ function NavDropdownIcon({ imageSrc, title, url }: NavDropdownIconProps) {
 export default function NavBar() {
   const buttonRef = useRef<any>(null)
   const pathname = usePathname()
-  const isArtGallery = pathname === '/art'
+  const searchParams = useSearchParams()
+  const queryParamType = searchParams.get('type') as any
+  const isArtGallery = pathname === '/art' && queryParamType !== 'memes'
   const isArtists = pathname === '/artists'
   const isCollections = pathname === '/collections'
   const isStickers = pathname === '/stickers'
   const isWhitepaper = pathname === '/whitepaper'
   const isRoadmap = pathname === '/roadmap'
-  // const isResources = pathname === '/resources'
+  const isMemes = pathname === '/art' && queryParamType === 'memes'
 
   const handleOutsideClick = (event: any) => {
     const menuIsExpanded = !!document.querySelector('.navbar-collapse.collapse.show')
@@ -122,6 +124,12 @@ export default function NavBar() {
       className: `${styles['dropdown-item']} d-md-none`,
       href: '/stickers',
       label: 'Stickers',
+      target: '_self'
+    },
+    {
+      className: `${styles['dropdown-item']} d-md-none`,
+      href: '/art?type=memes',
+      label: 'Memes',
       target: '_self'
     },
     {
@@ -214,6 +222,14 @@ export default function NavBar() {
                 Gallery
               </Link>
             </li>
+            <li className='nav-item d-block d-sm-none d-md-block'>
+              <Link
+                className={`nav-link ${styles['nav-link-text']} ${isMemes ? 'active' : ''}`}
+                {...(isMemes ? { 'aria-current': 'page' } : {})}
+                href='/art?type=memes'>
+                Memes
+              </Link>
+            </li>
             <li className='nav-item'>
               <Link
                 className={`nav-link ${styles['nav-link-text']} ${isArtists ? 'active' : ''}`}
@@ -246,7 +262,7 @@ export default function NavBar() {
                 Whitepaper
               </Link>
             </li>
-            <li className='nav-item d-block d-sm-none d-md-none d-lg-block d-xl-block'>
+            <li className='nav-item d-block d-sm-none d-md-none d-lg-block'>
               <Link
                 className={`nav-link ${styles['nav-link-text']} ${isRoadmap ? 'active' : ''}`}
                 {...(isRoadmap ? { 'aria-current': 'page' } : {})}
@@ -283,30 +299,30 @@ export default function NavBar() {
             </div>
             <div className={styles['social-links']}>
               <NavLinkIcon
-                className='d-sm-none d-md-none d-lg-block d-xl-block'
+                className='d-sm-none d-md-none d-xl-block'
                 imageSrc='/external-sites/birdeye.svg'
                 title='Birdeye'
                 url='https://birdeye.so/token/8x9c5qa4nvakKo5wHPbPa5xvTVMKmS26w4DRpCQLCLk3?chain=solana'
               />
               <NavLinkIcon
-                className='d-sm-none d-md-none d-lg-block d-xl-block'
+                className='d-sm-none d-md-none d-xl-block'
                 imageSrc='/external-sites/dexscreener.svg'
                 title='DEX Screener'
                 url='https://dexscreener.com/solana/8x9c5qa4nvakKo5wHPbPa5xvTVMKmS26w4DRpCQLCLk3'
               />
               <NavLinkIcon
-                className='d-sm-none d-md-none d-lg-block d-xl-block'
+                className='d-sm-none d-md-none d-xl-block'
                 imageSrc='/external-sites/dextools.svg'
                 title='DEXTools'
                 url='https://www.dextools.io/app/en/solana/pair-explorer/NniGZMgEpXL9jTmEATcKMxUbmH5cSNALngJKAQLTXzB'
               />
               <NavLinkIcon
-                className='d-sm-none d-md-none d-lg-block d-xl-block'
+                className='d-sm-none d-md-none d-xl-block'
                 imageSrc='/external-sites/coingecko.svg'
                 title='CoinGecko'
                 url='https://www.coingecko.com/en/coins/ms-paint/usd'
               />
-              <div className='d-none d-sm-block d-lg-none d-xl-none'>
+              <div className='d-none d-sm-block d-xl-none'>
                 <Dropdown
                   alignRight
                   dropdownClassName={styles['dropdown']}

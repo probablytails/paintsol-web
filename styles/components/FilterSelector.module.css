@@ -4,8 +4,40 @@
   justify-content: center;
   margin: auto;
   max-width: var(--form-max-width);
+  min-height: 26px;
 }
 
 .filter-radio-wrapper {
   margin: 0 16px;
 }
+
+.filter-image-type {
+  padding: 0 0.75rem;
+  max-width: 120px;
+}
+
+@media (max-width: 575px) {  
+  .filter-wrapper-sm {
+    display: flex !important;
+    justify-content: space-between;
+  }
+
+  .filter-selector-wrapper {
+    justify-content: flex-start;
+  }
+
+  .filter-radio-wrapper {
+    margin: 0 16px 0 0;
+  }
+  
+  .filter-selector-sm {
+    flex: 1 1 auto;
+  }
+  
+  .filter-image-type-sm {
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: flex-end;
+  }
+}
+

@@ -1,4 +1,4 @@
-import { ImageVersion } from '@/services/image'
+import { ImageType, ImageVersion } from '@/services/image'
 
 export type Artist = {
   deca_username: string | null
@@ -47,6 +47,7 @@ export type Image = {
   slug: string | null
   title: string | null
   tags: Tag[]
+  type: ImageType
   nextData?: Image | null
   prevData?: Image | null
   created_at: Date

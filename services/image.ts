@@ -2,6 +2,7 @@ import { Image } from '@/lib/types'
 import { apiRequest } from './apiRequest'
 
 export type ImageVersion = 'animation' | 'border' | 'no-border' | 'preview'
+export type ImageType = 'painting' | 'meme' | 'painting-and-meme'
 
 export const getPreferredImagePageUrl = (image: Image) => {
   if (image?.slug) {
@@ -112,14 +113,16 @@ export const getImage = async (idOrSlug: number | string, isServerSideReq?: bool
 
 type GetImages = {
   page: number
+  imageType: ImageType
 }
 
-export const getImages = async ({ page = 1 }: GetImages) => {
+export const getImages = async ({ page = 1, imageType }: GetImages) => {
   const response = await apiRequest({
     method: 'GET',
     url: '/images',
     params: {
-      page
+      page,
+      imageType
     }
   })
 
@@ -146,14 +149,36 @@ export const getImagesByArtistId = async ({ page = 1, artistId }: GetImagesByArt
 
 type GetImagesWithoutArtists = {
   page: number
+  imageType: ImageType
 }
 
-export const getImagesWithoutArtists = async ({ page = 1 }: GetImagesWithoutArtists) => {
+export const getImagesWithoutArtists = async ({ page = 1, imageType }: GetImagesWithoutArtists) => {
   const response = await apiRequest({
     method: 'GET',
     url: '/images/no-artist',
     params: {
-      page
+      page,
+      imageType
+    }
+  })
+
+  return response?.data
+}
+
+type GetImagesByTagId = {
+  page: number
+  tagId: number,
+  imageType: ImageType
+}
+
+export const getImagesByTagId = async ({ page = 1, tagId, imageType }: GetImagesByTagId) => {
+  const response = await apiRequest({
+    method: 'GET',
+    url: '/images/by-tag',
+    params: {
+      page,
+      id: tagId,
+      imageType
     }
   })
 
@@ -184,24 +209,6 @@ export const getImagesByCollectionId = async ({ page = 1, collection_id }: GetIm
     params: {
       page,
       id: collection_id
-    }
-  })
-
-  return response?.data
-}
-
-type GetImagesByTagId = {
-  page: number
-  tagId: number
-}
-
-export const getImagesByTagId = async ({ page = 1, tagId }: GetImagesByTagId) => {
-  const response = await apiRequest({
-    method: 'GET',
-    url: '/images/by-tag',
-    params: {
-      page,
-      id: tagId
     }
   })
 

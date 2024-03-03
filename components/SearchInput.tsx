@@ -40,6 +40,12 @@ export default function SearchInput({ allArtists, allTags, filterSelected,
   const searchInputRef = useRef<any>(null)
   const dropdownMenuRef = useRef<any>(null)
   const prevState = usePrevious({ filterSelected })
+  const allTagsRef = useRef(allTags)
+  allTagsRef.current = allTags
+
+  useEffect(() => {
+    setFilteredTags(allTags)
+  }, [allTags])
 
   useEffect(() => {
     window.addEventListener('mousedown', handleOutSideClick)
@@ -98,8 +104,8 @@ export default function SearchInput({ allArtists, allTags, filterSelected,
 
   function handleFilterTags(inputText: string) {
     const strRegExPattern = `.*${escapeRegExp(inputText?.toLowerCase())}.*`
-    
-    const newFilteredTags = allTags?.filter((tag) => {
+
+    const newFilteredTags = allTagsRef?.current?.filter((tag) => {
       return tag?.title?.toLowerCase().match(new RegExp(strRegExPattern,'g'))
     })
 
@@ -115,7 +121,7 @@ export default function SearchInput({ allArtists, allTags, filterSelected,
     })
 
     setFilteredArtists(newFilteredArtists)
-    setFilteredTags(allTags)
+    setFilteredTags(allTagsRef?.current)
   }
 
   function handleChange (text: string, removeFocus: boolean) {
@@ -167,7 +173,7 @@ export default function SearchInput({ allArtists, allTags, filterSelected,
   }
 
   function getTagByTitle(title: string) {
-    const tag = allTags.find((tag: Tag) => tag?.title?.toLowerCase() === title?.toLowerCase())
+    const tag = allTagsRef?.current?.find((tag: Tag) => tag?.title?.toLowerCase() === title?.toLowerCase())
     return tag || null
   }
 
@@ -186,7 +192,8 @@ export default function SearchInput({ allArtists, allTags, filterSelected,
     )
   })
 
-  const tags = filteredTags?.length > 0 ? filteredTags : allTags
+  const tags = filteredTags?.length > 0 ? filteredTags : allTagsRef?.current
+
   const tagBadges = tags?.map((tag) => {
     return (
       <TagBadge
