@@ -149,16 +149,14 @@ export const getImagesByArtistId = async ({ page = 1, artistId }: GetImagesByArt
 
 type GetImagesWithoutArtists = {
   page: number
-  imageType: ImageType
 }
 
-export const getImagesWithoutArtists = async ({ page = 1, imageType }: GetImagesWithoutArtists) => {
+export const getImagesWithoutArtists = async ({ page = 1 }: GetImagesWithoutArtists) => {
   const response = await apiRequest({
     method: 'GET',
     url: '/images/no-artist',
     params: {
-      page,
-      imageType
+      page
     }
   })
 

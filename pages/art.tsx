@@ -59,8 +59,7 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
 
   if (!artistIdIsValidInteger && noArtist) {
     const data = await getImagesWithoutArtists({
-      page: 1,
-      imageType: initialSelectedImageType
+      page: 1
     })
     initialImages = data?.[0] || []
     initialImagesTotal = data?.[1] || 0
@@ -306,7 +305,8 @@ export default function Gallery({
             selectedTag,
             setPage,
             setImages,
-            noArtist
+            noArtist,
+            selectedImageType
           })
         }}>
         <div className={`main-content-inner-wrapper ${viewTypeSelected === 'tiny' ? 'main-content-end-may-not-be-reached' : ''}`}>
@@ -370,6 +370,7 @@ type HandleOnScroll = {
   setPage: any
   setImages: any
   noArtist: boolean
+  selectedImageType: ImageType
 }
 
 /*
@@ -388,7 +389,8 @@ async function handleOnScroll({
   selectedTag,
   page,
   setPage,
-  setImages
+  setImages,
+  selectedImageType
 }: HandleOnScroll) {
   const element = event.target
   const bottomSpacerHeight = 64
@@ -404,9 +406,9 @@ async function handleOnScroll({
     } else if (selectedArtist) {
       nextPageData = await getImagesByArtistId({ page: nextPage, artistId: selectedArtist.id })
     } else if (selectedTag) {
-      nextPageData = await getImagesByTagId({ page: nextPage, tagId: selectedTag.id })
+      nextPageData = await getImagesByTagId({ page: nextPage, tagId: selectedTag.id, imageType: selectedImageType })
     } else {
-      nextPageData = await getImages({ page: nextPage })
+      nextPageData = await getImages({ page: nextPage, imageType: selectedImageType })
     }
     if (nextPageData?.[0].length === 0) {
       setEndReached(true)
